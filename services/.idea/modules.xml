@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/admin-valas/admin-valas.iml" filepath="$PROJECT_DIR$/admin-valas/admin-valas.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-core/app-core.iml" filepath="$PROJECT_DIR$/app-core/app-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app-service/app-service.iml" filepath="$PROJECT_DIR$/app-service/app-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/services.iml" filepath="$PROJECT_DIR$/services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/valas-scheduler/valas-scheduler.iml" filepath="$PROJECT_DIR$/valas-scheduler/valas-scheduler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/valuta-asing-pln.iml" filepath="$PROJECT_DIR$/valuta-asing-pln.iml" />
+    </modules>
+  </component>
+</project>
