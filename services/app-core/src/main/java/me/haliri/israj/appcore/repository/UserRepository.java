@@ -1,6 +1,5 @@
 package me.haliri.israj.appcore.repository;
 
-import me.haliri.israj.appcore.config.MainDatasourceConfig;
 import me.haliri.israj.appcore.domain.Role;
 import me.haliri.israj.appcore.domain.User;
 import me.haliri.israj.appcore.utils.AppUtils;
@@ -22,11 +21,11 @@ import java.util.Set;
 public class UserRepository {
 
     @Autowired
-    private MainDatasourceConfig dataSource;
+    private DataSource dataSource;
 
     public User findByUsername(String username){
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource.dataSource());
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
         String sql = "SELECT * FROM USERS WHERE ID= ?";
 
