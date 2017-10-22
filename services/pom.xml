@@ -24,6 +24,7 @@
 
   <modules>
     <module>app-core</module>
+    <module>app-service</module>
   </modules>
 
   <dependencies>
