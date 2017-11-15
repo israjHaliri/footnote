@@ -1,4 +1,8 @@
 services/app-core/target/
 services/app-service/target/
-services/.idea/**
-.DS_Store
+services/.idea/
+services/services.iml
+services/app-core/app-core.iml
+services/app-service/app-service.iml
+services/israjhaliri.com-log
+**/.DS_Store
