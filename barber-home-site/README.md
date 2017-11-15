@@ -1,6 +1,6 @@
-# barber-site
+# barber-home-site
 
-> site of my barber
+> admin panel barber app
 
 ## Build Setup
 

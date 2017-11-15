@@ -33,19 +33,19 @@ public class CustomRequestHandler extends HttpServletRequestWrapper {
         String body = IOUtils.toString(super.getInputStream(), "UTF-8");
         Object originalPayload = parseToken(body);
         String sOrigPayload = mapper.writeValueAsString(originalPayload);
-        AppUtils.getLogger(this).info("ORIGINAL PAYLOAD FROM TOKEN [{}]", sOrigPayload);
+        AppUtils.getLogger(this).debug("ORIGINAL PAYLOAD FROM TOKEN [{}]", sOrigPayload);
         return sOrigPayload.getBytes("UTF-8");
     }
 
     public Object parseToken(String token) {
-        AppUtils.getLogger(this).info("TOKEN TO PARSE [{}]", token);
+        AppUtils.getLogger(this).debug("TOKEN TO PARSE [{}]", token);
         try {
             ObjectMapper mapper = new ObjectMapper();
             Claims body = Jwts.parser()
                     .setSigningKey("israjhaliri".getBytes("UTF-8"))
                     .parseClaimsJws(token)
                     .getBody();
-            AppUtils.getLogger(this).info("JSON PAYLOAD [{}]",
+            AppUtils.getLogger(this).debug("JSON PAYLOAD [{}]",
                     mapper.writerWithDefaultPrettyPrinter()
                             .writeValueAsString(body));
             return body;

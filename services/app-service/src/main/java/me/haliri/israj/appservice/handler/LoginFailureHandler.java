@@ -22,7 +22,7 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest req, HttpServletResponse res, AuthenticationException ae) throws IOException, ServletException {
-        AppUtils.getLogger(this).info("LOGIN ERROR");
+        AppUtils.getLogger(this).debug("LOGIN ERROR");
         res.setStatus(HttpStatus.UNAUTHORIZED.value());
         HttpSession session = req.getSession();
         session.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, ae.getMessage());

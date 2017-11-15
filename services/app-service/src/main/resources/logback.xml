@@ -9,18 +9,18 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <level>DEBUG</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
+        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
+            <!--<level>INFO</level>-->
+            <!--<level>DEBUG</level>-->
+            <!--<onMatch>ACCEPT</onMatch>-->
+            <!--<onMismatch>DENY</onMismatch>-->
+        <!--</filter>-->
 
-        <file>${catalina.home:-.}/israjhaliri.com-log/app-service.log</file>
+        <file>${catalina.home:-.}/israjhaliri.com-log/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
             <fileNamePattern>
-                ${catalina.home:-.}/israjhaliri.com-log/app-service.log.%d{yyyy-MM-dd}.log.gz
+                ${catalina.home:-.}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
 
             <maxHistory>365</maxHistory>
@@ -30,7 +30,8 @@
         </encoder>
     </appender>
 
+    <property resource="application.properties"/>
 
-    <include resource="logback.${spring.profiles.active:-development}.xml" />
+    <include resource="logback.${spring.profiles.active}.xml" />
 
 </configuration>

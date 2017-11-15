@@ -1,7 +1,7 @@
 {
-  "name": "barber-site",
+  "name": "barber-home-site",
   "version": "1.0.0",
-  "description": "site of my barber",
+  "description": "admin panel barber app",
   "author": "israj haliri <israj.haliri@gmail.com>",
   "private": true,
   "scripts": {

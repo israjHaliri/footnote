@@ -37,7 +37,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication a) throws IOException, ServletException {
-        AppUtils.getLogger(this).info("LOGIN SUCCESS");
+        AppUtils.getLogger(this).debug("LOGIN SUCCESS");
         handle(request, response, a);
         clearAuthenticationAttributes(request);
     }

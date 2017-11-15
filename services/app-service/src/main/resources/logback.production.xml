@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
 
-    <logger name="me.haliri.israj.appservice" level="info">
+    <logger name="me.haliri.israj" level="info">
         <appender-ref ref="FILE" />
     </logger>
 

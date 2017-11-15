@@ -31,7 +31,7 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/israjhalirisite</db.url>
+                <db.url>jdbc:postgresql://localhost:5432/israjhaliri.com</db.url>
                 <db.username>israjhaliri</db.username>
                 <db.password>israjhaliri</db.password>
             </properties>
@@ -43,7 +43,7 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/israjhalirisite</db.url>
+                <db.url>jdbc:postgresql://localhost:5432/israjhaliri.com</db.url>
                 <db.username>admin</db.username>
                 <db.password>admin</db.password>
             </properties>
