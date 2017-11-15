@@ -17,7 +17,7 @@ public class AppServiceTests {
 
 	@Test
 	public void contextLoads() {
-		System.out.println("kampret : "+passwordEncoder.encode("123"));
+		System.out.println("generate password : "+passwordEncoder.encode("adminbarber"));
 	}
 
 }

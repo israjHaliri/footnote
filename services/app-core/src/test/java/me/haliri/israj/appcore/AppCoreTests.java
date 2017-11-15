@@ -3,6 +3,7 @@ package me.haliri.israj.appcore;
 import me.haliri.israj.appcore.domain.User;
 import me.haliri.israj.appcore.repository.UserRepository;
 import me.haliri.israj.appcore.utils.AppUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class AppCoreTests {
 
 	@Test
 	public void contextLoads() throws SQLException {
-		User user = userRepository.findByUsername("JONO");
+		User user = userRepository.findByUsername("israj.haliri@gmail.com");
 		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getId());
 		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getRoles().toString());
 		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getEnabled());

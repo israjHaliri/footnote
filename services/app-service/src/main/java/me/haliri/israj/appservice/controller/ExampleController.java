@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/secret")
+@RequestMapping("/api/secret")
 public class ExampleController {
 
 	@RequestMapping(value = "/example_get", method = RequestMethod.GET)

@@ -9,11 +9,11 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>${catalina.home:-.}/israjhaliri-site-log/app-core.log</file>
+        <file>${catalina.home:-.}/israjhaliri.com-log/app-core.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
             <fileNamePattern>
-                ${catalina.home:-.}/israjhaliri-site-log/app-core.log.%d{yyyy-MM-dd}.log.gz
+                ${catalina.home:-.}/israjhaliri.com-log/app-core.log.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
 
             <maxHistory>365</maxHistory>
