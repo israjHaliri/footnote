@@ -1,0 +1,4 @@
+services/app-core/target/
+services/app-service/target/
+services/.idea/**
+.DS_Store
