@@ -27,7 +27,7 @@ public class UserRepository {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "SELECT * FROM USERS WHERE ID= ?";
+        String sql = "SELECT * FROM CONFIG.USERS WHERE ID= ?";
 
         List<Map<String,Object>> userMap = jdbcTemplate.queryForList(sql, new Object[] { username });
         AppUtils.getLogger(this).debug("USERS LOG : {}",userMap.toString());
@@ -38,13 +38,7 @@ public class UserRepository {
             for (Map param : userMap){
                 user.setId(param.get("id").toString());
                 user.setPassword(param.get("password").toString());
-                Integer enabled = (Integer) param.get("enabled");
-                if(enabled == 1){
-                    user.setEnabled(true);
-                }else{
-                    user.setEnabled(false);
-                }
-
+                user.setEnabled((Boolean) param.get("enable"));
 
                 role.setId(param.get("id").toString());
                 role.setRole(param.get("role").toString());
@@ -57,5 +51,17 @@ public class UserRepository {
         }
         return new User();
 
+    }
+
+    public void insertUser(String emailAsId, String password, boolean enable, String role){
+
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+
+        try{
+            String sql = "insert into config.users (id,password,enable,role) values (?,?,?,?);";
+            jdbcTemplate.update(sql, new Object[] { emailAsId,password,enable,role });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

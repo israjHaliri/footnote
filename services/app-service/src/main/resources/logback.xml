@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <property resource="application.properties"/>
+
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d %-5level %logger{35} - %msg %n</pattern>
@@ -16,11 +18,13 @@
             <!--<onMismatch>DENY</onMismatch>-->
         <!--</filter>-->
 
-        <file>${catalina.home:-.}/israjhaliri.com-log/app.log</file>
+        <!--<file>${catalina.home:-.}/israjhaliri.com-log/app.log</file>-->
+        <file>${path.log}/israjhaliri.com-log/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
             <fileNamePattern>
-                ${catalina.home:-.}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz
+                <!--${catalina.home:-.}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz-->
+                ${path.log}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
 
             <maxHistory>365</maxHistory>
@@ -29,8 +33,6 @@
             <pattern>%d %-5level %logger{35} - %msg %n</pattern>
         </encoder>
     </appender>
-
-    <property resource="application.properties"/>
 
     <include resource="logback.${spring.profiles.active}.xml" />
 

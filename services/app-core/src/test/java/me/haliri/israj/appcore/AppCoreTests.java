@@ -3,6 +3,7 @@ package me.haliri.israj.appcore;
 import me.haliri.israj.appcore.domain.User;
 import me.haliri.israj.appcore.repository.UserRepository;
 import me.haliri.israj.appcore.utils.AppUtils;
+import org.apache.tomcat.jdbc.pool.DataSource;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,15 +19,11 @@ import java.sql.SQLException;
 public class AppCoreTests {
 
 	@Autowired
-	UserRepository userRepository;
+	DataSource dataSource;
 
 	@Test
 	public void contextLoads() throws SQLException {
-		User user = userRepository.findByUsername("israj.haliri@gmail.com");
-		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getId());
-		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getRoles().toString());
-		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getEnabled());
-		AppUtils.getLogger(this).debug("USER DETAILS : {}",user.getPassword());
+		System.out.println("DATASOURCE = " + dataSource);
 	}
 
 }

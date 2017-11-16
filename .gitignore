@@ -5,4 +5,5 @@ services/services.iml
 services/app-core/app-core.iml
 services/app-service/app-service.iml
 services/israjhaliri.com-log
+services/app-service/israjhaliri.com-log/
 **/.DS_Store

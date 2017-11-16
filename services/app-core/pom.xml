@@ -31,9 +31,9 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/israjhaliri.com</db.url>
-                <db.username>israjhaliri</db.username>
-                <db.password>israjhaliri</db.password>
+                <db.url>jdbc:postgresql://localhost:5432/israjhaliridotcom</db.url>
+                <db.username>israjhaliridotcom</db.username>
+                <db.password></db.password>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -43,9 +43,9 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/israjhaliri.com</db.url>
-                <db.username>admin</db.username>
-                <db.password>admin</db.password>
+                <db.url>jdbc:postgresql://localhost:5432/israjhaliridotcom</db.url>
+                <db.username>israjhaliri</db.username>
+                <db.password>israjhaliri</db.password>
             </properties>
         </profile>
     </profiles>

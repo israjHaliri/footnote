@@ -61,6 +61,7 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
+                <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs</pathLog>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -70,6 +71,7 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
+				<pathLog>/AppLogs</pathLog>
             </properties>
         </profile>
     </profiles>
