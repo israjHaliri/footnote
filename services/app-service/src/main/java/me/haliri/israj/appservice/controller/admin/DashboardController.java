@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/secret")
 public class DashboardController {
+
     @RequestMapping("/dashboard")
     public String dashboard(){
         return "this is dashboard";

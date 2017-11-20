@@ -22,45 +22,30 @@ public class BarberRepository {
     @Autowired
     private DataSource dataSource;
 
-    public User findByUsername(String username){
+    public List<Map<String,Object>> getAllGuest(){
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        String sql = "SELECT * FROM CONFIG.USERS WHERE ID= ?";
+        String sql = "SELECT * FROM barber.guest_book";
 
-        List<Map<String,Object>> userMap = jdbcTemplate.queryForList(sql, new Object[] { username });
-        AppUtils.getLogger(this).debug("USERS LOG : {}",userMap.toString());
+        List<Map<String,Object>> listData = jdbcTemplate.queryForList(sql);
+        AppUtils.getLogger(this).debug("GET ALL GUEST LOG : {}",listData.toString());
 
-        if(userMap.size() > 0){
-            User user = new User();
-            Role role = new Role();
-            for (Map param : userMap){
-                user.setId(param.get("id").toString());
-                user.setPassword(param.get("password").toString());
-                user.setEnabled((Boolean) param.get("enable"));
-
-                role.setId(param.get("id").toString());
-                role.setRole(param.get("role").toString());
-
-                Set<Role> roleSet =  new HashSet<>();
-                roleSet.add(role);
-                user.setRoles(roleSet);
-            }
-            return user;
-        }
-        return new User();
+        return listData;
 
     }
 
-    public void insertUser(String emailAsId, String password, boolean enable, String role){
+    public List<Map<String,Object>> getProfile(){
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
 
-        try{
-            String sql = "insert into config.users (id,password,enable,role) values (?,?,?,?);";
-            jdbcTemplate.update(sql, new Object[] { emailAsId,password,enable,role });
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        String sql = "SELECT id_profile, address, hand_phone, phone, email, lat, \"long\", create_date, update_date\n" +
+                "FROM barber.profile;";
+
+        List<Map<String,Object>> listData = jdbcTemplate.queryForList(sql);
+        AppUtils.getLogger(this).debug("GET PROFILE LOG : {}",listData.toString());
+
+        return listData;
+
     }
 }
