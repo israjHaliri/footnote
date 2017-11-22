@@ -1,9 +1,12 @@
 package me.haliri.israj.appservice.config;
 
 import me.haliri.israj.appservice.filter.RestFilter;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -15,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 //uncoment this if using signature payload
 //@Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
+
     @Bean
     public FilterRegistrationBean httpRequestFilter() {
         FilterRegistrationBean bean = new FilterRegistrationBean(new RestFilter());

@@ -1,5 +1,6 @@
 package me.haliri.israj.appcore.domain;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -9,8 +10,18 @@ public class User {
 
     String id;
     String password;
-    Boolean enabled;
-    private Set<Role> roles;
+    Boolean enable;
+    private List<Role> roles;
+
+    public User() {
+    }
+
+    public User(String id, String password, Boolean enable, List<Role> roles) {
+        this.id = id;
+        this.password = password;
+        this.enable = enable;
+        this.roles = roles;
+    }
 
     public String getId() {
         return id;
@@ -28,19 +39,19 @@ public class User {
         this.password = password;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
+    public Boolean getEnable() {
+        return enable;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 
@@ -49,7 +60,7 @@ public class User {
         return "User{" +
                 "id='" + id + '\'' +
                 ", password='" + password + '\'' +
-                ", enabled='" + enabled + '\'' +
+                ", enabled=" + enable +
                 ", roles=" + roles +
                 '}';
     }
