@@ -45,6 +45,16 @@ public class UserRepositoryImpl implements UserRespository {
     }
 
     @Override
+    public List<User> getListData() {
+        return null;
+    }
+
+    @Override
+    public List<User> getListDataByParameters(Object parameters) {
+        return null;
+    }
+
+    @Override
     public User getDataById(Object id) {
         try {
 

@@ -13,9 +13,13 @@ import java.util.Map;
 public interface BaseRepository<T,D> {
     D getData();
 
+    List<D> getListData();
+
     D getDataById(T id);
 
     D getDataByParameters(T parameters);
+
+    List<D> getListDataByParameters(T parameters);
 
     void saveData(D parameters);
 

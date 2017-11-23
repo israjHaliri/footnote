@@ -33,6 +33,16 @@ public class BarberProfileRepositoryImpl implements BarberProfileRespository {
     }
 
     @Override
+    public List<BarberProfile> getListDataByParameters(Object parameters) {
+        return null;
+    }
+
+    @Override
+    public List<BarberProfile> getListData() {
+        return null;
+    }
+
+    @Override
     public BarberProfile getData() {
         BarberProfile barberProfile = new BarberProfile();
         try {
@@ -79,11 +89,11 @@ public class BarberProfileRepositoryImpl implements BarberProfileRespository {
     }
 
     @Override
-    public void saveData(BarberProfile parameters) {
+    public void saveData(BarberProfile barberProfile) {
     }
 
     @Override
-    public void updateData(BarberProfile parameters) {
+    public void updateData(BarberProfile barberProfile) {
     }
 
     @Override
