@@ -25,11 +25,6 @@ public class BarberController {
     @Autowired
     BarberProfileRespository barberProfileRespository;
 
-    @RequestMapping("/get/profile")
-    public BarberProfile dashboard() {
-        return barberProfileRespository.getData();
-    }
-
     @RequestMapping(value = "/update/profile", method = RequestMethod.PUT)
     public Object updateProfile(@RequestBody BarberProfile barberProfile) {
         try {

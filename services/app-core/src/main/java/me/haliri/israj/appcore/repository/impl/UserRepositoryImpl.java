@@ -51,7 +51,7 @@ public class UserRepositoryImpl implements UserRespository {
             String sql = "SELECT * FROM CONFIG.USERS WHERE ID= ?";
             User user = (User) jdbcTemplate.queryForObject(sql, new Object[]{id.toString()}, new BeanPropertyRowMapper(User.class));
 
-            String sqlRole = "SELECT * FROM CONFIG.ROLE WHERE USER_ID= ?";
+            String sqlRole = "SELECT ur.user_id,r.role,r.id FROM CONFIG.user_roles ur JOIN CONFIG.role r on ur.role_id = r.id WHERE USER_ID = ?";
             List<Role> roles = jdbcTemplate.query(sqlRole, new Object[]{id.toString()}, new BeanPropertyRowMapper(Role.class));
 
             user.setRoles(roles);

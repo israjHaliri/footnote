@@ -1,5 +1,6 @@
 package me.haliri.israj.appservice.filter;
 
+import me.haliri.israj.appcore.utils.AppUtils;
 import me.haliri.israj.appservice.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,24 +36,26 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        String authToken = httpRequest.getHeader(this.tokenHeader);
+        AppUtils.getLogger(this).debug("REQ STARTS WITH : {}",httpRequest.getRequestURI().toString());
+        if (httpRequest.getRequestURI().startsWith("/api") || httpRequest.getRequestURI().startsWith("/auth")) {
+            String authToken = httpRequest.getHeader(this.tokenHeader);
 
-        if(StringUtils.hasText(authToken) && authToken.startsWith("Bearer "))
-            authToken = authToken.substring(7);
+            if (StringUtils.hasText(authToken) && authToken.startsWith("Bearer "))
+                authToken = authToken.substring(7);
 
-        String username = jwtTokenUtil.getUsernameFromToken(authToken);
+            String username = jwtTokenUtil.getUsernameFromToken(authToken);
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
-
         chain.doFilter(request, response);
     }
 }

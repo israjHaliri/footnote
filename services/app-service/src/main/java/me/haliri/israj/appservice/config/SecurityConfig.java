@@ -1,5 +1,6 @@
 package me.haliri.israj.appservice.config;
 
+import me.haliri.israj.appcore.repository.UserRespository;
 import me.haliri.israj.appservice.filter.JwtAuthenticationTokenFilter;
 import me.haliri.israj.appservice.handler.LoginFailureHandler;
 import me.haliri.israj.appservice.handler.LoginSuccessHandler;
@@ -23,6 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by israj on 9/30/2016.
@@ -35,8 +37,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Autowired private LoginFailureHandler loginFailureHandler;
-    @Autowired private LoginSuccessHandler loginSuccessHandler;
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -52,13 +57,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/api/secret/**").hasRole("SUPER_ADMIN")
-                .antMatchers("/api/barber/**").hasRole("BARBER_ADMIN")
-                .antMatchers("/**").permitAll()
+                .antMatchers("/api/barber/**").hasAnyRole("BARBER_ADMIN","SUPER_ADMIN")
+                .antMatchers("/service/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -82,8 +88,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080","*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:8080", "*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
