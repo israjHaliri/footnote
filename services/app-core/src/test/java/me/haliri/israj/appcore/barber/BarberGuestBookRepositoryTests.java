@@ -1,7 +1,7 @@
-package me.haliri.israj.appcore;
+package me.haliri.israj.appcore.barber;
 
-import me.haliri.israj.appcore.domain.BarberGuestBook;
-import me.haliri.israj.appcore.repository.BarberGuestBookRespository;
+import me.haliri.israj.appcore.domain.barber.BarberGuestBook;
+import me.haliri.israj.appcore.strategy.barber.impl.BarberGuestBookStrategyImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +15,17 @@ import java.sql.SQLException;
 public class BarberGuestBookRepositoryTests {
 
     @Autowired
-    BarberGuestBookRespository barberGuestBookRespository;
+    BarberGuestBookStrategyImpl barberGuestBookStrategy;
 
     @Test
     public void getDataTests() throws SQLException {
-        barberGuestBookRespository.getListData();
+        barberGuestBookStrategy.getListData();
     }
 
     @Test
     public void inserBarberProfileTests() throws SQLException {
         BarberGuestBook param = new BarberGuestBook();
         param.setUsername("jono");
-        barberGuestBookRespository.saveData(param);
+        barberGuestBookStrategy.saveData(param);
     }
 }

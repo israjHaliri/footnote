@@ -1,4 +1,4 @@
-package me.haliri.israj.appcore.domain;
+package me.haliri.israj.appcore.domain.common;
 
 /**
  * Created by israjhaliri on 8/25/17.

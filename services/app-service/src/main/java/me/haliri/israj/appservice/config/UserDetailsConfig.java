@@ -1,9 +1,9 @@
 package me.haliri.israj.appservice.config;
 
 
-import me.haliri.israj.appcore.domain.Role;
-import me.haliri.israj.appcore.domain.User;
-import me.haliri.israj.appcore.repository.impl.UserRepositoryImpl;
+import me.haliri.israj.appcore.domain.common.Role;
+import me.haliri.israj.appcore.domain.common.User;
+import me.haliri.israj.appcore.dao.common.impl.UserDaoImpl;
 import me.haliri.israj.appcore.utils.AppUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.Set;
 public class UserDetailsConfig implements UserDetailsService {
 
     @Autowired
-    UserRepositoryImpl userRepository;
+    UserDaoImpl userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -34,12 +34,10 @@ public class UserDetailsConfig implements UserDetailsService {
         if (user.getId() == null) {
             throw new UsernameNotFoundException(username);
         } else {
-
             Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-            for (Role roles : user.getRoles()) {
-                grantedAuthorities.add(new SimpleGrantedAuthority(roles.getRole()));
-            }
-
+            user.getRoles().forEach((users)->{
+                grantedAuthorities.add(new SimpleGrantedAuthority(users.getRole()));
+            });
             return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(),user.getEnable(), true, true, true, grantedAuthorities);
         }
     }

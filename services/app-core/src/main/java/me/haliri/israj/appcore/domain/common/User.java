@@ -1,7 +1,6 @@
-package me.haliri.israj.appcore.domain;
+package me.haliri.israj.appcore.domain.common;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by israjhaliri on 8/27/17.

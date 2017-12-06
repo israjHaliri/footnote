@@ -11,19 +11,10 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <!--<filter class="ch.qos.logback.classic.filter.LevelFilter">-->
-            <!--<level>INFO</level>-->
-            <!--<level>DEBUG</level>-->
-            <!--<onMatch>ACCEPT</onMatch>-->
-            <!--<onMismatch>DENY</onMismatch>-->
-        <!--</filter>-->
-
-        <!--<file>${catalina.home:-.}/israjhaliri.com-log/app.log</file>-->
         <file>${path.log}/israjhaliri.com-log/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
             <fileNamePattern>
-                <!--${catalina.home:-.}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz-->
                 ${path.log}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
 

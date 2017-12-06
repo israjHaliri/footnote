@@ -1,6 +1,5 @@
-package me.haliri.israj.appcore.domain;
+package me.haliri.israj.appcore.domain.common;
 
-import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 

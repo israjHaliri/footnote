@@ -1,4 +1,4 @@
-package me.haliri.israj.appcore.domain;
+package me.haliri.israj.appcore.domain.barber;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;

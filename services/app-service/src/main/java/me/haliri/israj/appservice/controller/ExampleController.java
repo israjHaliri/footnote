@@ -1,9 +1,8 @@
 package me.haliri.israj.appservice.controller;
 
 
-import me.haliri.israj.appcore.domain.User;
+import me.haliri.israj.appcore.domain.common.User;
 import me.haliri.israj.appcore.utils.AppUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

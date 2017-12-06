@@ -1,9 +1,7 @@
-package me.haliri.israj.appcore;
+package me.haliri.israj.appcore.barber;
 
-import me.haliri.israj.appcore.domain.BarberGuestBook;
-import me.haliri.israj.appcore.domain.BarberTestimonial;
-import me.haliri.israj.appcore.repository.BarberGuestBookRespository;
-import me.haliri.israj.appcore.repository.BarberTestimonialRespository;
+import me.haliri.israj.appcore.domain.barber.BarberTestimonial;
+import me.haliri.israj.appcore.strategy.BarberTestimonialDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ import java.util.Map;
 public class BarberTestimonialRepositoryTests {
 
     @Autowired
-    BarberTestimonialRespository barberTestimonialRespository;
+    BarberTestimonialDao barberTestimonialDao;
 
     @Test
     public void getListDataByParametersTests() throws SQLException {
@@ -27,7 +25,7 @@ public class BarberTestimonialRepositoryTests {
         param.put("start",1);
         param.put("length",10);
         param.put("search","jono");
-        barberTestimonialRespository.getListDataByParameters(param);
+        barberTestimonialDao.getListDataByParameters(param);
     }
 
     @Test
@@ -36,7 +34,7 @@ public class BarberTestimonialRepositoryTests {
         param.setAge(11);
         param.setSubject("jono");
         param.setDescription("testing");
-        barberTestimonialRespository.saveData(param);
+        barberTestimonialDao.saveData(param);
     }
 
     @Test
@@ -46,11 +44,16 @@ public class BarberTestimonialRepositoryTests {
         param.setSubject("jono2");
         param.setDescription("testing2");
         param.setIdTestimonial(3);
-        barberTestimonialRespository.updateData(param);
+        barberTestimonialDao.updateData(param);
     }
 
     @Test
     public void deleteData() throws SQLException {
-        barberTestimonialRespository.deleteData(3);
+        barberTestimonialDao.deleteData(3);
+    }
+
+    @Test
+    public void getListData() throws SQLException {
+        barberTestimonialDao.getListData();
     }
 }

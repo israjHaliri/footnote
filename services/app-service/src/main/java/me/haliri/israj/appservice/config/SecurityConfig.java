@@ -1,6 +1,5 @@
 package me.haliri.israj.appservice.config;
 
-import me.haliri.israj.appcore.repository.UserRespository;
 import me.haliri.israj.appservice.filter.JwtAuthenticationTokenFilter;
 import me.haliri.israj.appservice.handler.LoginFailureHandler;
 import me.haliri.israj.appservice.handler.LoginSuccessHandler;
@@ -21,10 +20,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * Created by israj on 9/30/2016.

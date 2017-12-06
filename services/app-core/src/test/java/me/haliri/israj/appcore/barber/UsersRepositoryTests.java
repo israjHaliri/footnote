@@ -1,12 +1,8 @@
-package me.haliri.israj.appcore;
+package me.haliri.israj.appcore.barber;
 
-import me.haliri.israj.appcore.domain.ResultMessage;
-import me.haliri.israj.appcore.domain.Role;
-import me.haliri.israj.appcore.domain.User;
-import me.haliri.israj.appcore.repository.BaseRepository;
-import me.haliri.israj.appcore.repository.UserRespository;
-import me.haliri.israj.appcore.repository.impl.UserRepositoryImpl;
-import me.haliri.israj.appcore.utils.AppUtils;
+import me.haliri.israj.appcore.domain.common.Role;
+import me.haliri.israj.appcore.domain.common.User;
+import me.haliri.israj.appcore.dao.common.UserDao;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +18,7 @@ import java.util.List;
 public class UsersRepositoryTests {
 
 	@Autowired
-	UserRespository userRepository;
+	UserDao userRepository;
 
 	@Test
 	public void getDataByIdTests() throws SQLException {

@@ -1,31 +1,26 @@
-package me.haliri.israj.appcore;
+package me.haliri.israj.appcore.barber;
 
-import me.haliri.israj.appcore.domain.BarberProfile;
-import me.haliri.israj.appcore.domain.Role;
-import me.haliri.israj.appcore.domain.User;
-import me.haliri.israj.appcore.repository.BarberProfileRespository;
-import me.haliri.israj.appcore.repository.UserRespository;
+import me.haliri.israj.appcore.domain.barber.BarberProfile;
+import me.haliri.israj.appcore.strategy.BarberProfileDao;
+import me.haliri.israj.appcore.strategy.barber.impl.BarberProfileStrategyImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class BarberProfileRepositoryTests {
 
 	@Autowired
-	BarberProfileRespository barberProfileRespository;
+	BarberProfileStrategyImpl barberProfileStrategy;
 
 	@Test
 	public void getDataTests() throws SQLException {
-		barberProfileRespository.getData();
+		barberProfileStrategy.getData();
 	}
 
 	@Test
@@ -36,6 +31,6 @@ public class BarberProfileRepositoryTests {
 		barberProfile.setLat(new Float(-6.121435));
 		barberProfile.setLon(new Float(106.774124));
 		barberProfile.setPhone("+6285862624149");
-		barberProfileRespository.saveOrUpdate(barberProfile);
+		barberProfileStrategy.saveOrUpdate(barberProfile);
 	}
 }
