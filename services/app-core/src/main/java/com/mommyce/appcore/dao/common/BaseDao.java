@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by israjhaliri on 11/21/17.
  */
-public interface BaseDao<T1,T2> {
+public interface BaseDAO<T1,T2> {
     T1 getData();
 
     List<T1> getListData();

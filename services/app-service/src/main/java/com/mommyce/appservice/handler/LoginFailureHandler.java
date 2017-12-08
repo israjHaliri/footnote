@@ -1,6 +1,6 @@
 package com.mommyce.appservice.handler;
 
-import me.haliri.israj.appcore.utils.AppUtils;
+import com.mommyce.appcore.utils.AppUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.WebAttributes;

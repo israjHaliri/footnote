@@ -1,5 +1,6 @@
 package com.mommyce.appservice;
 
+import com.mommyce.appcore.utils.AppUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class AppServiceTests {
 
 	@Test
 	public void contextLoads() {
-		System.out.println("generate password admin barber: "+passwordEncoder.encode("barberadmin"));
-		System.out.println("generate password super admin: "+passwordEncoder.encode("026"));
+		AppUtils.getLogger(this).debug("generate password admin barber : {}",passwordEncoder.encode("barberadmin"));
+		AppUtils.getLogger(this).debug("generate password super admin : {}",passwordEncoder.encode("026"));
 	}
 
 }

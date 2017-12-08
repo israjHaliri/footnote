@@ -20,7 +20,7 @@ import java.util.List;
  * Created by israjhaliri on 8/28/17.
  */
 @Service
-public class BarberGuestBookStrategyImpl {
+public class BarberGuestBookStrategy {
 
     @Autowired
     private DataSource dataSource;
@@ -36,12 +36,8 @@ public class BarberGuestBookStrategyImpl {
         getDataStrategy = (parameter) -> {
             List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
             String sql = "SELECT * FROM barber.guest_book ORDER BY id_guest_book ASC ";
-            try {
-                barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
-            } catch (Exception e) {
-                e.printStackTrace();
-                AppUtils.getLogger(this).error("ERROR GUESTBOOK LOG GET LIST DATA: {}", e.getMessage());
-            }
+
+            barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
             AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", barberGuestBookList.toString());
             return barberGuestBookList;
         };
@@ -50,7 +46,7 @@ public class BarberGuestBookStrategyImpl {
 
     @Transactional
     public void saveData(BarberGuestBook barberGuestBook) {
-        saveOrUpdateDataStrategy = (BarberGuestBook parameters) ->{
+        saveOrUpdateDataStrategy = (BarberGuestBook parameters) -> {
             String sql = "INSERT INTO barber.guest_book (username, create_date) VALUES (?, current_date)";
             jdbcTemplate.update(sql, parameters.getUsername());
         };

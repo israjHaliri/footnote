@@ -2,7 +2,7 @@ package com.mommyce.appcore.barber;
 
 import com.mommyce.appcore.domain.common.Role;
 import com.mommyce.appcore.domain.common.User;
-import com.mommyce.appcore.dao.common.UserDao;
+import com.mommyce.appcore.dao.common.UserDAO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.List;
 public class UsersRepositoryTests {
 
 	@Autowired
-	UserDao userRepository;
+    UserDAO userRepository;
 
 	@Test
 	public void getDataByIdTests() throws SQLException {

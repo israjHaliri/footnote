@@ -1,7 +1,7 @@
 package com.mommyce.appcore.barber;
 
 import com.mommyce.appcore.domain.barber.BarberGuestBook;
-import com.mommyce.appcore.strategy.barber.impl.BarberGuestBookStrategyImpl;
+import com.mommyce.appcore.strategy.barber.impl.BarberGuestBookStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class BarberGuestBookRepositoryTests {
 
     @Autowired
-    BarberGuestBookStrategyImpl barberGuestBookStrategy;
+    BarberGuestBookStrategy barberGuestBookStrategy;
 
     @Test
     public void getDataTests() throws SQLException {

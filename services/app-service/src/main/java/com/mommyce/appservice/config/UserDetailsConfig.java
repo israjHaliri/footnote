@@ -1,11 +1,9 @@
 package com.mommyce.appservice.config;
 
 
-import me.haliri.israj.appcore.domain.common.Role;
-import me.haliri.israj.appcore.domain.common.User;
-import me.haliri.israj.appcore.dao.common.impl.UserDaoImpl;
-import me.haliri.israj.appcore.utils.AppUtils;
-
+import com.mommyce.appcore.dao.common.UserDAO;
+import com.mommyce.appcore.domain.common.User;
+import com.mommyce.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,11 +23,11 @@ import java.util.Set;
 public class UserDetailsConfig implements UserDetailsService {
 
     @Autowired
-    UserDaoImpl userRepository;
+    UserDAO userDAO;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =  userRepository.getDataById(username);
+        User user =  userDAO.getDataById(username);
         AppUtils.getLogger(this).debug("USERNAME PARAMETER : {}, DETAIL : {}",username, user.toString());
         if (user.getId() == null) {
             throw new UsernameNotFoundException(username);

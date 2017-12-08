@@ -1,7 +1,7 @@
 package com.mommyce.appservice.filter;
 
+import com.mommyce.appcore.utils.AppUtils;
 import com.mommyce.appservice.utils.JwtTokenUtil;
-import me.haliri.israj.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

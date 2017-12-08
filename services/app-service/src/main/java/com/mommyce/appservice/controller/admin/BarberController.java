@@ -1,16 +1,19 @@
 package com.mommyce.appservice.controller.admin;
 
-import me.haliri.israj.appcore.constant.Response;
-import me.haliri.israj.appcore.domain.barber.BarberProfile;
-import me.haliri.israj.appcore.domain.barber.BarberTestimonial;
-import me.haliri.israj.appcore.domain.common.ResultMessage;
-import me.haliri.israj.appcore.strategy.BarberProfileDao;
-import me.haliri.israj.appcore.strategy.BarberTestimonialDao;
-import me.haliri.israj.appcore.utils.AppUtils;
+import com.mommyce.appcore.constant.*;
+import com.mommyce.appcore.constant.ResponseStatus;
+import com.mommyce.appcore.domain.barber.BarberProfile;
+import com.mommyce.appcore.domain.barber.BarberTestimonial;
+import com.mommyce.appcore.domain.common.ResultMessage;
+import com.mommyce.appcore.strategy.barber.impl.BarberProfileStrategy;
+import com.mommyce.appcore.strategy.barber.impl.BarberTestimonialStrategy;
+import com.mommyce.appcore.strategy.common.impl.CommonStrategy;
+import com.mommyce.appcore.utils.AppUtils;
 import org.apache.commons.httpclient.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,28 +26,27 @@ import java.util.Map;
 public class BarberController {
 
     @Autowired
-    BarberProfileDao barberProfileDao;
+    BarberProfileStrategy barberProfileStrategy;
 
     @Autowired
-    BarberTestimonialDao barberTestimonialDao;
+    BarberTestimonialStrategy barberTestimonialStrategy;
+
+    @Autowired
+    CommonStrategy commonStrategy;
 
     @RequestMapping(value = "/update/profile", method = RequestMethod.PUT)
     public Object updateProfile(@RequestBody BarberProfile barberProfile) {
-        ResultMessage.getInstance().setMessage(Response.SUCCESS_SAVE);
-        ResultMessage.getInstance().setStatus(HttpStatus.SC_OK);
         try {
-            barberProfileDao.saveOrUpdate(barberProfile);
+            barberProfileStrategy.saveOrUpdate(barberProfile);
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             AppUtils.getLogger(this).error("ERROR PROFILE LOG SAVE OR UPDATE: {}", e.getMessage());
-            ResultMessage.getInstance().setMessage(Response.FAILED_SAVE);
-            ResultMessage.getInstance().setError(e.getMessage());
-            ResultMessage.getInstance().setStatus(HttpStatus.SC_METHOD_FAILURE);
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
         }
-        return ResultMessage.getInstance().getResponse();
     }
 
     @RequestMapping("/get/testimonial")
-    public Map getTestimonial(
+    public Object getTestimonial(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
             @RequestParam(value = "length", defaultValue = "10") int length,
@@ -61,20 +63,22 @@ public class BarberController {
         parameters.put("start",(start + 1));
         parameters.put("length",length + start);
         parameters.put("search",search);
-        List<BarberTestimonial> list = barberTestimonialDao.getListDataByParameters(parameters);
+        List<BarberTestimonial> barberTestimonialList = null;
 
         Map<String,Object> result = new HashMap();
         result.put("draw", draw);
         result.put("search[value]", search);
-        result.put("data", list);
-        if (list.size() < 1 || list.isEmpty()) {
+        try{
+            barberTestimonialList = barberTestimonialStrategy.getListDataByParameters(parameters);
+            result.put("data", barberTestimonialList);
+            result.put("recordsTotal", barberTestimonialList.get(0).getTotal_count());
+            result.put("recordsFiltered", barberTestimonialList.get(0).getTotal_count());
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,result);
+        } catch (Exception e){
             result.put("recordsTotal", 0);
             result.put("recordsFiltered", 0);
-        } else {
-            result.put("recordsTotal", list.get(0).getTotal_count());
-            result.put("recordsFiltered", list.get(0).getTotal_count());
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),result);
         }
-        return result;
     }
 
     @RequestMapping(value = "/update/testimonial", method = RequestMethod.PUT)
@@ -89,33 +93,25 @@ public class BarberController {
         barberTestimonial.setDescription(description);
         barberTestimonial.setAge(age);
         barberTestimonial.setIdTestimonial(idTestimonial);
-        ResultMessage.getInstance().setMessage(Response.SUCCESS_UPDATE);
-        ResultMessage.getInstance().setStatus(HttpStatus.SC_OK);
         try {
-            barberTestimonialDao.updateData(barberTestimonial);
+            barberTestimonialStrategy.updateData(barberTestimonial);
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            ResultMessage.getInstance().setMessage(Response.FAILED_SAVE);
-            ResultMessage.getInstance().setError(e.getMessage());
-            ResultMessage.getInstance().setStatus(HttpStatus.SC_METHOD_FAILURE);
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
         }
-        return ResultMessage.getInstance().getResponse();
     }
 
     @RequestMapping(value = "/delete/testimonial/{idTestimonial}", method = RequestMethod.DELETE)
     public Object insertTestimonial(
-            @PathVariable(value = "idTestimonial") int idTestimonial
+            @PathVariable(value = "idTestimonial") String idTestimonial
     ) {
-        ResultMessage.getInstance().setMessage(Response.SUCCESS_DELETE);
-        ResultMessage.getInstance().setStatus(HttpStatus.SC_OK);
         try {
-            barberTestimonialDao.deleteData(idTestimonial);
+            barberTestimonialStrategy.deleteData(idTestimonial);
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            ResultMessage.getInstance().setMessage(Response.FAILED_DELETE);
-            ResultMessage.getInstance().setError(e.getMessage());
-            ResultMessage.getInstance().setStatus(HttpStatus.SC_METHOD_FAILURE);
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
         }
-        return ResultMessage.getInstance().getResponse();
     }
 }

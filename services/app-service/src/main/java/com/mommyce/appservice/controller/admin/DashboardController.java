@@ -1,6 +1,5 @@
 package com.mommyce.appservice.controller.admin;
 
-import me.haliri.israj.appcore.utils.AppUtils;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;

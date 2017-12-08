@@ -2,7 +2,7 @@ package com.mommyce.appcore.dao.common.impl;
 
 import com.mommyce.appcore.domain.common.Role;
 import com.mommyce.appcore.domain.common.User;
-import com.mommyce.appcore.dao.common.UserDao;
+import com.mommyce.appcore.dao.common.UserDAO;
 import com.mommyce.appcore.utils.AppUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +17,7 @@ import java.util.List;
  * Created by israjhaliri on 8/28/17.
  */
 @Repository
-
-public class UserDaoImpl implements UserDao{
+public class UserDAOImpl implements UserDAO {
 
     @Autowired
     private DataSource dataSource;

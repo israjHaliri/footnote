@@ -3,7 +3,7 @@ package com.mommyce.appservice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication(scanBasePackages = { "me.haliri.israj" })
+@SpringBootApplication(scanBasePackages = { "com.mommyce" })
 public class AppService {
 
 	public static void main(String[] args) {

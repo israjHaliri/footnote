@@ -1,10 +1,14 @@
 package com.mommyce.appcore.strategy.barber.impl;
 
+import com.mommyce.appcore.constant.ResponseStatus;
 import com.mommyce.appcore.domain.barber.BarberTestimonial;
+import com.mommyce.appcore.domain.common.ResultMessage;
 import com.mommyce.appcore.strategy.barber.DeleteDataStrategy;
 import com.mommyce.appcore.strategy.barber.GetDataStrategy;
 import com.mommyce.appcore.strategy.barber.SaveOrUpdateDataStrategy;
+import com.mommyce.appcore.strategy.common.impl.CommonStrategy;
 import com.mommyce.appcore.utils.AppUtils;
+import org.apache.juli.OneLineFormatter;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +25,7 @@ import java.util.Map;
  * Created by israjhaliri on 8/28/17.
  */
 @Repository
-@Transactional
-public class BarberTestimonialStrategyImpl {
+public class BarberTestimonialStrategy {
 
     @Autowired
     private DataSource dataSource;
@@ -35,15 +39,17 @@ public class BarberTestimonialStrategyImpl {
 
     private DeleteDataStrategy<String> deleteDataStrategy;
 
+    @Autowired
+    CommonStrategy commonStrategy;
+
     public List<BarberTestimonial> getListData() {
+        Map<String,Object> result = new HashMap<>();
         getDataStrategy = (parameters) -> {
             List<BarberTestimonial> barberTestimonialList = new ArrayList<>();
+
             String sql = "SELECT * FROM barber.testimonial ORDER BY create_date DESC LIMIT 5";
-            try {
-                barberTestimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberTestimonial.class));
-            } catch (Exception e) {
-                AppUtils.getLogger(this).debug("ERROR TESTIMONIAL LOG GET LIST DATA: {}", e.getMessage());
-            }
+
+            barberTestimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberTestimonial.class));
             AppUtils.getLogger(this).debug("TESTIMONIAL LOG GET DATA: {}", barberTestimonialList.toString());
             return barberTestimonialList;
         };
@@ -54,6 +60,7 @@ public class BarberTestimonialStrategyImpl {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
             List<BarberTestimonial> barberTestimonialList = new ArrayList<>();
+
             String sql = "SELECT t.*\n" +
                     "FROM\n" +
                     "(SELECT row_number() over() as rn,t.*\n" +
@@ -68,13 +75,8 @@ public class BarberTestimonialStrategyImpl {
                     "                 ) t\n" +
                     "          ) t\n" +
                     "WHERE t.rn BETWEEN " + param.get("start") + "::integer AND " + param.get("length") + "::integer";
-            try {
-                barberTestimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberTestimonial.class));
-            } catch (Exception e) {
-                AppUtils.getLogger(this).debug("ERROR TESTIMONIAL LOG GET LIST DATA BY PARAMETERS: {}", e.getMessage());
-            }
             AppUtils.getLogger(this).debug("GET TESTIMONIAL LOG : {}", barberTestimonialList.toString());
-            return barberTestimonialList;
+            return barberTestimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberTestimonial.class));
         };
         return (List<BarberTestimonial>) getDataStrategy.process(allparameters);
     }

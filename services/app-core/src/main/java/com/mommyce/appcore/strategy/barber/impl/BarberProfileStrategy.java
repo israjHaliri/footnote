@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Repository
 @Transactional
-public class BarberProfileStrategyImpl {
+public class BarberProfileStrategy {
 
     @Autowired
     private DataSource dataSource;
@@ -36,12 +37,8 @@ public class BarberProfileStrategyImpl {
             BarberProfile barberProfile = new BarberProfile();
             String sql = "SELECT address, phone, email, lat, lon, create_date, update_date\n" +
                     "FROM barber.profile ORDER BY create_date DESC LIMIT 1";
-            try {
-                barberProfile = (BarberProfile) jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper(BarberProfile.class));
-            } catch (Exception e) {
-                AppUtils.getLogger(this).error("ERROR PROFILE LOG GET DATA: {}", e.getMessage());
-            }
 
+            barberProfile = (BarberProfile) jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper(BarberProfile.class));
             AppUtils.getLogger(this).debug("GET PROFILE LOG : {}", barberProfile.toString());
             return barberProfile;
         };

@@ -1,7 +1,7 @@
 package com.mommyce.appcore.barber;
 
 import com.mommyce.appcore.domain.barber.BarberTestimonial;
-import com.mommyce.appcore.strategy.barber.impl.BarberTestimonialStrategyImpl;
+import com.mommyce.appcore.strategy.barber.impl.BarberTestimonialStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.Map;
 public class BarberTestimonialRepositoryTests {
 
     @Autowired
-    BarberTestimonialStrategyImpl barberTestimonialStrategy;
+    BarberTestimonialStrategy barberTestimonialStrategy;
 
     @Test
     public void getListDataByParametersTests() throws SQLException {

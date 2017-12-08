@@ -14,7 +14,7 @@ public class ResultMessage {
 
     private static ResultMessage instance = null;
 
-    protected ResultMessage() {
+    public ResultMessage() {
     }
 
     public static ResultMessage getInstance() {
@@ -68,14 +68,5 @@ public class ResultMessage {
                 ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';
-    }
-
-    public Map getResponse() {
-        Map res = new HashMap();
-        res.put("status",this.status);
-        res.put("error",this.error);
-        res.put("message",this.message);
-        res.put("data",this.data);
-        return res;
     }
 }
