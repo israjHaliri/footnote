@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>services</artifactId>
-        <groupId>me.haliri.israj</groupId>
+        <groupId>com.mommyce</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -37,9 +37,9 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/israjhaliridotcom</db.url>
-                <db.username>israjhaliridotcom</db.username>
-                <db.password></db.password>
+                <db.url>jdbc:postgresql://localhost:5432/mommyce</db.url>
+                <db.username>mommyce</db.username>
+                <db.password>mommyce</db.password>
                 <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs</pathLog>
             </properties>
             <activation>
@@ -50,9 +50,9 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/israjhaliridotcom</db.url>
-                <db.username>israjhaliri</db.username>
-                <db.password>israjhaliri</db.password>
+                <db.url>jdbc:postgresql://localhost:5432/mommyce</db.url>
+                <db.username>mommyce</db.username>
+                <db.password>mommyce</db.password>
                 <pathLog>/AppLogs</pathLog>
             </properties>
         </profile>

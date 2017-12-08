@@ -5,7 +5,7 @@
 
 	<parent>
         <artifactId>services</artifactId>
-        <groupId>me.haliri.israj</groupId>
+        <groupId>com.mommyce</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
