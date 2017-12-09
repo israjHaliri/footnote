@@ -26,7 +26,7 @@ public class BarberProfileController {
     @Autowired
     CommonStrategy commonStrategy;
 
-    @RequestMapping("/secret/barber/get/profile")
+    @RequestMapping(value = "/secret/barber/get/profile", method = RequestMethod.GET)
     public Object getProfile() {
         try{
             BarberProfile barberProfile = barberProfileStrategy.getData();
