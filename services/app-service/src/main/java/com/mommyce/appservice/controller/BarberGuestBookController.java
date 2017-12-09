@@ -4,19 +4,21 @@ import com.mommyce.appcore.constant.ResponseStatus;
 import com.mommyce.appcore.domain.barber.BarberGuestBook;
 import com.mommyce.appcore.strategy.barber.impl.BarberGuestBookStrategy;
 import com.mommyce.appcore.strategy.common.impl.CommonStrategy;
+import com.mommyce.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by israjhaliri on 10/16/17.
  */
 @RestController
-@RequestMapping("/service/barber")
 public class BarberGuestBookController {
     @Autowired
     BarberGuestBookStrategy barberGuestBookStrategy;
@@ -24,14 +26,53 @@ public class BarberGuestBookController {
     @Autowired
     CommonStrategy commonStrategy;
 
-    @RequestMapping("/secret/barber/get/guest_book")
+    @RequestMapping(value = "/public/barber/get/guest_book", method = RequestMethod.GET)
     public Object getGuestBook() {
         List<BarberGuestBook> barberGuestBookList = null;
         try{
-            barberGuestBookList = (List<BarberGuestBook>) barberGuestBookStrategy.getListData();
+            barberGuestBookList = barberGuestBookStrategy.getListData();
             return commonStrategy.setResultMessage(ResponseStatus.SUCCESS, null, barberGuestBookList);
         } catch (Exception e){
             return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
+        }
+    }
+
+    @RequestMapping(value = "/secret/barber/get/guest_book", method = RequestMethod.GET)
+    public Object getGuestBookPerPage(@RequestParam(value = "draw", defaultValue = "0") int draw,
+                               @RequestParam(value = "start", defaultValue = "0") int start,
+                               @RequestParam(value = "length", defaultValue = "10") int length,
+                               @RequestParam(value = "columns[0][data]", defaultValue = "") String firstColumn,
+                               @RequestParam(value = "order[0][column]", defaultValue = "0") int sortIndex,
+                               @RequestParam(value = "order[0][dir]", defaultValue = "ASC") String sortDir,
+                               @RequestParam(value = "search[value]", defaultValue = "") String search
+    ) {
+        AppUtils.getLogger(this).debug(
+                "datatable info = draw : {} , start : {}, length : {}, firstColumn : {}, sortIndex : {}, sortDir : {}, search : {},",
+                draw, start, length, firstColumn, sortIndex, sortDir, search
+        );
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("start",(start + 1));
+        parameters.put("length",length + start);
+        parameters.put("search",search);
+        List<BarberGuestBook> barberGuestBookList = null;
+
+        Map<String,Object> result = new HashMap();
+        result.put("draw", draw);
+        result.put("search[value]", search);
+        try{
+            barberGuestBookList = barberGuestBookStrategy.getListDataPerPage(parameters);
+            result.put("data", barberGuestBookList);
+            if(barberGuestBookList.size() > 0){
+                result.put("recordsTotal", barberGuestBookList.get(0).getTotal_count());
+                result.put("recordsFiltered", barberGuestBookList.get(0).getTotal_count());
+            }else{
+                result.put("recordsTotal", 0);
+                result.put("recordsFiltered", 0);
+            }
+
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,result);
+        } catch (Exception e){
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),result);
         }
     }
 

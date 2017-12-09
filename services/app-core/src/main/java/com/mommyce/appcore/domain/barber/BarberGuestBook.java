@@ -9,6 +9,8 @@ public class BarberGuestBook {
     private String username;
     private String idGuestBook;
     private Date createDate;
+    private Integer rn;
+    private Integer total_count;
 
     public String getUsername() {
         return username;
@@ -34,12 +36,30 @@ public class BarberGuestBook {
         this.createDate = createDate;
     }
 
+    public Integer getRn() {
+        return rn;
+    }
+
+    public void setRn(Integer rn) {
+        this.rn = rn;
+    }
+
+    public Integer getTotal_count() {
+        return total_count;
+    }
+
+    public void setTotal_count(Integer total_count) {
+        this.total_count = total_count;
+    }
+
     @Override
     public String toString() {
         return "BarberGuestBook{" +
                 "username='" + username + '\'' +
                 ", idGuestBook='" + idGuestBook + '\'' +
-                ", date=" + createDate +
+                ", createDate=" + createDate +
+                ", rn=" + rn +
+                ", total_count=" + total_count +
                 '}';
     }
 }

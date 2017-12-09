@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by israjhaliri on 8/28/17.
@@ -32,7 +33,7 @@ public class BarberGuestBookStrategy {
     public List<BarberGuestBook> getListData() {
         getDataStrategy = (parameter) -> {
             List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
-            String sql = "SELECT * FROM barber.guest_book ORDER BY id_guest_book ASC ";
+            String sql = "SELECT * FROM barber.guest_book ORDER BY id_guest_book ASC limit 5 ";
 
             barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
             AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", barberGuestBookList.toString());
@@ -41,11 +42,37 @@ public class BarberGuestBookStrategy {
         return (List<BarberGuestBook>) getDataStrategy.process(null);
     }
 
+    public List<BarberGuestBook> getListDataPerPage(Object allparameters) {
+        getDataStrategy = (parameters) -> {
+            Map<String, Object> param = (Map<String, Object>) parameters;
+            List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
+
+            String sql = "SELECT t.*\n" +
+                    "FROM\n" +
+                    "   (SELECT row_number() over() as rn,t.*\n" +
+                    "       FROM\n" +
+                    "           (SELECT t.*\n" +
+                    "                   FROM\n" +
+                    "                    (SELECT COUNT(id_guest_book) OVER() TOTAL_COUNT,id_guest_book,username,create_date\n" +
+                    "                    FROM barber.guest_book \n" +
+                    "                    WHERE username LIKE  '%" + param.get("search") + "%' \n" +
+                    "                    ORDER BY barber.guest_book.id_guest_book DESC \n" +
+                    "                    ) t\n" +
+                    "                 ) t\n" +
+                    "          ) t\n" +
+                    "WHERE t.rn BETWEEN " + param.get("start") + "::integer AND " + param.get("length") + "::integer";
+            AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", barberGuestBookList.toString());
+            return barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
+        };
+        return (List<BarberGuestBook>) getDataStrategy.process(allparameters);
+    }
+
     @Transactional
     public void saveData(BarberGuestBook barberGuestBook) {
         saveOrUpdateDataStrategy = (BarberGuestBook parameters) -> {
             String sql = "INSERT INTO barber.guest_book (username, create_date) VALUES (?, current_date)";
             jdbcTemplate.update(sql, parameters.getUsername());
         };
+        saveOrUpdateDataStrategy.process(barberGuestBook);
     }
 }

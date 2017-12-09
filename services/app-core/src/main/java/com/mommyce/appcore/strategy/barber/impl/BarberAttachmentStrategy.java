@@ -65,7 +65,7 @@ public class BarberAttachmentStrategy {
 
 
             barberAttachmentList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberAttachment.class));
-            AppUtils.getLogger(this).debug("GET CONTENT LOG : {}", barberAttachmentList.toString());
+            AppUtils.getLogger(this).debug("GET ATTACHMENT LOG : {}", barberAttachmentList.toString());
             return barberAttachmentList;
         };
         return (List<BarberAttachment>) getDataStrategy.process(allparameters);

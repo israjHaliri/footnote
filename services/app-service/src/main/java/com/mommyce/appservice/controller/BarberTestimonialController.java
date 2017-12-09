@@ -38,7 +38,7 @@ public class BarberTestimonialController {
     }
 
     @RequestMapping(value = "/secret/barber/get/testimonial", method = RequestMethod.GET)
-    public Object getTestimonial(
+    public Object getTestimonialPerPage(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
             @RequestParam(value = "length", defaultValue = "10") int length,
