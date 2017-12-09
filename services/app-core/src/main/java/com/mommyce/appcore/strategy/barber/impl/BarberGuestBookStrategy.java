@@ -23,9 +23,6 @@ import java.util.List;
 public class BarberGuestBookStrategy {
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private GetDataStrategy getDataStrategy;

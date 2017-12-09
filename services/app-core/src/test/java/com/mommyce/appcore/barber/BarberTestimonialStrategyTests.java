@@ -14,18 +14,18 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BarberTestimonialRepositoryTests {
+public class BarberTestimonialStrategyTests {
 
     @Autowired
     BarberTestimonialStrategy barberTestimonialStrategy;
 
     @Test
-    public void getListDataByParametersTests() throws SQLException {
+    public void getListDataPerPage() throws SQLException {
         Map<String,Object> param = new HashMap<>();
         param.put("start",1);
         param.put("length",10);
         param.put("search","jono");
-        barberTestimonialStrategy.getListDataByParameters(param);
+        barberTestimonialStrategy.getListDataPerPage(param);
     }
 
     @Test
@@ -49,7 +49,7 @@ public class BarberTestimonialRepositoryTests {
 
     @Test
     public void deleteData() throws SQLException {
-        barberTestimonialStrategy.deleteData("3");
+        barberTestimonialStrategy.deleteData(3);
     }
 
     @Test

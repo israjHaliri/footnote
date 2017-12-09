@@ -40,6 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoginSuccessHandler loginSuccessHandler;
 
+    private static final String[] AUTH_WHITELIST = {
+
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
@@ -59,9 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/secret/**").hasRole("SUPER_ADMIN")
-                .antMatchers("/api/barber/**").hasAnyRole("BARBER_ADMIN","SUPER_ADMIN")
-                .antMatchers("/service/**").permitAll()
+                .antMatchers("/secret/barber/**").hasAnyRole("BARBER_ADMIN","SUPER_ADMIN")
+                .antMatchers("/public/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

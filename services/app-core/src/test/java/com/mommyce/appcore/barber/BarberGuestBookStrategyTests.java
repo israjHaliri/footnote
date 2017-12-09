@@ -12,18 +12,18 @@ import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BarberGuestBookRepositoryTests {
+public class BarberGuestBookStrategyTests {
 
     @Autowired
     BarberGuestBookStrategy barberGuestBookStrategy;
 
     @Test
-    public void getDataTests() throws SQLException {
+    public void getData() throws SQLException {
         barberGuestBookStrategy.getListData();
     }
 
     @Test
-    public void inserBarberProfileTests() throws SQLException {
+    public void inserBarberProfile() throws SQLException {
         BarberGuestBook param = new BarberGuestBook();
         param.setUsername("jono");
         barberGuestBookStrategy.saveData(param);

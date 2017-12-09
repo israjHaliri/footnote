@@ -28,22 +28,18 @@ import java.util.Map;
 public class BarberTestimonialStrategy {
 
     @Autowired
-    private DataSource dataSource;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private GetDataStrategy getDataStrategy;
 
     private SaveOrUpdateDataStrategy<BarberTestimonial> saveOrUpdateDataStrategy;
 
-    private DeleteDataStrategy<String> deleteDataStrategy;
+    private DeleteDataStrategy<Integer> deleteDataStrategy;
 
     @Autowired
     CommonStrategy commonStrategy;
 
     public List<BarberTestimonial> getListData() {
-        Map<String,Object> result = new HashMap<>();
         getDataStrategy = (parameters) -> {
             List<BarberTestimonial> barberTestimonialList = new ArrayList<>();
 
@@ -56,16 +52,16 @@ public class BarberTestimonialStrategy {
         return (List<BarberTestimonial>) getDataStrategy.process(null);
     }
 
-    public List<BarberTestimonial> getListDataByParameters(Object allparameters) {
+    public List<BarberTestimonial> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
             List<BarberTestimonial> barberTestimonialList = new ArrayList<>();
 
             String sql = "SELECT t.*\n" +
                     "FROM\n" +
-                    "(SELECT row_number() over() as rn,t.*\n" +
-                    "FROM\n" +
-                    "(SELECT t.*\n" +
+                    "   (SELECT row_number() over() as rn,t.*\n" +
+                    "       FROM\n" +
+                    "           (SELECT t.*\n" +
                     "                   FROM\n" +
                     "                    (SELECT COUNT(id_testimonial) OVER() TOTAL_COUNT,id_testimonial,subject,description,age,create_date,update_date\n" +
                     "                    FROM barber.testimonial \n" +
@@ -105,10 +101,10 @@ public class BarberTestimonialStrategy {
     }
 
     @Transactional
-    public void deleteData(String id) {
+    public void deleteData(Integer id) {
         deleteDataStrategy = (parameters) -> {
             String sql = "DELETE FROM barber.testimonial\n" +
-                    "WHERE id_testimonial = ";
+                    "WHERE id_testimonial = ?";
             jdbcTemplate.update(sql, parameters);
         };
         deleteDataStrategy.process(id);

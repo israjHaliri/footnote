@@ -61,6 +61,7 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
+				<pathFile>/Volumes/Base/Users/israjhaliri/Documents/AppAttachment/mommyce</pathFile>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -70,6 +71,7 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
+				<pathFile>/AppAttachment/mommyce</pathFile>
             </properties>
         </profile>
     </profiles>

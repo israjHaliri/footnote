@@ -36,8 +36,8 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        AppUtils.getLogger(this).debug("REQ STARTS WITH : {}",httpRequest.getRequestURI().toString());
-        if (httpRequest.getRequestURI().startsWith("/api") || httpRequest.getRequestURI().startsWith("/auth")) {
+        if (httpRequest.getRequestURI().startsWith("/secret")) {
+            AppUtils.getLogger(this).debug("REQ STARTS WITH : {}",httpRequest.getRequestURI().toString());
             String authToken = httpRequest.getHeader(this.tokenHeader);
 
             if (StringUtils.hasText(authToken) && authToken.startsWith("Bearer "))

@@ -40,7 +40,7 @@
                 <db.url>jdbc:postgresql://localhost:5432/mommyce</db.url>
                 <db.username>mommyce</db.username>
                 <db.password>mommyce</db.password>
-                <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs</pathLog>
+                <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs/mommyce/</pathLog>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -53,7 +53,7 @@
                 <db.url>jdbc:postgresql://localhost:5432/mommyce</db.url>
                 <db.username>mommyce</db.username>
                 <db.password>mommyce</db.password>
-                <pathLog>/AppLogs</pathLog>
+                <pathLog>/AppLogs/mommyce</pathLog>
             </properties>
         </profile>
     </profiles>

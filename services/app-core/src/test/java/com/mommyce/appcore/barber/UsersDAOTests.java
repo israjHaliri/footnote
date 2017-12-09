@@ -15,18 +15,18 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UsersRepositoryTests {
+public class UsersDAOTests {
 
 	@Autowired
     UserDAO userRepository;
 
 	@Test
-	public void getDataByIdTests() throws SQLException {
+	public void getDataById() throws SQLException {
 		userRepository.getDataById("israj.haliri@gmail.com");
 	}
 
 	@Test
-	public void inserUserTests() throws SQLException {
+	public void inserUser() throws SQLException {
 		List<Role> roles = new ArrayList<>();
 		roles.add(new Role("5","ROLE_ADMIN","test@gmail.com"));
 		userRepository.saveData(new User("test@gmail.com","$2a$10$8k2lhhix.vOEJSSioh2.KedJxICTU07hY4NFd4NURAEVdc3JtoZCa",true,roles));

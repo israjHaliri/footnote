@@ -1,19 +1,15 @@
-package com.mommyce.appservice.controller.admin;
+package com.mommyce.appservice.controller;
 
-import com.mommyce.appcore.constant.*;
 import com.mommyce.appcore.constant.ResponseStatus;
 import com.mommyce.appcore.domain.barber.BarberProfile;
 import com.mommyce.appcore.domain.barber.BarberTestimonial;
-import com.mommyce.appcore.domain.common.ResultMessage;
 import com.mommyce.appcore.strategy.barber.impl.BarberProfileStrategy;
 import com.mommyce.appcore.strategy.barber.impl.BarberTestimonialStrategy;
 import com.mommyce.appcore.strategy.common.impl.CommonStrategy;
 import com.mommyce.appcore.utils.AppUtils;
-import org.apache.commons.httpclient.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +18,7 @@ import java.util.Map;
  * Created by israjhaliri on 10/16/17.
  */
 @RestController
-@RequestMapping("/api/barber")
-public class BarberController {
-
-    @Autowired
-    BarberProfileStrategy barberProfileStrategy;
+public class BarberTestimonialController {
 
     @Autowired
     BarberTestimonialStrategy barberTestimonialStrategy;
@@ -34,18 +26,18 @@ public class BarberController {
     @Autowired
     CommonStrategy commonStrategy;
 
-    @RequestMapping(value = "/update/profile", method = RequestMethod.PUT)
-    public Object updateProfile(@RequestBody BarberProfile barberProfile) {
-        try {
-            barberProfileStrategy.saveOrUpdate(barberProfile);
-            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,null);
-        } catch (Exception e) {
-            AppUtils.getLogger(this).error("ERROR PROFILE LOG SAVE OR UPDATE: {}", e.getMessage());
+    @RequestMapping(value = "/public/barber/get/testimonial", method = RequestMethod.GET)
+    public Object getTestimonial() {
+        List<BarberTestimonial> result = null;
+        try{
+            result = barberTestimonialStrategy.getListData();
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS, null, result);
+        } catch (Exception e){
             return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping("/get/testimonial")
+    @RequestMapping(value = "/secret/barber/get/testimonial", method = RequestMethod.GET)
     public Object getTestimonial(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
@@ -69,19 +61,42 @@ public class BarberController {
         result.put("draw", draw);
         result.put("search[value]", search);
         try{
-            barberTestimonialList = barberTestimonialStrategy.getListDataByParameters(parameters);
+            barberTestimonialList = barberTestimonialStrategy.getListDataPerPage(parameters);
             result.put("data", barberTestimonialList);
-            result.put("recordsTotal", barberTestimonialList.get(0).getTotal_count());
-            result.put("recordsFiltered", barberTestimonialList.get(0).getTotal_count());
+            if(barberTestimonialList.size() > 0){
+                result.put("recordsTotal", barberTestimonialList.get(0).getTotal_count());
+                result.put("recordsFiltered", barberTestimonialList.get(0).getTotal_count());
+            }else{
+                result.put("recordsTotal", 0);
+                result.put("recordsFiltered", 0);
+            }
+
             return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,result);
         } catch (Exception e){
-            result.put("recordsTotal", 0);
-            result.put("recordsFiltered", 0);
             return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),result);
         }
     }
 
-    @RequestMapping(value = "/update/testimonial", method = RequestMethod.PUT)
+    @RequestMapping(value = "/secret/barber/insert/testimonial", method = RequestMethod.POST)
+    public Object saveTestimonial(
+            @RequestParam(value = "subject") String subject,
+            @RequestParam(value = "description") String description,
+            @RequestParam(value = "age") int age
+    ) {
+        BarberTestimonial barberTestimonial = new BarberTestimonial();
+        barberTestimonial.setSubject(subject);
+        barberTestimonial.setDescription(description);
+        barberTestimonial.setAge(age);
+        try {
+            barberTestimonialStrategy.saveData(barberTestimonial);
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
+        }
+    }
+
+    @RequestMapping(value = "/secret/barber/update/testimonial", method = RequestMethod.PUT)
     public Object updateTestimonial(
             @RequestParam(value = "idTestimonial") int idTestimonial,
             @RequestParam(value = "subject") String subject,
@@ -102,9 +117,9 @@ public class BarberController {
         }
     }
 
-    @RequestMapping(value = "/delete/testimonial/{idTestimonial}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/secret/barber/delete/testimonial/{idTestimonial}", method = RequestMethod.DELETE)
     public Object insertTestimonial(
-            @PathVariable(value = "idTestimonial") String idTestimonial
+            @PathVariable(value = "idTestimonial") Integer idTestimonial
     ) {
         try {
             barberTestimonialStrategy.deleteData(idTestimonial);

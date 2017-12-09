@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class BarberProfileRepositoryTests {
+public class BarberProfileStrategyTests {
 
 	@Autowired
 	BarberProfileStrategy barberProfileStrategy;
@@ -23,7 +23,7 @@ public class BarberProfileRepositoryTests {
 	}
 
 	@Test
-	public void inserBarberProfileTests() throws SQLException {
+	public void inserBarberProfile() throws SQLException {
 		BarberProfile barberProfile = new BarberProfile();
 		barberProfile.setAddress("jln goal para");
 		barberProfile.setEmail("admin.barber@gmail.com");
