@@ -6,10 +6,7 @@ import com.mommyce.appcore.strategy.barber.impl.BarberGuestBookStrategy;
 import com.mommyce.appcore.strategy.common.impl.CommonStrategy;
 import com.mommyce.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +28,17 @@ public class BarberGuestBookController {
         List<BarberGuestBook> barberGuestBookList = null;
         try{
             barberGuestBookList = barberGuestBookStrategy.getListData();
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS, null, barberGuestBookList);
+        } catch (Exception e){
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
+        }
+    }
+
+    @RequestMapping(value = "/secret/barber/get_by_id/guest_book/{idGuestBook}", method = RequestMethod.GET)
+    public Object getGuestBookById(@PathVariable(value = "idGuestBook") Integer idGuestBook) {
+        List<BarberGuestBook> barberGuestBookList = null;
+        try{
+            barberGuestBookList = barberGuestBookStrategy.getListDataById(idGuestBook);
             return commonStrategy.setResultMessage(ResponseStatus.SUCCESS, null, barberGuestBookList);
         } catch (Exception e){
             return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
@@ -88,6 +96,19 @@ public class BarberGuestBookController {
         } catch (Exception e) {
             e.printStackTrace();
             return commonStrategy.setResultMessage(ResponseStatus.FAILED, e.getMessage(), null);
+        }
+    }
+
+    @RequestMapping(value = "/secret/barber/delete/guest_book/{idGuestBook}", method = RequestMethod.DELETE)
+    public Object deleteGuestBook(
+            @PathVariable(value = "idGuestBook") Integer idGuestBook
+    ) {
+        try {
+            barberGuestBookStrategy.deleteData(idGuestBook);
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS,null,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 }

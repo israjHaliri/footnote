@@ -10,6 +10,7 @@ import com.mommyce.appcore.strategy.common.impl.CommonStrategy;
 import com.mommyce.appcore.utils.AppUtils;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -32,16 +33,7 @@ public class BarberAttachmentStrategy {
 
     private GetDataStrategy getDataStrategy;
 
-    @Transactional
-    public void saveAttachment(BarberAttachment barberAttachment) {
-        saveOrUpdateDataStrategy = (BarberAttachment parameters) -> {
-            String sql = "INSERT INTO barber.attachment(\n" +
-                    "content_id, file, type)\n" +
-                    "VALUES ( ?, ?, ?)";
-            jdbcTemplate.update(sql, parameters.getContentId(), parameters.getFile(),parameters.getType().name());
-        };
-        saveOrUpdateDataStrategy.process(barberAttachment);
-    }
+    private DeleteDataStrategy<Map> deleteDataStrategy;
 
     public List<BarberAttachment> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
@@ -70,4 +62,54 @@ public class BarberAttachmentStrategy {
         };
         return (List<BarberAttachment>) getDataStrategy.process(allparameters);
     }
+
+    public String getFileNameById(Map param) {
+        getDataStrategy = (parameters) -> {
+            Map<String,Object> objParam = (Map<String, Object>) parameters;
+            List<BarberAttachment> barberAttachmentList = new ArrayList<>();
+
+            String sql = "SELECT file \n" +
+                    "FROM barber.attachment where id_attachment = ? and content_id = ? and type = ?;";
+
+            BarberAttachment barberAttachment = (BarberAttachment) jdbcTemplate.queryForObject(sql, new Object[]{objParam.get("idAttachment"),objParam.get("idContent"),objParam.get("type")}, new BeanPropertyRowMapper(BarberAttachment.class));
+            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", barberAttachmentList.toString());
+            return barberAttachment.getFile().toString();
+        };
+        return (String) getDataStrategy.process(param);
+    }
+
+    @Transactional
+    public void saveData(BarberAttachment barberAttachment) {
+        saveOrUpdateDataStrategy = (BarberAttachment parameters) -> {
+            String sql = "INSERT INTO barber.attachment(\n" +
+                    "content_id, file, type)\n" +
+                    "VALUES ( ?, ?, ?)";
+            jdbcTemplate.update(sql, parameters.getContentId(), parameters.getFile(),parameters.getType().name());
+        };
+        saveOrUpdateDataStrategy.process(barberAttachment);
+    }
+
+    @Transactional
+    public void updateData(BarberAttachment barberAttachment) {
+        saveOrUpdateDataStrategy = (BarberAttachment parameters) -> {
+            String sql = "UPDATE barber.attachment\n" +
+                    "SET file=?\n" +
+                    "WHERE id_attachment=? and content_id=? and type=?";
+            jdbcTemplate.update(sql, parameters.getFile(),parameters.getIdAttachment(),parameters.getContentId(),parameters.getType().name());
+        };
+        saveOrUpdateDataStrategy.process(barberAttachment);
+    }
+
+    @Transactional
+    public void deleteData(Map param) {
+        deleteDataStrategy = (parameters) -> {
+            Map objParam = parameters;
+            String sql = "DELETE FROM barber.attachment\n" +
+                    "WHERE id_attachment=? and type =? and content_id =?";
+            jdbcTemplate.update(sql, parameters.get("idAttachment"),objParam.get("type"),objParam.get("idContent"));
+        };
+        deleteDataStrategy.process(param);
+    }
+
+
 }

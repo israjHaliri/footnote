@@ -1,6 +1,7 @@
 package com.mommyce.appcore.strategy.barber.impl;
 
 import com.mommyce.appcore.domain.barber.BarberTestimonial;
+import com.mommyce.appcore.strategy.barber.DeleteDataStrategy;
 import com.mommyce.appcore.strategy.barber.GetDataStrategy;
 import com.mommyce.appcore.domain.barber.BarberGuestBook;
 import com.mommyce.appcore.strategy.barber.SaveOrUpdateDataStrategy;
@@ -30,6 +31,8 @@ public class BarberGuestBookStrategy {
 
     private SaveOrUpdateDataStrategy<BarberGuestBook> saveOrUpdateDataStrategy;
 
+    private DeleteDataStrategy<Integer> deleteDataStrategy;
+
     public List<BarberGuestBook> getListData() {
         getDataStrategy = (parameter) -> {
             List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
@@ -40,6 +43,18 @@ public class BarberGuestBookStrategy {
             return barberGuestBookList;
         };
         return (List<BarberGuestBook>) getDataStrategy.process(null);
+    }
+
+    public List<BarberGuestBook> getListDataById(Integer id) {
+        getDataStrategy = (parameter) -> {
+            List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
+            String sql = "SELECT * FROM barber.guest_book where id_guest_book = ? ";
+
+            barberGuestBookList = jdbcTemplate.query(sql,new Object[]{parameter}, new BeanPropertyRowMapper(BarberGuestBook.class));
+            AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", barberGuestBookList.toString());
+            return barberGuestBookList;
+        };
+        return (List<BarberGuestBook>) getDataStrategy.process(id);
     }
 
     public List<BarberGuestBook> getListDataPerPage(Object allparameters) {
@@ -74,5 +89,15 @@ public class BarberGuestBookStrategy {
             jdbcTemplate.update(sql, parameters.getUsername());
         };
         saveOrUpdateDataStrategy.process(barberGuestBook);
+    }
+
+    @Transactional
+    public void deleteData(Integer id) {
+        deleteDataStrategy = (parameters) -> {
+            String sql = "DELETE FROM barber.guest_book\n" +
+                    "WHERE id_guest_book = ?";
+            jdbcTemplate.update(sql, parameters);
+        };
+        deleteDataStrategy.process(id);
     }
 }

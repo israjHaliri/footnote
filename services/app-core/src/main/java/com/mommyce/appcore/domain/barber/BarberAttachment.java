@@ -11,6 +11,8 @@ public class BarberAttachment {
     private Integer contentId;
     private String file;
     private Type type;
+    private Integer rn;
+    private Integer total_count;
 
     public Integer getIdAttachment() {
         return idAttachment;
@@ -44,6 +46,22 @@ public class BarberAttachment {
         this.type = type;
     }
 
+    public Integer getRn() {
+        return rn;
+    }
+
+    public void setRn(Integer rn) {
+        this.rn = rn;
+    }
+
+    public Integer getTotal_count() {
+        return total_count;
+    }
+
+    public void setTotal_count(Integer total_count) {
+        this.total_count = total_count;
+    }
+
     @Override
     public String toString() {
         return "BarberAttachment{" +
@@ -51,6 +69,8 @@ public class BarberAttachment {
                 ", contentId=" + contentId +
                 ", file='" + file + '\'' +
                 ", type=" + type +
+                ", rn=" + rn +
+                ", total_count=" + total_count +
                 '}';
     }
 }

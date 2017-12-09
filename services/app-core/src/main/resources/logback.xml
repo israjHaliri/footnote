@@ -11,11 +11,11 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>${path.log}/israjhaliri.com-log/app.log</file>
+        <file>${path.log}/mommyce-log/app.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 
             <fileNamePattern>
-                ${path.log}/israjhaliri.com-log/app.log.%d{yyyy-MM-dd}.log.gz
+                ${path.log}/mommyce-log/app.log.%d{yyyy-MM-dd}.log.gz
             </fileNamePattern>
 
             <maxHistory>365</maxHistory>

@@ -52,6 +52,21 @@ public class BarberContentStrategy {
         return (List<BarberContent>) getDataStrategy.process(type);
     }
 
+    public List<BarberContent> getListDataById(Map param) {
+        getDataStrategy = (parameters) -> {
+            Map<String,Object> objParam = (Map<String, Object>) parameters;
+            List<BarberContent> barberContentList = new ArrayList<>();
+
+            String sql = "SELECT id_content, title, description, create_date, update_date, create_by, update_by, type, price\n" +
+                    "FROM barber.content where type = ? and id_content = ? limit 5";
+
+            barberContentList = jdbcTemplate.query(sql, new Object[]{objParam.get("type"),objParam.get("idContent")}, new BeanPropertyRowMapper(BarberContent.class));
+            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", barberContentList.toString());
+            return barberContentList;
+        };
+        return (List<BarberContent>) getDataStrategy.process(param);
+    }
+
     public List<BarberContent> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
@@ -65,7 +80,7 @@ public class BarberContentStrategy {
                     "               FROM\n" +
                     "                   (SELECT COUNT(id_content) OVER() TOTAL_COUNT,id_content,title,description,create_date,update_date,create_by,update_by,type,price\n" +
                     "                    FROM barber.content \n" +
-                    "                    WHERE title LIKE  '%" + param.get("search") + "%' \n" +
+                    "                    WHERE title LIKE  '%" + param.get("search") + "%' and type = '"+param.get("type")+"' \n" +
                     "                    ORDER BY barber.content.id_content DESC) " +
                     "             t)\n" +
                     "     t)\n" +
@@ -74,7 +89,7 @@ public class BarberContentStrategy {
 
 
             barberContentList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberContent.class));
-            AppUtils.getLogger(this).debug("GET CONTENT LOG : {}", barberContentList.toString());
+            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", barberContentList.toString());
             return barberContentList;
         };
         return (List<BarberContent>) getDataStrategy.process(allparameters);

@@ -19,6 +19,9 @@ public class BarberContent {
     private String updateBy;
     private Type type;
     private BigDecimal price;
+    private Integer rn;
+    private Integer total_count;
+
     private List<BarberAttachment> barberAttachmentList;
 
     public Integer getIdContent() {
@@ -97,6 +100,22 @@ public class BarberContent {
         return barberAttachmentList;
     }
 
+    public Integer getRn() {
+        return rn;
+    }
+
+    public void setRn(Integer rn) {
+        this.rn = rn;
+    }
+
+    public Integer getTotal_count() {
+        return total_count;
+    }
+
+    public void setTotal_count(Integer total_count) {
+        this.total_count = total_count;
+    }
+
     public void setBarberAttachmentList(List<BarberAttachment> barberAttachmentList) {
         this.barberAttachmentList = barberAttachmentList;
     }
@@ -113,6 +132,8 @@ public class BarberContent {
                 ", updateBy='" + updateBy + '\'' +
                 ", type=" + type +
                 ", price=" + price +
+                ", rn=" + rn +
+                ", total_count=" + total_count +
                 ", barberAttachmentList=" + barberAttachmentList +
                 '}';
     }

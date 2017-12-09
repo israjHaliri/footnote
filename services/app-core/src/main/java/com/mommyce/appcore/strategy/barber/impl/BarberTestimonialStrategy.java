@@ -52,6 +52,19 @@ public class BarberTestimonialStrategy {
         return (List<BarberTestimonial>) getDataStrategy.process(null);
     }
 
+    public List<BarberTestimonial> getListDataById(Integer id) {
+        getDataStrategy = (parameters) -> {
+            List<BarberTestimonial> barberTestimonialList = new ArrayList<>();
+
+            String sql = "SELECT * FROM barber.testimonial where id_testimonial = ?";
+
+            barberTestimonialList = jdbcTemplate.query(sql,new Object[]{parameters}, new BeanPropertyRowMapper(BarberTestimonial.class));
+            AppUtils.getLogger(this).debug("TESTIMONIAL LOG GET DATA: {}", barberTestimonialList.toString());
+            return barberTestimonialList;
+        };
+        return (List<BarberTestimonial>) getDataStrategy.process(id);
+    }
+
     public List<BarberTestimonial> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;

@@ -89,7 +89,7 @@ public class BarberContentStartegyTests {
         barberAttachment.setContentId(2);
         barberAttachment.setFile("file.txt");
         barberAttachment.setType(Type.PRICE);
-        barberAttachmentStrategy.saveAttachment(barberAttachment);
+        barberAttachmentStrategy.saveData(barberAttachment);
     }
 
     @Test
