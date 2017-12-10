@@ -8,17 +8,21 @@ import java.util.List;
 public class User {
 
     String id;
+    String username;
     String password;
     Boolean enable;
+    String token;
     private List<Role> roles;
 
     public User() {
     }
 
-    public User(String id, String password, Boolean enable, List<Role> roles) {
+    public User(String id, String username, String password, Boolean enable, String token, List<Role> roles) {
         this.id = id;
+        this.username = username;
         this.password = password;
         this.enable = enable;
+        this.token = token;
         this.roles = roles;
     }
 
@@ -54,12 +58,30 @@ public class User {
         this.roles = roles;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", enabled=" + enable +
+                ", enable=" + enable +
+                ", token='" + token + '\'' +
                 ", roles=" + roles +
                 '}';
     }

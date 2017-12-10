@@ -1,5 +1,7 @@
 package com.mommyce.appservice.filter;
 
+import com.mommyce.appcore.dao.common.UserDAO;
+import com.mommyce.appcore.domain.common.User;
 import com.mommyce.appcore.utils.AppUtils;
 import com.mommyce.appservice.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,9 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
+    @Autowired
+    UserDAO userDAO;
+
     @Value("${jwt.header}")
     private String tokenHeader;
 
@@ -44,17 +49,23 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
                 authToken = authToken.substring(7);
 
             String username = jwtTokenUtil.getUsernameFromToken(authToken);
+            try {
+                User user = userDAO.getDataById(username);
+                if (user.getId() != null  && user.getToken().equals(authToken) && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-
-                if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    if (jwtTokenUtil.validateToken(authToken, userDetails)) {
+                        UsernamePasswordAuthenticationToken authentication =
+                                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
                 }
+            }catch (Exception e){
+                AppUtils.getLogger(this).error("ERROR USER DETAIL FROM TOKEN : {}", e.getMessage());
             }
+
+
         }
         chain.doFilter(request, response);
     }

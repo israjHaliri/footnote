@@ -65,8 +65,8 @@ public class UserDAOImpl implements UserDAO {
     @Override
     @Transactional
     public void saveData(User user) {
-        String sql = "insert into config.users (id,password,enable) values (?,?,?)";
-        jdbcTemplate.update(sql, new Object[]{user.getId(), user.getPassword(), user.getEnable()});
+        String sql = "insert into config.users (id,password,enable,username) values (?,?,?)";
+        jdbcTemplate.update(sql, new Object[]{user.getId(), user.getPassword(), user.getEnable(),user.getUsername()});
         String sqlRole = "insert into config.role (role,user_id) values (?,?,?)";
         for (Role role : user.getRoles()) {
             jdbcTemplate.update(sqlRole, new Object[]{role.getRole(), role.getUserId()});
@@ -86,5 +86,17 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void deleteData(Object id) {
 
+    }
+
+    @Override
+    public void saveToken(String token, String username) {
+        String sql = "update config.users set token =? where id = ?";
+        jdbcTemplate.update(sql, new Object[]{token, username});
+    }
+
+    @Override
+    public void deleteToken(String username) {
+        String sql = "update config.users set token = '' where id = ?";
+        jdbcTemplate.update(sql, new Object[]{username});
     }
 }

@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.5
 -- Dumped by pg_dump version 10.0
 
--- Started on 2017-12-09 18:54:31 WIB
+-- Started on 2017-12-10 21:14:55 WIB
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -45,7 +45,7 @@ CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- TOC entry 2480 (class 0 OID 0)
+-- TOC entry 2481 (class 0 OID 0)
 -- Dependencies: 1
 -- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
@@ -110,7 +110,7 @@ CREATE SEQUENCE content_id_content_seq
 ALTER TABLE content_id_content_seq OWNER TO mommyce;
 
 --
--- TOC entry 2481 (class 0 OID 0)
+-- TOC entry 2482 (class 0 OID 0)
 -- Dependencies: 201
 -- Name: content_id_content_seq; Type: SEQUENCE OWNED BY; Schema: barber; Owner: mommyce
 --
@@ -148,7 +148,7 @@ CREATE SEQUENCE guest_book_id_guest_book_seq
 ALTER TABLE guest_book_id_guest_book_seq OWNER TO mommyce;
 
 --
--- TOC entry 2482 (class 0 OID 0)
+-- TOC entry 2483 (class 0 OID 0)
 -- Dependencies: 193
 -- Name: guest_book_id_guest_book_seq; Type: SEQUENCE OWNED BY; Schema: barber; Owner: mommyce
 --
@@ -172,7 +172,7 @@ CREATE SEQUENCE images_id_image_seq
 ALTER TABLE images_id_image_seq OWNER TO mommyce;
 
 --
--- TOC entry 2483 (class 0 OID 0)
+-- TOC entry 2484 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: images_id_image_seq; Type: SEQUENCE OWNED BY; Schema: barber; Owner: mommyce
 --
@@ -196,7 +196,7 @@ CREATE SEQUENCE images_news_and_article_di_seq
 ALTER TABLE images_news_and_article_di_seq OWNER TO mommyce;
 
 --
--- TOC entry 2484 (class 0 OID 0)
+-- TOC entry 2485 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: images_news_and_article_di_seq; Type: SEQUENCE OWNED BY; Schema: barber; Owner: mommyce
 --
@@ -255,7 +255,7 @@ CREATE SEQUENCE testimonial_id_testimonial_seq
 ALTER TABLE testimonial_id_testimonial_seq OWNER TO mommyce;
 
 --
--- TOC entry 2485 (class 0 OID 0)
+-- TOC entry 2486 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: testimonial_id_testimonial_seq; Type: SEQUENCE OWNED BY; Schema: barber; Owner: mommyce
 --
@@ -294,7 +294,7 @@ CREATE SEQUENCE role_id_seq
 ALTER TABLE role_id_seq OWNER TO mommyce;
 
 --
--- TOC entry 2486 (class 0 OID 0)
+-- TOC entry 2487 (class 0 OID 0)
 -- Dependencies: 195
 -- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: config; Owner: mommyce
 --
@@ -332,7 +332,7 @@ CREATE SEQUENCE user_roles_id_seq
 ALTER TABLE user_roles_id_seq OWNER TO mommyce;
 
 --
--- TOC entry 2487 (class 0 OID 0)
+-- TOC entry 2488 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: user_roles_id_seq; Type: SEQUENCE OWNED BY; Schema: config; Owner: mommyce
 --
@@ -356,7 +356,7 @@ CREATE SEQUENCE user_roles_role_id_seq
 ALTER TABLE user_roles_role_id_seq OWNER TO mommyce;
 
 --
--- TOC entry 2488 (class 0 OID 0)
+-- TOC entry 2489 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: user_roles_role_id_seq; Type: SEQUENCE OWNED BY; Schema: config; Owner: mommyce
 --
@@ -372,7 +372,9 @@ ALTER SEQUENCE user_roles_role_id_seq OWNED BY user_roles.role_id;
 CREATE TABLE users (
     id character varying(100) NOT NULL,
     password character varying(150),
-    enable boolean
+    enable boolean,
+    token text,
+    username character varying(100)
 );
 
 
@@ -381,7 +383,7 @@ ALTER TABLE users OWNER TO mommyce;
 SET search_path = barber, pg_catalog;
 
 --
--- TOC entry 2317 (class 2604 OID 16555)
+-- TOC entry 2318 (class 2604 OID 16555)
 -- Name: attachment id_attachment; Type: DEFAULT; Schema: barber; Owner: mommyce
 --
 
@@ -389,7 +391,7 @@ ALTER TABLE ONLY attachment ALTER COLUMN id_attachment SET DEFAULT nextval('imag
 
 
 --
--- TOC entry 2318 (class 2604 OID 16578)
+-- TOC entry 2319 (class 2604 OID 16578)
 -- Name: attachment content_id; Type: DEFAULT; Schema: barber; Owner: mommyce
 --
 
@@ -397,7 +399,7 @@ ALTER TABLE ONLY attachment ALTER COLUMN content_id SET DEFAULT nextval('images_
 
 
 --
--- TOC entry 2316 (class 2604 OID 24944)
+-- TOC entry 2317 (class 2604 OID 24944)
 -- Name: content id_content; Type: DEFAULT; Schema: barber; Owner: mommyce
 --
 
@@ -405,7 +407,7 @@ ALTER TABLE ONLY content ALTER COLUMN id_content SET DEFAULT nextval('content_id
 
 
 --
--- TOC entry 2314 (class 2604 OID 16566)
+-- TOC entry 2315 (class 2604 OID 16566)
 -- Name: guest_book id_guest_book; Type: DEFAULT; Schema: barber; Owner: mommyce
 --
 
@@ -413,7 +415,7 @@ ALTER TABLE ONLY guest_book ALTER COLUMN id_guest_book SET DEFAULT nextval('gues
 
 
 --
--- TOC entry 2315 (class 2604 OID 24938)
+-- TOC entry 2316 (class 2604 OID 24938)
 -- Name: testimonial id_testimonial; Type: DEFAULT; Schema: barber; Owner: mommyce
 --
 
@@ -423,7 +425,7 @@ ALTER TABLE ONLY testimonial ALTER COLUMN id_testimonial SET DEFAULT nextval('te
 SET search_path = config, pg_catalog;
 
 --
--- TOC entry 2319 (class 2604 OID 24828)
+-- TOC entry 2320 (class 2604 OID 24828)
 -- Name: role id; Type: DEFAULT; Schema: config; Owner: mommyce
 --
 
@@ -431,7 +433,7 @@ ALTER TABLE ONLY role ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regclas
 
 
 --
--- TOC entry 2320 (class 2604 OID 24911)
+-- TOC entry 2321 (class 2604 OID 24911)
 -- Name: user_roles id; Type: DEFAULT; Schema: config; Owner: mommyce
 --
 
@@ -439,7 +441,7 @@ ALTER TABLE ONLY user_roles ALTER COLUMN id SET DEFAULT nextval('user_roles_id_s
 
 
 --
--- TOC entry 2321 (class 2604 OID 24913)
+-- TOC entry 2322 (class 2604 OID 24913)
 -- Name: user_roles role_id; Type: DEFAULT; Schema: config; Owner: mommyce
 --
 
@@ -449,18 +451,20 @@ ALTER TABLE ONLY user_roles ALTER COLUMN role_id SET DEFAULT nextval('user_roles
 SET search_path = barber, pg_catalog;
 
 --
--- TOC entry 2465 (class 0 OID 16552)
+-- TOC entry 2466 (class 0 OID 16552)
 -- Dependencies: 192
 -- Data for Name: attachment; Type: TABLE DATA; Schema: barber; Owner: mommyce
 --
 
 COPY attachment (id_attachment, content_id, file, type) FROM stdin;
 12	2	14b82981491f46f3909bf511a1c3183ajpg	PRICE
+15	2	40057a0b93e045cf93431189c3dda996.gif	PRICE
+16	2	0c4e2dfeeaed47e4937e4d7d3f0afac9.jpg	PRICE
 \.
 
 
 --
--- TOC entry 2462 (class 0 OID 16525)
+-- TOC entry 2463 (class 0 OID 16525)
 -- Dependencies: 189
 -- Data for Name: content; Type: TABLE DATA; Schema: barber; Owner: mommyce
 --
@@ -473,7 +477,7 @@ test	from postman	2018-11-12	\N	admin	\N	PRICE	10000	4
 
 
 --
--- TOC entry 2459 (class 0 OID 16433)
+-- TOC entry 2460 (class 0 OID 16433)
 -- Dependencies: 186
 -- Data for Name: guest_book; Type: TABLE DATA; Schema: barber; Owner: mommyce
 --
@@ -487,7 +491,7 @@ new jono	2017-12-09	5
 
 
 --
--- TOC entry 2460 (class 0 OID 16484)
+-- TOC entry 2461 (class 0 OID 16484)
 -- Dependencies: 187
 -- Data for Name: profile; Type: TABLE DATA; Schema: barber; Owner: mommyce
 --
@@ -498,7 +502,7 @@ jln goal para new	israj.haliri@gmail.comnew	2017-12-09 14:46:22.2833	2017-12-09 
 
 
 --
--- TOC entry 2461 (class 0 OID 16492)
+-- TOC entry 2462 (class 0 OID 16492)
 -- Dependencies: 188
 -- Data for Name: testimonial; Type: TABLE DATA; Schema: barber; Owner: mommyce
 --
@@ -511,7 +515,7 @@ israj	test post man	24	2017-12-09	2017-12-09	7
 SET search_path = config, pg_catalog;
 
 --
--- TOC entry 2469 (class 0 OID 24825)
+-- TOC entry 2470 (class 0 OID 24825)
 -- Dependencies: 196
 -- Data for Name: role; Type: TABLE DATA; Schema: config; Owner: mommyce
 --
@@ -523,7 +527,7 @@ COPY role (id, role) FROM stdin;
 
 
 --
--- TOC entry 2472 (class 0 OID 24908)
+-- TOC entry 2473 (class 0 OID 24908)
 -- Dependencies: 199
 -- Data for Name: user_roles; Type: TABLE DATA; Schema: config; Owner: mommyce
 --
@@ -536,21 +540,21 @@ COPY user_roles (id, role_id, user_id) FROM stdin;
 
 
 --
--- TOC entry 2467 (class 0 OID 24804)
+-- TOC entry 2468 (class 0 OID 24804)
 -- Dependencies: 194
 -- Data for Name: users; Type: TABLE DATA; Schema: config; Owner: mommyce
 --
 
-COPY users (id, password, enable) FROM stdin;
-barber.admin@gmail.com	$2a$10$L18ssgkvUhy4c4hEwrtDqOj6XoFoK1ebnSm2/o3zeVaYv0J3IAPHq	t
-israj.haliri@gmail.com	$2a$10$2iK4SlHwGGPPVV4aloBDsu/nmaIFC8ltS6Cd0go8.bZf8sjCNoXGi	t
+COPY users (id, password, enable, token, username) FROM stdin;
+israj.haliri@gmail.com	$2a$12$RKa5AEAijUjfANNEc3ea1.MRRHQqWN4OESPRi5dSbALNnJVi4twpi	t		jono
+barber.admin@gmail.com	$2a$10$L18ssgkvUhy4c4hEwrtDqOj6XoFoK1ebnSm2/o3zeVaYv0J3IAPHq	t	\N	\N
 \.
 
 
 SET search_path = barber, pg_catalog;
 
 --
--- TOC entry 2489 (class 0 OID 0)
+-- TOC entry 2490 (class 0 OID 0)
 -- Dependencies: 201
 -- Name: content_id_content_seq; Type: SEQUENCE SET; Schema: barber; Owner: mommyce
 --
@@ -559,7 +563,7 @@ SELECT pg_catalog.setval('content_id_content_seq', 5, true);
 
 
 --
--- TOC entry 2490 (class 0 OID 0)
+-- TOC entry 2491 (class 0 OID 0)
 -- Dependencies: 193
 -- Name: guest_book_id_guest_book_seq; Type: SEQUENCE SET; Schema: barber; Owner: mommyce
 --
@@ -568,16 +572,16 @@ SELECT pg_catalog.setval('guest_book_id_guest_book_seq', 5, true);
 
 
 --
--- TOC entry 2491 (class 0 OID 0)
+-- TOC entry 2492 (class 0 OID 0)
 -- Dependencies: 190
 -- Name: images_id_image_seq; Type: SEQUENCE SET; Schema: barber; Owner: mommyce
 --
 
-SELECT pg_catalog.setval('images_id_image_seq', 14, true);
+SELECT pg_catalog.setval('images_id_image_seq', 16, true);
 
 
 --
--- TOC entry 2492 (class 0 OID 0)
+-- TOC entry 2493 (class 0 OID 0)
 -- Dependencies: 191
 -- Name: images_news_and_article_di_seq; Type: SEQUENCE SET; Schema: barber; Owner: mommyce
 --
@@ -586,7 +590,7 @@ SELECT pg_catalog.setval('images_news_and_article_di_seq', 1, false);
 
 
 --
--- TOC entry 2493 (class 0 OID 0)
+-- TOC entry 2494 (class 0 OID 0)
 -- Dependencies: 200
 -- Name: testimonial_id_testimonial_seq; Type: SEQUENCE SET; Schema: barber; Owner: mommyce
 --
@@ -597,7 +601,7 @@ SELECT pg_catalog.setval('testimonial_id_testimonial_seq', 7, true);
 SET search_path = config, pg_catalog;
 
 --
--- TOC entry 2494 (class 0 OID 0)
+-- TOC entry 2495 (class 0 OID 0)
 -- Dependencies: 195
 -- Name: role_id_seq; Type: SEQUENCE SET; Schema: config; Owner: mommyce
 --
@@ -606,7 +610,7 @@ SELECT pg_catalog.setval('role_id_seq', 4, true);
 
 
 --
--- TOC entry 2495 (class 0 OID 0)
+-- TOC entry 2496 (class 0 OID 0)
 -- Dependencies: 197
 -- Name: user_roles_id_seq; Type: SEQUENCE SET; Schema: config; Owner: mommyce
 --
@@ -615,7 +619,7 @@ SELECT pg_catalog.setval('user_roles_id_seq', 3, true);
 
 
 --
--- TOC entry 2496 (class 0 OID 0)
+-- TOC entry 2497 (class 0 OID 0)
 -- Dependencies: 198
 -- Name: user_roles_role_id_seq; Type: SEQUENCE SET; Schema: config; Owner: mommyce
 --
@@ -628,7 +632,7 @@ SET search_path = barber, pg_catalog;
 SET default_tablespace = '';
 
 --
--- TOC entry 2327 (class 2606 OID 24952)
+-- TOC entry 2328 (class 2606 OID 24952)
 -- Name: content content_pkey; Type: CONSTRAINT; Schema: barber; Owner: mommyce
 --
 
@@ -639,7 +643,7 @@ ALTER TABLE ONLY content
 SET default_tablespace = mommyce;
 
 --
--- TOC entry 2323 (class 2606 OID 16571)
+-- TOC entry 2324 (class 2606 OID 16571)
 -- Name: guest_book guest_book_pkey; Type: CONSTRAINT; Schema: barber; Owner: mommyce; Tablespace: mommyce
 --
 
@@ -648,7 +652,7 @@ ALTER TABLE ONLY guest_book
 
 
 --
--- TOC entry 2330 (class 2606 OID 16563)
+-- TOC entry 2331 (class 2606 OID 16563)
 -- Name: attachment images_pkey; Type: CONSTRAINT; Schema: barber; Owner: mommyce; Tablespace: mommyce
 --
 
@@ -659,7 +663,7 @@ ALTER TABLE ONLY attachment
 SET default_tablespace = '';
 
 --
--- TOC entry 2325 (class 2606 OID 24940)
+-- TOC entry 2326 (class 2606 OID 24940)
 -- Name: testimonial testimonial_pkey; Type: CONSTRAINT; Schema: barber; Owner: mommyce
 --
 
@@ -670,7 +674,7 @@ ALTER TABLE ONLY testimonial
 SET search_path = config, pg_catalog;
 
 --
--- TOC entry 2334 (class 2606 OID 24831)
+-- TOC entry 2335 (class 2606 OID 24831)
 -- Name: role role_pkey; Type: CONSTRAINT; Schema: config; Owner: mommyce
 --
 
@@ -679,7 +683,7 @@ ALTER TABLE ONLY role
 
 
 --
--- TOC entry 2338 (class 2606 OID 24915)
+-- TOC entry 2339 (class 2606 OID 24915)
 -- Name: user_roles user_roles_pkey; Type: CONSTRAINT; Schema: config; Owner: mommyce
 --
 
@@ -688,7 +692,7 @@ ALTER TABLE ONLY user_roles
 
 
 --
--- TOC entry 2332 (class 2606 OID 24808)
+-- TOC entry 2333 (class 2606 OID 24808)
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: config; Owner: mommyce
 --
 
@@ -699,7 +703,7 @@ ALTER TABLE ONLY users
 SET search_path = barber, pg_catalog;
 
 --
--- TOC entry 2328 (class 1259 OID 16584)
+-- TOC entry 2329 (class 1259 OID 16584)
 -- Name: fki_news_and_article_fkey; Type: INDEX; Schema: barber; Owner: mommyce
 --
 
@@ -709,7 +713,7 @@ CREATE INDEX fki_news_and_article_fkey ON attachment USING btree (content_id);
 SET search_path = config, pg_catalog;
 
 --
--- TOC entry 2335 (class 1259 OID 24922)
+-- TOC entry 2336 (class 1259 OID 24922)
 -- Name: fki_role_fkey; Type: INDEX; Schema: config; Owner: mommyce
 --
 
@@ -717,7 +721,7 @@ CREATE INDEX fki_role_fkey ON user_roles USING btree (role_id);
 
 
 --
--- TOC entry 2336 (class 1259 OID 24928)
+-- TOC entry 2337 (class 1259 OID 24928)
 -- Name: fki_user_fkey; Type: INDEX; Schema: config; Owner: mommyce
 --
 
@@ -727,7 +731,7 @@ CREATE INDEX fki_user_fkey ON user_roles USING btree (user_id);
 SET search_path = barber, pg_catalog;
 
 --
--- TOC entry 2339 (class 2606 OID 24953)
+-- TOC entry 2340 (class 2606 OID 24953)
 -- Name: attachment content_fkey; Type: FK CONSTRAINT; Schema: barber; Owner: mommyce
 --
 
@@ -738,7 +742,7 @@ ALTER TABLE ONLY attachment
 SET search_path = config, pg_catalog;
 
 --
--- TOC entry 2340 (class 2606 OID 24917)
+-- TOC entry 2341 (class 2606 OID 24917)
 -- Name: user_roles role_fkey; Type: FK CONSTRAINT; Schema: config; Owner: mommyce
 --
 
@@ -747,7 +751,7 @@ ALTER TABLE ONLY user_roles
 
 
 --
--- TOC entry 2341 (class 2606 OID 24923)
+-- TOC entry 2342 (class 2606 OID 24923)
 -- Name: user_roles user_fkey; Type: FK CONSTRAINT; Schema: config; Owner: mommyce
 --
 
@@ -755,7 +759,7 @@ ALTER TABLE ONLY user_roles
     ADD CONSTRAINT user_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
--- Completed on 2017-12-09 18:54:31 WIB
+-- Completed on 2017-12-10 21:14:55 WIB
 
 --
 -- PostgreSQL database dump complete

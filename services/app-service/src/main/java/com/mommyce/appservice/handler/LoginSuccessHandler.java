@@ -1,5 +1,6 @@
 package com.mommyce.appservice.handler;
 
+import com.mommyce.appcore.dao.common.UserDAO;
 import com.mommyce.appcore.utils.AppUtils;
 import com.mommyce.appservice.config.UserDetailsConfig;
 import com.mommyce.appservice.utils.JwtTokenUtil;
@@ -30,6 +31,9 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
     @Autowired
     private UserDetailsConfig userDetailsConfig;
 
+    @Autowired
+    UserDAO userDAO;
+
     @Value("${jwt.header}")
     private String tokenHeader;
 
@@ -48,12 +52,25 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler{
         response.setHeader(tokenHeader, token);
         response.setHeader(HttpHeaders.LOCATION, request.getServletContext().getContextPath() + "/#/");
 
-        try (PrintWriter writer = response.getWriter()) {
-            writer.write("{\"code\":\""+response.getStatus()
-                    + "\", \"status\":\"SUCESS\", "
-                    + "\"token\":\""+token+"\"}");
-            writer.flush();
-            writer.close();
+        try {
+            userDAO.saveToken(token,username);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write("{\"code\":\""+response.getStatus()
+                        + "\", \"status\":\"SUCESS\", "
+                        + "\"token\":\""+token+"\"}");
+                writer.flush();
+                writer.close();
+            }
+        }
+        catch (Exception e){
+            response.setStatus(420);
+            try (PrintWriter writer = response.getWriter()) {
+                writer.write("{\"code\":\""+response.getStatus()
+                        + "\", \"status\":\"FAILED\", "
+                        + "\"message\": Failed to save token please try again}");
+                writer.flush();
+                writer.close();
+            }
         }
     }
 

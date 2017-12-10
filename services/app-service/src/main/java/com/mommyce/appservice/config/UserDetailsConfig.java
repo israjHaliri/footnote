@@ -4,6 +4,7 @@ package com.mommyce.appservice.config;
 import com.mommyce.appcore.dao.common.UserDAO;
 import com.mommyce.appcore.domain.common.User;
 import com.mommyce.appcore.utils.AppUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,6 +30,7 @@ public class UserDetailsConfig implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user =  userDAO.getDataById(username);
         AppUtils.getLogger(this).debug("USERNAME PARAMETER : {}, DETAIL : {}",username, user.toString());
+
         if (user.getId() == null) {
             throw new UsernameNotFoundException(username);
         } else {
