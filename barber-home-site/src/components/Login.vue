@@ -33,8 +33,8 @@
 		methods:{
 			auth(){
 				axios.post('http://localhost:9393/auth', querystring.stringify({
-					'username': 'JONO',
-					'password': '123'
+					'username': 'israj.haliri@gmail.com',
+					'password': '026'
 				}))
 				.then((response) => {
 					this.$router.push({ name: 'Dashboard' })
