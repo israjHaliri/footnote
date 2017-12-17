@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -17,36 +18,41 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest
 public class AppServiceTests {
 
-	@Autowired
-	PasswordEncoder passwordEncoder;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
-	@Test
-	public void contextLoads() {
-		AppUtils.getLogger(this).debug("generate password admin barber : {}",passwordEncoder.encode("barberadmin"));
-		AppUtils.getLogger(this).debug("generate password super admin : {}",passwordEncoder.encode("026"));
+    @Test
+    public void contextLoads() {
+        AppUtils.getLogger(this).debug("generate password admin barber : {}", passwordEncoder.encode("barberadmin"));
+        AppUtils.getLogger(this).debug("generate password super admin : {}", passwordEncoder.encode("026"));
 
-		CustomPasswordEncoderConfig customPasswordEncoder = new CustomPasswordEncoderConfig();
-		String encoded = customPasswordEncoder.encode("MD12");
-		Boolean decoded = customPasswordEncoder.matches("MD12",encoded);
-		AppUtils.getLogger(this).debug("Custom encoded "+encoded);
-		AppUtils.getLogger(this).debug("Custom encoded "+decoded);
-	}
+        CustomPasswordEncoderConfig customPasswordEncoder = new CustomPasswordEncoderConfig();
+        String encoded = customPasswordEncoder.encode("MD12");
+        Boolean decoded = customPasswordEncoder.matches("MD12", encoded);
+        AppUtils.getLogger(this).debug("Custom encoded " + encoded);
+        AppUtils.getLogger(this).debug("Custom encoded " + decoded);
 
-	@Test
-	public void EncriptUtils() {
-		final String secretKey = "mommyce";
+        String hashed = BCrypt.hashpw("026", BCrypt.gensalt(12));
+        AppUtils.getLogger(this).debug("genstalt 12 encoded " + hashed);
+        String hashedBarber = BCrypt.hashpw("barberadmin", BCrypt.gensalt(12));
+        AppUtils.getLogger(this).debug("genstalt 12 encoded " + hashedBarber);
+    }
 
-		String originalString = "026";
-		String encryptedString = AESUtils.encrypt(originalString, secretKey) ;
-		String decryptedString = AESUtils.decrypt(encryptedString, secretKey) ;
+    @Test
+    public void EncriptUtils() {
+        final String secretKey = "mommyce";
 
-		AppUtils.getLogger(this).debug("ORIGINAL STRING : {}",originalString);
-		AppUtils.getLogger(this).debug("ECNRYPT STRING : {}",encryptedString);
-		AppUtils.getLogger(this).debug("DECRYPT STRING: {}",decryptedString);
+        String originalString = "026";
+        String encryptedString = AESUtils.encrypt(originalString, secretKey);
+        String decryptedString = AESUtils.decrypt(encryptedString, secretKey);
 
-		String newPass = "026";
-		byte[]   bytesEncoded = Base64.encodeBase64(newPass.getBytes());
-		AppUtils.getLogger(this).debug("ECNRYPT STRING : {}",new String(bytesEncoded ));
-	}
+        AppUtils.getLogger(this).debug("ORIGINAL STRING : {}", originalString);
+        AppUtils.getLogger(this).debug("ECNRYPT STRING : {}", encryptedString);
+        AppUtils.getLogger(this).debug("DECRYPT STRING: {}", decryptedString);
+
+        String newPass = "026";
+        byte[] bytesEncoded = Base64.encodeBase64(newPass.getBytes());
+        AppUtils.getLogger(this).debug("ECNRYPT STRING : {}", new String(bytesEncoded));
+    }
 
 }

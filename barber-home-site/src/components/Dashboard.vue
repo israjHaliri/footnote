@@ -2,6 +2,9 @@
 	<div class="container-fluid">
 		<div class="animated fadeIn">
 			<div class="row">
+				<div class="col-md-12">
+					<button v-on:click="getData">Cehck</button>	
+				</div>
 				<div class="col-sm-6 col-lg-3">
 					<div class="card card-inverse card-primary">
 						<div class="card-block pb-0">
@@ -82,19 +85,42 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</div>
 </template>    
 
 <script>
-	export default {
-		data () {
-			return {
-			}
+export default {
+	data () {
+		return {
+		}
+	},
+	mounted() {
+		this.getData()
+	},
+	methods:{
+		getData(){
+			this.$axios({
+				url:'/secret/barber/get/guest_book_one_month',
+				method:'GET',
+				headers : {
+					"Content-Type" : "application/x-www-form-urlencoded",
+					"Authorization" : "Bearer "+localStorage.getItem("LoginBarberShopToken")
+				}
+			})
+			.then( response => {
+				console.log("response : ",response);
+			})
+			.catch( error => {
+				if(error.response.data.status == 401 || error.response.data.status == 403){
+					this.$router.push("/");
+				}
+				alert(error.response.data.message);
+			});
 		}
 	}
+}
 </script>
 
 <style scoped>

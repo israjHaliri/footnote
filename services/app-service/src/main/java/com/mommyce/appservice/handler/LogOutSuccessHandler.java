@@ -60,11 +60,12 @@ public class LogOutSuccessHandler implements LogoutSuccessHandler {
                 writer.close();
             }
         }else{
-            response.setStatus(400);
             try (PrintWriter writer = response.getWriter()) {
-                writer.write("{\"code\":\"" + response.getStatus()
+                response.setStatus(400);
+                String message = " Make sure token is correct and you have logged in";
+                writer.write("{\"code\":\""+response.getStatus()
                         + "\", \"status\":\"FAILED\", "
-                        + "\"message\": Make sure token is correct and you have logged in}");
+                        + "\"message\":\""+message+"\"}");
                 writer.flush();
                 writer.close();
             }

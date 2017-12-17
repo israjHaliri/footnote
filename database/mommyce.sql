@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.5
 -- Dumped by pg_dump version 10.0
 
--- Started on 2017-12-10 21:14:55 WIB
+-- Started on 2017-12-17 17:24:48 WIB
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -546,8 +546,8 @@ COPY user_roles (id, role_id, user_id) FROM stdin;
 --
 
 COPY users (id, password, enable, token, username) FROM stdin;
-israj.haliri@gmail.com	$2a$12$RKa5AEAijUjfANNEc3ea1.MRRHQqWN4OESPRi5dSbALNnJVi4twpi	t		jono
-barber.admin@gmail.com	$2a$10$L18ssgkvUhy4c4hEwrtDqOj6XoFoK1ebnSm2/o3zeVaYv0J3IAPHq	t	\N	\N
+barber.admin@gmail.com	$2a$12$JEdDATwXzSanYkSNNlfcYuOsHcHSH9dQNjCRlUlZOqfUrYXyR7gw6	t	eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiYXJiZXIuYWRtaW5AZ21haWwuY29tIiwiYXVkIjoiaXNyYWpIYWxpcmlTaXRlIiwiZXhwIjoxNTEzNTA2NDk5fQ.5IJoio6ams_1An1nPg8LdboXnIUgI_GHx844GyOwCYc	\N
+israj.haliri@gmail.com	$2a$12$3aJYGZNTDKXUeDruTBxYVeBVyTBcM0mpG/BF/.DezaUSI/N4yzMIO	t	eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpc3Jhai5oYWxpcmlAZ21haWwuY29tIiwiYXVkIjoiaXNyYWpIYWxpcmlTaXRlIiwiZXhwIjoxNTEzNTA2NTI0fQ.fMkrSeRuhcDmpfohsNhxraozXThYdDofRl8BQcqUWgg	jono
 \.
 
 
@@ -759,7 +759,7 @@ ALTER TABLE ONLY user_roles
     ADD CONSTRAINT user_fkey FOREIGN KEY (user_id) REFERENCES users(id);
 
 
--- Completed on 2017-12-10 21:14:55 WIB
+-- Completed on 2017-12-17 17:24:48 WIB
 
 --
 -- PostgreSQL database dump complete

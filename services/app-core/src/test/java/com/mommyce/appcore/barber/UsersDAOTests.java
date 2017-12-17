@@ -29,6 +29,6 @@ public class UsersDAOTests {
 	public void inserUser() throws SQLException {
 		List<Role> roles = new ArrayList<>();
 		roles.add(new Role("5","ROLE_ADMIN","test@gmail.com"));
-		userRepository.saveData(new User("test@gmail.com","jono","$2a$10$8k2lhhix.vOEJSSioh2.KedJxICTU07hY4NFd4NURAEVdc3JtoZCa",true,"",roles));
+		userRepository.saveData(new User("test@gmail.com","jono","$2a$12$3aJYGZNTDKXUeDruTBxYVeBVyTBcM0mpG/BF/.DezaUSI/N4yzMIO",true,"",roles));
 	}
 }

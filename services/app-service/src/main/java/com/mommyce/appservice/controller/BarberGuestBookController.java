@@ -34,6 +34,17 @@ public class BarberGuestBookController {
         }
     }
 
+    @RequestMapping(value = "/secret/barber/get/guest_book_one_month", method = RequestMethod.GET)
+    public Object getGuestBookOneMonth() {
+        List<BarberGuestBook> barberGuestBookList = null;
+        try{
+            barberGuestBookList = barberGuestBookStrategy.getOneMonthListData();
+            return commonStrategy.setResultMessage(ResponseStatus.SUCCESS, null, barberGuestBookList);
+        } catch (Exception e){
+            return commonStrategy.setResultMessage(ResponseStatus.FAILED,e.getMessage(),null);
+        }
+    }
+
     @RequestMapping(value = "/secret/barber/get_by_id/guest_book/{idGuestBook}", method = RequestMethod.GET)
     public Object getGuestBookById(@PathVariable(value = "idGuestBook") Integer idGuestBook) {
         List<BarberGuestBook> barberGuestBookList = null;

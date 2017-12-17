@@ -33,6 +33,20 @@ public class BarberGuestBookStrategy {
 
     private DeleteDataStrategy<Integer> deleteDataStrategy;
 
+    public List<BarberGuestBook> getOneMonthListData() {
+        getDataStrategy = (parameter) -> {
+            List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
+            String sql = "SELECT * FROM barber.guest_book where guest_book.create_date BETWEEN\n" +
+                    "NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-30 \n" +
+                    "AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER";
+
+            barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
+            AppUtils.getLogger(this).debug("GET ONE MONTH GUESTBOOK LOG : {}", barberGuestBookList.toString());
+            return barberGuestBookList;
+        };
+        return (List<BarberGuestBook>) getDataStrategy.process(null);
+    }
+
     public List<BarberGuestBook> getListData() {
         getDataStrategy = (parameter) -> {
             List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
@@ -51,7 +65,7 @@ public class BarberGuestBookStrategy {
             String sql = "SELECT * FROM barber.guest_book where id_guest_book = ? ";
 
             barberGuestBookList = jdbcTemplate.query(sql,new Object[]{parameter}, new BeanPropertyRowMapper(BarberGuestBook.class));
-            AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", barberGuestBookList.toString());
+            AppUtils.getLogger(this).debug("GET BY ID GUESTBOOK LOG : {}", barberGuestBookList.toString());
             return barberGuestBookList;
         };
         return (List<BarberGuestBook>) getDataStrategy.process(id);
@@ -76,7 +90,7 @@ public class BarberGuestBookStrategy {
                     "                 ) t\n" +
                     "          ) t\n" +
                     "WHERE t.rn BETWEEN " + param.get("start") + "::integer AND " + param.get("length") + "::integer";
-            AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", barberGuestBookList.toString());
+            AppUtils.getLogger(this).debug("GET PERPAGE GUESTBOOK LOG : {}", barberGuestBookList.toString());
             return barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
         };
         return (List<BarberGuestBook>) getDataStrategy.process(allparameters);

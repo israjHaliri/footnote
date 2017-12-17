@@ -4,14 +4,20 @@
 			<div class="row">
 				<div class="modal-dialog">
 					<div class="loginmodal-container">
-						<h1><b><small>Login to Your </small></b><i>Account</i></h1><br>
-						<input type="text" name="user" placeholder="Username">
-						<input type="password" name="pass" placeholder="Password">
+						<h1>
+							<b><small>Login to Your </small></b><i>Account</i>
+						</h1>
+						<div class="col-xs-12" align="center">
+							<span style="color:#ad3d3d">{{ message }}</span>
+						</div>
+						<br>
+						<input type="text" v-model="username"  name="username" placeholder="Username">
+						<input type="password" v-model="password"  name="password" placeholder="Password">
 						<button class="btn btn-primary" style="width: 100%; height: 50px;" v-on:click="auth">
 							<b>Login</b>
 						</button>
 						<div class="login-help">
-							<p><i>israjHaliri.com</i></p>
+							<p><i>LoginBarberShop</i></p>
 						</div>
 					</div>
 				</div>
@@ -21,30 +27,39 @@
 </template>
 
 <script>
-	import axios from 'axios';
-	import querystring from 'querystring';
 
-	export default {
-		data () {
-			return {
 
-			}
-		},
-		methods:{
-			auth(){
-				axios.post('http://localhost:9393/auth', querystring.stringify({
-					'username': 'israj.haliri@gmail.com',
-					'password': '026'
-				}))
-				.then((response) => {
-					this.$router.push({ name: 'Dashboard' })
+export default {
+	data () {
+		return {
+			username : "",
+			password : "",
+			message : ""
+		}
+	},
+	methods:{
+		auth(){
+			this.$axios.post(
+				'/auth', 
+				this.$querystring.stringify({
+					'username': this.username,
+					'password': this.$base64.Base64.encode(this.password)
+				}),{
+					headers: {
+						'Content-Type': 'application/x-www-form-urlencoded',
+						'Accept': 'application/json'
+					}
 				})
-				.catch((error) => {
-					alert("Failed To Login "+error);
-				});
-			}
+			.then( response => {
+				localStorage.setItem('LoginBarberShopToken', response.data.token)
+				this.$router.push("/dashboard")
+			})
+			.catch( error => {
+				this.message = error.response.data.message;
+			});
 		}
 	}
+}
 </script>
 
 <style scoped>
