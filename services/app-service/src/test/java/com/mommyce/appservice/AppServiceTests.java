@@ -3,14 +3,12 @@ package com.mommyce.appservice;
 import com.mommyce.appcore.utils.AppUtils;
 import com.mommyce.appservice.config.CustomPasswordEncoderConfig;
 import com.mommyce.appservice.utils.AESUtils;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 

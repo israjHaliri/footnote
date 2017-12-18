@@ -36,9 +36,9 @@ public class BarberGuestBookStrategy {
     public List<BarberGuestBook> getOneMonthListData() {
         getDataStrategy = (parameter) -> {
             List<BarberGuestBook> barberGuestBookList = new ArrayList<>();
-            String sql = "SELECT * FROM barber.guest_book where guest_book.create_date BETWEEN\n" +
-                    "NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-30 \n" +
-                    "AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER";
+            String sql = "SELECT guest_book.create_date, count(guest_book.create_date) total_count FROM barber.guest_book where guest_book.create_date BETWEEN\n" +
+                    "NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-30\n" +
+                    "AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER group by guest_book.create_date";
 
             barberGuestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(BarberGuestBook.class));
             AppUtils.getLogger(this).debug("GET ONE MONTH GUESTBOOK LOG : {}", barberGuestBookList.toString());

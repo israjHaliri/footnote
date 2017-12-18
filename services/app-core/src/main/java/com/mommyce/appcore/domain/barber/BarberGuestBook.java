@@ -10,7 +10,7 @@ public class BarberGuestBook {
     private String idGuestBook;
     private Date createDate;
     private Integer rn;
-    private Integer total_count;
+    private Integer totalCount;
 
     public String getUsername() {
         return username;
@@ -44,12 +44,12 @@ public class BarberGuestBook {
         this.rn = rn;
     }
 
-    public Integer getTotal_count() {
-        return total_count;
+    public Integer getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotal_count(Integer total_count) {
-        this.total_count = total_count;
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class BarberGuestBook {
                 ", idGuestBook='" + idGuestBook + '\'' +
                 ", createDate=" + createDate +
                 ", rn=" + rn +
-                ", total_count=" + total_count +
+                ", total_count=" + totalCount +
                 '}';
     }
 }

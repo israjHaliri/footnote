@@ -82,8 +82,8 @@ public class BarberGuestBookController {
             barberGuestBookList = barberGuestBookStrategy.getListDataPerPage(parameters);
             result.put("data", barberGuestBookList);
             if(barberGuestBookList.size() > 0){
-                result.put("recordsTotal", barberGuestBookList.get(0).getTotal_count());
-                result.put("recordsFiltered", barberGuestBookList.get(0).getTotal_count());
+                result.put("recordsTotal", barberGuestBookList.get(0).getTotalCount());
+                result.put("recordsFiltered", barberGuestBookList.get(0).getTotalCount());
             }else{
                 result.put("recordsTotal", 0);
                 result.put("recordsFiltered", 0);
