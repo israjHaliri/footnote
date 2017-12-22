@@ -5,7 +5,7 @@
 
 	<parent>
         <artifactId>services</artifactId>
-        <groupId>com.mommyce</groupId>
+        <groupId>com.haliri.israj</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -20,7 +20,7 @@
 	<dependencies>
 		<dependency>
 			<artifactId>app-core</artifactId>
-			<groupId>com.mommyce</groupId>
+			<groupId>com.haliri.israj</groupId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -61,7 +61,7 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
-				<pathFile>/Volumes/Base/Users/israjhaliri/Documents/AppAttachment/mommyce</pathFile>
+				<pathFile>/Volumes/Base/Users/israjhaliri/Documents/AppAttachment/footnote</pathFile>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -71,7 +71,7 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
-				<pathFile>/AppAttachment/mommyce</pathFile>
+				<pathFile>/AppAttachment/footnote</pathFile>
             </properties>
         </profile>
     </profiles>

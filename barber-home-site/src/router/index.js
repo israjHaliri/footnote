@@ -34,7 +34,7 @@ export default new Router({
 			name: 'dashboard',
 			component: Dashboard
 		},{
-			path: '/category',
+			path: '/profile',
 			name: 'category',
 			component: Category
 		}

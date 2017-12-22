@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>services</artifactId>
-        <groupId>com.mommyce</groupId>
+        <groupId>com.haliri.israj</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
@@ -37,10 +37,10 @@
             <id>development</id>
             <properties>
                 <activatedProperties>development</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/mommyce</db.url>
-                <db.username>mommyce</db.username>
-                <db.password>mommyce</db.password>
-                <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs/mommyce/</pathLog>
+                <db.url>jdbc:postgresql://localhost:5432/footnote</db.url>
+                <db.username>footnoter</db.username>
+                <db.password>footnoter</db.password>
+                <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs/footnote/</pathLog>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -50,10 +50,10 @@
             <id>production</id>
             <properties>
                 <activatedProperties>production</activatedProperties>
-                <db.url>jdbc:postgresql://localhost:5432/mommyce</db.url>
-                <db.username>mommyce</db.username>
-                <db.password>mommyce</db.password>
-                <pathLog>/AppLogs/mommyce</pathLog>
+                <db.url>jdbc:postgresql://localhost:5432/footnote</db.url>
+                <db.username>footnote</db.username>
+                <db.password>footnote</db.password>
+                <pathLog>/AppLogs/footnote</pathLog>
             </properties>
         </profile>
     </profiles>

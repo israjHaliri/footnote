@@ -9,7 +9,7 @@
 </template>    
 
 <script>
-import GuestBookLineChart from '@/components/plugin/GuestBookLineChart'
+import GuestBookLineChart from '@/components/partial/GuestBookLineChart'
 
 export default {
 	components: {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <included>
 
-    <logger name="com.mommyce" level="debug">
+    <logger name="com.haliri.israj" level="debug">
         <appender-ref ref="FILE" />
     </logger>
 
