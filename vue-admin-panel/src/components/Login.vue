@@ -17,7 +17,7 @@
 							<b>Login</b>
 						</button>
 						<div class="login-help">
-							<p><i>LoginBarberShop</i></p>
+							<p><i>Vue|Admin Panel</i></p>
 						</div>
 					</div>
 				</div>
@@ -51,7 +51,7 @@ export default {
 					}
 				})
 			.then( response => {
-				localStorage.setItem('LoginBarberShopToken', response.data.token)
+				localStorage.setItem('VueAdminPanelToken', response.data.token)
 				this.$router.push("/dashboard")
 			})
 			.catch( error => {

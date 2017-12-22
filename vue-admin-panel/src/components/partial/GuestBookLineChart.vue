@@ -39,11 +39,11 @@ export default {
 	methods:{
 		getData(){
 			this.$axios({
-				url:'/secret/barber/get/guest_book_one_month',
+				url:'/secret/content/get/guest_book_one_month',
 				method:'GET',
 				headers : {
 					"Content-Type" : "application/x-www-form-urlencoded",
-					"Authorization" : "Bearer "+localStorage.getItem("LoginBarberShopToken")
+					"Authorization" : "Bearer "+localStorage.getItem("VueAdminPanelToken")
 				}
 			})
 			.then( response => {

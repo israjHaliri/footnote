@@ -42,12 +42,12 @@ export default {
                 method:'POST',
                 headers : {
                    "Content-Type" : "application/x-www-form-urlencoded",
-                   "Authorization" : "Bearer "+localStorage.getItem("LoginBarberShopToken")
+                   "Authorization" : "Bearer "+localStorage.getItem("VueAdminPanelToken")
                }
            })
             .then( response => {
                 console.log("response : ",response);
-                localStorage.setItem('LoginBarberShopToken', "")
+                localStorage.setItem('VueAdminPanelToken', "")
                 this.$router.push("/")
             })
             .catch( error => {
