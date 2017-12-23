@@ -2,25 +2,22 @@
     <div class="sidebar">
         <nav class="sidebar-nav">
             <ul class="nav">
-                <li class="nav-item">
+                <router-link :to="'/dashboard'" class="nav-item">
                     <a class="nav-link" href="index.html"><i class="icon-speedometer"></i> Dashboard</a>
-                </li>
+                </router-link>
                 <li class="divider"></li>
                 <li class="nav-title">
                     Navigator
                 </li>
-                <li class="nav-item">
+                <router-link :to="'/profile'" class="nav-item">
                     <a class="nav-link" href="index.html"><i class="icon-pencil"></i> Profile</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html"><i class="icon-pencil"></i> GuestBook</a>
-                </li>
-                <li class="nav-item">
+                </router-link>
+                <router-link :to="'/testimonial'" class="nav-item">
                     <a class="nav-link" href="index.html"><i class="icon-pencil"></i> Testimonial</a>
-                </li>
+                </router-link>
                 <router-link tag="li" class="nav-item nav-dropdown" :to="{ path: '/menu'}" disabled>
                     <div class="nav-link nav-dropdown-toggle" @click="handleClickParent">
-                        <i class="icon-note"></i> Content
+                        <i class="icon-note"></i> Item
                     </div>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">

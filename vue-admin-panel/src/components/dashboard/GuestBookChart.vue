@@ -39,17 +39,16 @@ export default {
 	methods:{
 		getData(){
 			this.$axios({
-				url:'/secret/content/get/guest_book_one_month',
+				url:'/secret/get/guest_book_one_month',
 				method:'GET',
 				headers : {
 					"Content-Type" : "application/x-www-form-urlencoded",
-					"Authorization" : "Bearer "+localStorage.getItem("VueAdminPanelToken")
+					"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
 				}
 			})
 			.then( response => {
 
 				for (var i = 0; i < response.data.data.length; i++) {
-					console.log("response : ",response);
 					this.listData.push(response.data.data[i].totalCount)
 					this.listLabel.push(response.data.data[i].createDate)
 				}
@@ -68,13 +67,6 @@ export default {
 				}
 				this.renderChart(this.datacollection, this.options);
 			})
-			.catch( error => {
-				console.log("error : ",error);
-				if(error.response.data.status == 401 || error.response.data.status == 403){
-					this.$router.push("/");
-				}
-				alert(error.response.data.message);
-			});
 		}
 	}
 }	

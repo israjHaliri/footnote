@@ -17,7 +17,7 @@
 							<b>Login</b>
 						</button>
 						<div class="login-help">
-							<p><i>Vue|Admin Panel</i></p>
+							<p><i>Vue | Admin Panel</i></p>
 						</div>
 					</div>
 				</div>
@@ -40,7 +40,7 @@ export default {
 	methods:{
 		auth(){
 			this.$axios.post(
-				'/auth', 
+				'/login', 
 				this.$querystring.stringify({
 					'username': this.username,
 					'password': this.$base64.Base64.encode(this.password)
@@ -52,7 +52,7 @@ export default {
 				})
 			.then( response => {
 				localStorage.setItem('VueAdminPanelToken', response.data.token)
-				this.$router.push("/dashboard")
+				this.$router.push("/dashboard")	
 			})
 			.catch( error => {
 				this.message = error.response.data.message;

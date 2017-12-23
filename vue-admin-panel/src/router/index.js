@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import axios from 'axios';
-import querystring from 'querystring';
-import base64 from 'js-base64'
 
 import Full from '@/containers/Full'
 
 import Login from '@/components/Login'
-import Dashboard from '@/components/Dashboard'
-import Category from '@/components/Category'
+import Dashboard from '@/components/dashboard/ContainerChart'
+import Profile from '@/components/Profile'
+import Testimonial from '@/components/Testimonial'
+import ListItem from '@/components/item/ListItem'
+import NewItem from '@/components/item/NewItem'
+import Attachment from '@/components/item/Attachment'
 import NotFound from '@/components/404'
 
 Vue.use(Router)
@@ -18,41 +19,43 @@ export default new Router({
 	routes: [
 	{
 		path: '/',
-		name: 'login',
+		name: 'Login',
 		component: Login
 	},
 	{ path: '/404', component: NotFound },  
 	{ path: '*', redirect: '/404' }, 
 	{
 		path: '/',
-		name: 'backend',
+		name: 'Backend',
 		component: Full,
 		children : 
 		[
 		{
 			path: '/dashboard',
-			name: 'dashboard',
+			name: 'Dashboard',
 			component: Dashboard
 		},{
 			path: '/profile',
-			name: 'category',
-			component: Category
+			name: 'Profile',
+			component: Profile
+		},{
+			path: '/testimonial',
+			name: 'Testimonial',
+			component: Testimonial
+		},{
+			path: '/item/list',
+			name: 'ListItem',
+			component: ListItem
+		},{
+			path: '/item/new',
+			name: 'NewItem',
+			component: NewItem
+		},{
+			path: '/item/attachment',
+			name: 'Attachment',
+			component: Attachment
 		}
 		]
 	}
 	]
 })
-
-var instanceAxios = axios.create({
-	baseURL: 'http://localhost:9393'
-});
-instanceAxios.defaults.timeout = 2500;
-instanceAxios.interceptors.response.use(function (response) {
-	return response;
-}, function (error) {
-	return Promise.reject(error);
-});
-
-Vue.prototype.$axios = instanceAxios
-Vue.prototype.$querystring = querystring
-Vue.prototype.$base64 = base64
