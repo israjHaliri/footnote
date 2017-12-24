@@ -62,7 +62,7 @@ public class AttachmentController {
         result.put("search[value]", search);
         try {
             attachmentList = attachmentStrategy.getListDataPerPage(parameters);
-            result.put("data", attachmentList);
+            result.put("attachments", attachmentList);
             if (attachmentList.size() > 0) {
                 result.put("recordsTotal", attachmentList.get(0).getTotal_count());
                 result.put("recordsFiltered", attachmentList.get(0).getTotal_count());

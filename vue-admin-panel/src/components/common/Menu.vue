@@ -18,12 +18,12 @@
                     </div>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item" v-on:click="handleClickMenu('New Item')">
-                            <router-link :to="'/dashboard'" class="nav-link" style="padding-left : 30px;">
+                            <router-link :to="'/item/new'" class="nav-link" style="padding-left : 30px;">
                                 <i class="icon-pencil"></i> New
                             </router-link>
                         </li>
                         <li class="nav-item" v-on:click="handleClickMenu('List Item')">
-                            <router-link :to="'/dashboard'" class="nav-link" style="padding-left : 30px;">
+                            <router-link :to="'/item/list'" class="nav-link" style="padding-left : 30px;">
                                 <i class="icon-pencil"></i> List
                             </router-link>
                         </li>

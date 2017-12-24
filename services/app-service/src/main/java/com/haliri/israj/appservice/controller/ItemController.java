@@ -81,7 +81,7 @@ public class ItemController {
         result.put("search[value]", search);
         try{
             itemList = itemStrategy.getListDataPerPage(parameters);
-            result.put("data", itemList);
+            result.put("items", itemList);
             if(itemList.size() > 0){
                 result.put("recordsTotal", itemList.get(0).getTotal_count());
                 result.put("recordsFiltered", itemList.get(0).getTotal_count());

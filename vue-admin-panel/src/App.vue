@@ -17,7 +17,12 @@ let axios = Axios.create({
 
 axios.defaults.timeout = 2500;
 axios.interceptors.response.use(function (response) {
-	return response;
+	if(response.data.status == 420){
+		alert(response.data.message)
+		return response;	
+	}else{
+		return response;	
+	}
 }, function (error) {
 	if(typeof error.response == "undefined"){
 		alert(error)

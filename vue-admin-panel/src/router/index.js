@@ -6,7 +6,8 @@ import Full from '@/containers/Full'
 import Login from '@/components/Login'
 import Dashboard from '@/components/Dashboard'
 import Profile from '@/components/Profile'
-import Item from '@/components/Item'
+import ItemNew from '@/components/item/New'
+import ItemList from '@/components/item/List'
 import NotFound from '@/components/404'
 
 Vue.use(Router)
@@ -35,6 +36,14 @@ export default new Router({
 			path: '/profile',
 			name: 'Profile',
 			component: Profile
+		},{
+			path: '/item/new',
+			name: 'ItemNew',
+			component: ItemNew
+		},{
+			path: '/item/list',
+			name: 'ItemList',
+			component: ItemList
 		}
 		]
 	}

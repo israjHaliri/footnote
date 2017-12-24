@@ -74,7 +74,7 @@ public class ItemStrategy {
                     "       FROM\n" +
                     "           (SELECT t.*\n" +
                     "               FROM\n" +
-                    "                   (SELECT COUNT(id_item) OVER() total_count,id_item,title,description,create_date,update_date,create_by,update_by,type,price\n" +
+                    "                   (SELECT COUNT(id_item) OVER() total_count,id_item,title,description,create_date,update_date,create_by,update_by,type,information\n" +
                     "                    FROM content.item \n" +
                     "                    WHERE title LIKE  '%" + param.get("search") + "%' AND type = '" + param.get("type") + "' \n" +
                     "                    ORDER BY content.item.id_item DESC) " +
