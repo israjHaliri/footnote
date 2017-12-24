@@ -2,7 +2,6 @@ package com.haliri.israj.appcore.domain.content;
 
 import com.haliri.israj.appcore.constant.ContentType;
 
-import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class Item {
     private String createBy;
     private String updateBy;
     private ContentType contentType;
-    private String infomation;
+    private String information;
     private Integer rn;
     private Integer total_count;
 
@@ -88,12 +87,12 @@ public class Item {
         this.contentType = contentType;
     }
 
-    public String getInfomation() {
-        return infomation;
+    public String getInformation() {
+        return information;
     }
 
-    public void setInfomation(String infomation) {
-        this.infomation = infomation;
+    public void setInformation(String information) {
+        this.information = information;
     }
 
     public List<Attachment> getAttachmentList() {
@@ -131,7 +130,7 @@ public class Item {
                 ", createBy='" + createBy + '\'' +
                 ", updateBy='" + updateBy + '\'' +
                 ", contentType=" + contentType +
-                ", infomation=" + infomation +
+                ", information=" + information +
                 ", rn=" + rn +
                 ", total_count=" + total_count +
                 ", attachmentList=" + attachmentList +

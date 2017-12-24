@@ -1,9 +1,10 @@
 package com.haliri.israj.appservice.controller;
 
 import com.haliri.israj.appcore.domain.content.Item;
-import com.haliri.israj.appcore.strategy.content.impl.ContentStrategy;
-import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
+import com.haliri.israj.appcore.handler.ResponseHandler;
+import com.haliri.israj.appcore.strategy.content.impl.ItemStrategy;
 import com.haliri.israj.appcore.utils.AppUtils;
+import com.haliri.israj.appservice.utils.WebUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,43 +16,45 @@ import java.util.Map;
  * Created by israjhaliri on 10/16/17.
  */
 @RestController
-public class ContentController {
+public class ItemController {
 
     @Autowired
-    ContentStrategy contentStrategy;
+    ItemStrategy itemStrategy;
 
     @Autowired
-    ResponseHandlerImpl responseHandlerImpl;
+    ResponseHandler responseHandler;
 
-    @RequestMapping(value = "/public/barber/get/content/{type}", method = RequestMethod.GET)
-    public Object getTestimonial(@PathVariable(value = "type") String type) {
+    @RequestMapping(value = "/public/get/content", method = RequestMethod.GET)
+    public Object getTestimonial(
+            @RequestParam(value = "type", defaultValue = "") String type
+    ) {
         List<Item> result = null;
         try{
-            result = contentStrategy.getListData(type);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
+            result = itemStrategy.getListData(type);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get_by_id/content/{type}/{idContent}", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get_by_id/content", method = RequestMethod.GET)
     public Object getTestimonial(
-            @PathVariable(value = "type") String type,
-            @PathVariable(value = "idContent") Integer idContent
+            @RequestParam(value = "type", defaultValue = "") String type,
+            @RequestParam(value = "idContent", defaultValue = "") String idContent
     ) {
         Map parameter = new HashMap();
         parameter.put("type",type);
         parameter.put("idContent",idContent);
         List<Item> result = null;
         try{
-            result = contentStrategy.getListDataById(parameter);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
+            result = itemStrategy.getListDataById(parameter);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get/content", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/content", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
@@ -77,7 +80,7 @@ public class ContentController {
         result.put("draw", draw);
         result.put("search[value]", search);
         try{
-            itemList = contentStrategy.getListDataPerPage(parameters);
+            itemList = itemStrategy.getListDataPerPage(parameters);
             result.put("data", itemList);
             if(itemList.size() > 0){
                 result.put("recordsTotal", itemList.get(0).getTotal_count());
@@ -87,44 +90,45 @@ public class ContentController {
                 result.put("recordsFiltered", 0);
             }
 
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),result);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/insert/content", method = RequestMethod.POST)
+    @RequestMapping(value = "/secret/insert/content", method = RequestMethod.POST)
     public Object saveTestimonial(@RequestBody Item Item) {
         try {
-            contentStrategy.saveData(Item);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            Item.setCreateBy(WebUtil.getUserLogin());
+            itemStrategy.saveData(Item);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/update/content", method = RequestMethod.PUT)
+    @RequestMapping(value = "/secret/update/content", method = RequestMethod.PUT)
     public Object updateTestimonial(@RequestBody Item Item) {
         try {
-            contentStrategy.updateData(Item);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            itemStrategy.updateData(Item);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/delete/content/{idContent}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/secret/delete/content/{idContent}", method = RequestMethod.DELETE)
     public Object insertTestimonial(
             @PathVariable(value = "idContent") Integer idContent
     ) {
         try {
-            contentStrategy.deleteData(idContent);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            itemStrategy.deleteData(idContent);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 }

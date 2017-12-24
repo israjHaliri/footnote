@@ -1,9 +1,9 @@
 package com.haliri.israj.appservice.controller;
 
 import com.haliri.israj.appcore.domain.content.Profile;
+import com.haliri.israj.appcore.handler.ResponseHandler;
 import com.haliri.israj.appcore.strategy.content.impl.ProfileStrategy;
 import com.haliri.israj.appcore.utils.AppUtils;
-import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,26 +17,26 @@ public class ProfileController {
     ProfileStrategy profileStrategy;
 
     @Autowired
-    ResponseHandlerImpl responseHandlerImpl;
+    ResponseHandler responseHandler;
 
-    @RequestMapping(value = "/secret/barber/get/profile", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/profile", method = RequestMethod.GET)
     public Object getProfile() {
         try{
             Profile profile = profileStrategy.getData();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, profile);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, profile);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/update/profile", method = RequestMethod.PUT)
+    @RequestMapping(value = "/secret/update/profile", method = RequestMethod.PUT)
     public Object updateProfile(@RequestBody Profile profile) {
         try {
             profileStrategy.saveOrUpdate(profile);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             AppUtils.getLogger(this).error("ERROR PROFILE LOG SAVE OR UPDATE: {}", e.getMessage());
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 }

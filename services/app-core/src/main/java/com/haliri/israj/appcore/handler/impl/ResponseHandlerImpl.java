@@ -5,10 +5,12 @@ import com.haliri.israj.appcore.constant.ResponseStatus;
 import com.haliri.israj.appcore.domain.common.ResultMessage;
 import com.haliri.israj.appcore.handler.ResponseHandler;
 import org.apache.commons.httpclient.HttpStatus;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by israjhaliri on 8/28/17.
  */
+@Service
 public class ResponseHandlerImpl implements ResponseHandler {
 
     @Override

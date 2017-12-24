@@ -2,9 +2,14 @@
 	<div id="full">
 		<header-bar></header-bar>
 		<div class="app-body">
-			<menu-bar></menu-bar>
-			<main class="main" style="min-height: 550px;">
-				<history-bar></history-bar>
+			<menu-bar @menuSelected="onSelectNav"></menu-bar>
+			<main class="main" style="min-height: 550px;">				
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item">Home</li>
+					<li class="breadcrumb-item"><a href="#">Admin</a>
+					</li>
+					<li class="breadcrumb-item active">{{newLabelNav}}</li>
+				</ol>
 				<router-view></router-view>
 			</main>
 		</div>
@@ -13,23 +18,28 @@
 </template>
 
 <script>
-	import Header from '@/components/shared/Header.vue'
-	import Footer from '@/components/shared/Footer.vue'
-	import Menu from '@/components/shared/Menu.vue'
-	import History from '@/components/shared/History.vue'
-	export default {
-		name: 'full',
-		data: function(){
-			return {
-			}
-		},
-		components: {
-			'header-bar': Header,
-			'footer-bar': Footer,
-			'menu-bar': Menu,
-			'history-bar': History
+import Header from '@/components/common/Header.vue'
+import Footer from '@/components/common/Footer.vue'
+import Menu from '@/components/common/Menu.vue'
+export default {
+	name: 'full',
+	data: function(){
+		return {
+			newLabelNav : "Dashboard",
+		}
+	},
+	components: {
+		'header-bar': Header,
+		'footer-bar': Footer,
+		'menu-bar': Menu,
+		'history-bar': History
+	},
+	methods: {
+		onSelectNav (menuSelected) {
+			this.newLabelNav = menuSelected
 		}
 	}
+}
 </script>
 
 <style scoped>

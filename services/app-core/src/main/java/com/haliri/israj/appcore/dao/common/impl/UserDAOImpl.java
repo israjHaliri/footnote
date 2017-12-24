@@ -27,14 +27,14 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User getDataById(Object id) {
-        String sql = "SELECT * FROM CONFIG.USERS WHERE ID= ?";
-        String sqlRole = "SELECT ur.user_id,r.role,r.id FROM CONFIG.user_roles ur JOIN CONFIG.role r on ur.role_id = r.id WHERE USER_ID = ?";
+        String sql = "SELECT * FROM common.users WHERE id= ?";
+        String sqlRole = "SELECT ur.user_id,r.role,r.id FROM common.user_roles ur JOIN common.role r on ur.role_id = r.id WHERE user_id = ?";
         try {
             User user = (User) jdbcTemplate.queryForObject(sql, new Object[]{id.toString()}, new BeanPropertyRowMapper(User.class));
             List<Role> roles = jdbcTemplate.query(sqlRole, new Object[]{id.toString()}, new BeanPropertyRowMapper(Role.class));
 
             user.setRoles(roles);
-            AppUtils.getLogger(this).debug("USERS LOG : {}", user.toString());
+            AppUtils.getLogger(this).debug("USERS GET BY ID LOG : {}", user.toString());
             return user;
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,14 +63,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    @Transactional
     public void saveData(User user) {
-        String sql = "insert into config.users (id,password,enable,username) values (?,?,?)";
-        jdbcTemplate.update(sql, new Object[]{user.getId(), user.getPassword(), user.getEnable(),user.getUsername()});
-        String sqlRole = "insert into config.role (role,user_id) values (?,?,?)";
-        for (Role role : user.getRoles()) {
-            jdbcTemplate.update(sqlRole, new Object[]{role.getRole(), role.getUserId()});
-        }
     }
 
     @Override
@@ -90,13 +83,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void saveToken(String token, String username) {
-        String sql = "update config.users set token =? where id = ?";
+        String sql = "UPDATE common.users SET token =? WHERE id = ?";
         jdbcTemplate.update(sql, new Object[]{token, username});
     }
 
     @Override
     public void deleteToken(String username) {
-        String sql = "update config.users set token = '' where id = ?";
+        String sql = "UPDATE common.users SET token = '' WHERE id = ?";
         jdbcTemplate.update(sql, new Object[]{username});
     }
 }

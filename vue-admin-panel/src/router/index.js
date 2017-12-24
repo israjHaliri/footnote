@@ -4,12 +4,9 @@ import Router from 'vue-router'
 import Full from '@/containers/Full'
 
 import Login from '@/components/Login'
-import Dashboard from '@/components/dashboard/ContainerChart'
+import Dashboard from '@/components/Dashboard'
 import Profile from '@/components/Profile'
-import Testimonial from '@/components/Testimonial'
-import ListItem from '@/components/item/ListItem'
-import NewItem from '@/components/item/NewItem'
-import Attachment from '@/components/item/Attachment'
+import Item from '@/components/Item'
 import NotFound from '@/components/404'
 
 Vue.use(Router)
@@ -38,22 +35,6 @@ export default new Router({
 			path: '/profile',
 			name: 'Profile',
 			component: Profile
-		},{
-			path: '/testimonial',
-			name: 'Testimonial',
-			component: Testimonial
-		},{
-			path: '/item/list',
-			name: 'ListItem',
-			component: ListItem
-		},{
-			path: '/item/new',
-			name: 'NewItem',
-			component: NewItem
-		},{
-			path: '/item/attachment',
-			name: 'Attachment',
-			component: Attachment
 		}
 		]
 	}

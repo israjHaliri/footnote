@@ -23,7 +23,7 @@ public class ProfileStrategyTests {
 	}
 
 	@Test
-	public void inserBarberProfile() throws SQLException {
+	public void inserProfile() throws SQLException {
 		Profile profile = new Profile();
 		profile.setAddress("jln goal para");
 		profile.setEmail("admin.content@gmail.com");

@@ -1,8 +1,8 @@
 package com.haliri.israj.appservice.controller;
 
 import com.haliri.israj.appcore.domain.content.Testimonial;
+import com.haliri.israj.appcore.handler.ResponseHandler;
 import com.haliri.israj.appcore.strategy.content.impl.TestimonialStrategy;
-import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
 import com.haliri.israj.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,31 +21,31 @@ public class TestimonialController {
     TestimonialStrategy testimonialStrategy;
 
     @Autowired
-    ResponseHandlerImpl responseHandlerImpl;
+    ResponseHandler responseHandler;
 
-    @RequestMapping(value = "/public/barber/get/testimonial", method = RequestMethod.GET)
+    @RequestMapping(value = "/public/get/testimonial", method = RequestMethod.GET)
     public Object getTestimonial() {
         List<Testimonial> result = null;
         try{
             result = testimonialStrategy.getListData();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get_by_id/testimonial/{idTestimonial}", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get_by_id/testimonial/{idTestimonial}", method = RequestMethod.GET)
     public Object getTestimonialById(@PathVariable(value = "idTestimonial") Integer idTestimonial) {
         List<Testimonial> result = null;
         try{
             result = testimonialStrategy.getListDataById(idTestimonial);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get/testimonial", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/testimonial", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
@@ -79,13 +79,13 @@ public class TestimonialController {
                 result.put("recordsFiltered", 0);
             }
 
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),result);
         }
     }
 
-    @RequestMapping(value = "/public/barber/insert/testimonial", method = RequestMethod.POST)
+    @RequestMapping(value = "/public/insert/testimonial", method = RequestMethod.POST)
     public Object saveTestimonial(
             @RequestParam(value = "subject") String subject,
             @RequestParam(value = "description") String description,
@@ -97,14 +97,14 @@ public class TestimonialController {
         testimonial.setAge(age);
         try {
             testimonialStrategy.saveData(testimonial);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/update/testimonial", method = RequestMethod.PUT)
+    @RequestMapping(value = "/secret/update/testimonial", method = RequestMethod.PUT)
     public Object updateTestimonial(
             @RequestParam(value = "idTestimonial") int idTestimonial,
             @RequestParam(value = "subject") String subject,
@@ -118,23 +118,23 @@ public class TestimonialController {
         testimonial.setIdTestimonial(idTestimonial);
         try {
             testimonialStrategy.updateData(testimonial);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/delete/testimonial/{idTestimonial}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/secret/delete/testimonial/{idTestimonial}", method = RequestMethod.DELETE)
     public Object deleteTestimonial(
             @PathVariable(value = "idTestimonial") Integer idTestimonial
     ) {
         try {
             testimonialStrategy.deleteData(idTestimonial);
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 }

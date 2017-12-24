@@ -23,7 +23,7 @@ public class GuestBookStrategyTests {
     }
 
     @Test
-    public void inserBarberProfile() throws SQLException {
+    public void inserProfile() throws SQLException {
         GuestBook param = new GuestBook();
         param.setUsername("jono");
         guestBookStrategy.saveData(param);

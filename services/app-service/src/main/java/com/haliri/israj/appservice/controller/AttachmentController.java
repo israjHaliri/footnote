@@ -1,10 +1,10 @@
 package com.haliri.israj.appservice.controller;
 
 import com.haliri.israj.appcore.domain.content.Attachment;
+import com.haliri.israj.appcore.handler.ResponseHandler;
 import com.haliri.israj.appcore.utils.AppUtils;
 import com.haliri.israj.appcore.constant.ContentType;
 import com.haliri.israj.appcore.strategy.content.impl.AttachmentStrategy;
-import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,14 +28,14 @@ public class AttachmentController {
     AttachmentStrategy attachmentStrategy;
 
     @Autowired
-    ResponseHandlerImpl responseHandlerImpl;
+    ResponseHandler responseHandler;
 
     final String uuid = UUID.randomUUID().toString().replace("-", "");
 
     @Value("${patFile}")
     String pathFile;
 
-    @RequestMapping(value = "/secret/barber/get/attachment", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/attachment", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
             @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
@@ -71,13 +71,13 @@ public class AttachmentController {
                 result.put("recordsFiltered", 0);
             }
 
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e) {
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), result);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/insert/attachment", method = RequestMethod.POST)
+    @RequestMapping(value = "/secret/insert/attachment", method = RequestMethod.POST)
     public Object saveTestimonial(
             @RequestParam(value = "contentId") Integer contentId,
             @RequestParam(value = "file") MultipartFile file,
@@ -92,17 +92,17 @@ public class AttachmentController {
         try {
             if(saveFile(contentId,file, attachment.getFile())){
                 attachmentStrategy.saveData(attachment);
-                return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
+                return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
             }else{
-                return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, "Failed To Save File Make Sure Paramter is Correct", null);
+                return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, "Failed To Save File Make Sure Paramter is Correct", null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/delete/attachment/{idAttachment}/{idContent}/{type}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/secret/delete/attachment/{idAttachment}/{idContent}/{type}", method = RequestMethod.DELETE)
     public Object insertTestimonial(
             @PathVariable(value = "idAttachment") Integer idAttachment,
             @PathVariable(value = "idContent") Integer idContent,
@@ -116,13 +116,13 @@ public class AttachmentController {
             String nameFile = attachmentStrategy.getFileNameById(parameter);
             if (deleletFile(nameFile)) {
                 attachmentStrategy.deleteData(parameter);
-                return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
+                return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
             } else {
-                return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, "Failed Delete File Make Sure Paramter is Correct", null);
+                return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, "Failed Delete File Make Sure Paramter is Correct", null);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 

@@ -2,7 +2,7 @@ package com.haliri.israj.appcore.content;
 
 import com.haliri.israj.appcore.domain.content.Attachment;
 import com.haliri.israj.appcore.domain.content.Item;
-import com.haliri.israj.appcore.strategy.content.impl.ContentStrategy;
+import com.haliri.israj.appcore.strategy.content.impl.ItemStrategy;
 import com.haliri.israj.appcore.constant.ContentType;
 import com.haliri.israj.appcore.strategy.content.impl.AttachmentStrategy;
 import org.junit.Test;
@@ -21,14 +21,14 @@ import java.util.Map;
 public class ItemStrategyTests {
 
     @Autowired
-    ContentStrategy contentStrategy;
+    ItemStrategy itemStrategy;
 
     @Autowired
     AttachmentStrategy attachmentStrategy;
 
     @Test
     public void getListData() throws SQLException {
-        contentStrategy.getListData(ContentType.ARTICLE.name());
+        itemStrategy.getListData(ContentType.ARTICLE.name());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class ItemStrategyTests {
         param.put("start",1);
         param.put("length",10);
         param.put("search","");
-        contentStrategy.getListDataPerPage(param);
+        itemStrategy.getListDataPerPage(param);
     }
 
     @Test
@@ -60,9 +60,9 @@ public class ItemStrategyTests {
         Item.setCreateBy("admin.content@gmail.com");
         Item.setUpdateBy("admin.content@gmail.com");
         Item.setContentType(ContentType.ARTICLE);
-        Item.setInfomation("-");
+        Item.setInformation("-");
         Item.setIdContent(null);
-        contentStrategy.saveData(Item);
+        itemStrategy.saveData(Item);
     }
 
     @Test
@@ -75,9 +75,9 @@ public class ItemStrategyTests {
         Item.setCreateBy("admin.content@gmail.com");
         Item.setUpdateBy("admin.content@gmail.com");
         Item.setContentType(ContentType.ARTICLE);
-        Item.setInfomation("-");
+        Item.setInformation("-");
         Item.setIdContent(2);
-        contentStrategy.updateData(Item);
+        itemStrategy.updateData(Item);
     }
 
     @Test
@@ -92,6 +92,6 @@ public class ItemStrategyTests {
 
     @Test
     public void deleteData() throws SQLException {
-        contentStrategy.deleteData(1);
+        itemStrategy.deleteData(1);
     }
 }

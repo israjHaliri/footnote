@@ -24,11 +24,4 @@ public class UsersDAOTests {
 	public void getDataById() throws SQLException {
 		userRepository.getDataById("israj.haliri@gmail.com");
 	}
-
-	@Test
-	public void inserUser() throws SQLException {
-		List<Role> roles = new ArrayList<>();
-		roles.add(new Role("5","ROLE_ADMIN","test@gmail.com"));
-		userRepository.saveData(new User("test@gmail.com","jono","$2a$12$3aJYGZNTDKXUeDruTBxYVeBVyTBcM0mpG/BF/.DezaUSI/N4yzMIO",true,"",roles));
-	}
 }

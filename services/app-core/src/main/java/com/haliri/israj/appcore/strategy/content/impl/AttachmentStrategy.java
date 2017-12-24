@@ -37,18 +37,18 @@ public class AttachmentStrategy {
 
             String sql = "SELECT t.*\n" +
                     "   FROM\n" +
-                    "  (SELECT row_number() over() as rn,t.*\n" +
+                    "  (SELECT ROW_NUMBER() OVER() AS rn,t.*\n" +
                     "      FROM\n" +
                     "          (SELECT t.*\n" +
                     "              FROM\n" +
-                    "                  (SELECT COUNT(id_attachment) OVER() TOTAL_COUNT,id_attachment,content_id,file,type\n" +
-                    "                  FROM barber.attachment \n" +
-                    "                   WHERE file LIKE  '%%' and type = '"+param.get("type")+"'\n" +
-                    "                   ORDER BY barber.attachment.id_attachment DESC)\n" +
+                    "                  (SELECT COUNT(id_attachment) OVER() total_count,id_attachment,content_id,file,type\n" +
+                    "                  FROM content.attachment \n" +
+                    "                   WHERE file LIKE  '%%' AND type = '"+param.get("type")+"'\n" +
+                    "                   ORDER BY content.attachment.id_attachment DESC)\n" +
                     "            t)\n" +
                     "    t)\n" +
                     "t\n" +
-                    "WHERE t.rn BETWEEN "+param.get("start")+"::integer AND "+param.get("length")+"::integer";
+                    "WHERE t.rn BETWEEN "+param.get("start")+"::INTEGER AND "+param.get("length")+"::INTEGER";
 
 
             attachmentList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Attachment.class));
@@ -64,7 +64,7 @@ public class AttachmentStrategy {
             List<Attachment> attachmentList = new ArrayList<>();
 
             String sql = "SELECT file \n" +
-                    "FROM barber.attachment where id_attachment = ? and content_id = ? and type = ?;";
+                    "FROM content.attachment WHERE id_attachment = ? AND content_id = ? AND type = ?;";
 
             Attachment attachment = (Attachment) jdbcTemplate.queryForObject(sql, new Object[]{objParam.get("idAttachment"),objParam.get("idContent"),objParam.get("type")}, new BeanPropertyRowMapper(Attachment.class));
             AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", attachmentList.toString());
@@ -76,7 +76,7 @@ public class AttachmentStrategy {
     @Transactional
     public void saveData(Attachment attachment) {
         saveOrUpdateDataStrategy = (Attachment parameters) -> {
-            String sql = "INSERT INTO barber.attachment(\n" +
+            String sql = "INSERT INTO content.attachment(\n" +
                     "content_id, file, type)\n" +
                     "VALUES ( ?, ?, ?)";
             jdbcTemplate.update(sql, parameters.getItemId(), parameters.getFile(),parameters.getContentType().name());
@@ -87,9 +87,9 @@ public class AttachmentStrategy {
     @Transactional
     public void updateData(Attachment attachment) {
         saveOrUpdateDataStrategy = (Attachment parameters) -> {
-            String sql = "UPDATE barber.attachment\n" +
+            String sql = "UPDATE content.attachment\n" +
                     "SET file=?\n" +
-                    "WHERE id_attachment=? and content_id=? and type=?";
+                    "WHERE id_attachment=? AND content_id=? AND type=?";
             jdbcTemplate.update(sql, parameters.getFile(),parameters.getIdAttachment(),parameters.getItemId(),parameters.getContentType().name());
         };
         saveOrUpdateDataStrategy.process(attachment);
@@ -99,8 +99,8 @@ public class AttachmentStrategy {
     public void deleteData(Map param) {
         deleteDataStrategy = (parameters) -> {
             Map objParam = parameters;
-            String sql = "DELETE FROM barber.attachment\n" +
-                    "WHERE id_attachment=? and type =? and content_id =?";
+            String sql = "DELETE FROM content.attachment\n" +
+                    "WHERE id_attachment=? AND type =? AND content_id =?";
             jdbcTemplate.update(sql, parameters.get("idAttachment"),objParam.get("type"),objParam.get("idContent"));
         };
         deleteDataStrategy.process(param);

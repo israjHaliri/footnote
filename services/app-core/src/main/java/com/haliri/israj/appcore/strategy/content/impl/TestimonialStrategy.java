@@ -38,7 +38,7 @@ public class TestimonialStrategy {
         getDataStrategy = (parameters) -> {
             List<Testimonial> testimonialList = new ArrayList<>();
 
-            String sql = "SELECT * FROM barber.testimonial ORDER BY create_date DESC LIMIT 5";
+            String sql = "SELECT * FROM content.testimonial ORDER BY create_date DESC LIMIT 5";
 
             testimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Testimonial.class));
             AppUtils.getLogger(this).debug("TESTIMONIAL LOG GET DATA: {}", testimonialList.toString());
@@ -51,7 +51,7 @@ public class TestimonialStrategy {
         getDataStrategy = (parameters) -> {
             List<Testimonial> testimonialList = new ArrayList<>();
 
-            String sql = "SELECT * FROM barber.testimonial where id_testimonial = ?";
+            String sql = "SELECT * FROM content.testimonial WHERE id_testimonial = ?";
 
             testimonialList = jdbcTemplate.query(sql,new Object[]{parameters}, new BeanPropertyRowMapper(Testimonial.class));
             AppUtils.getLogger(this).debug("TESTIMONIAL LOG GET DATA: {}", testimonialList.toString());
@@ -67,18 +67,18 @@ public class TestimonialStrategy {
 
             String sql = "SELECT t.*\n" +
                     "FROM\n" +
-                    "   (SELECT row_number() over() as rn,t.*\n" +
+                    "   (SELECT ROW_NUMBER() OVER() AS rn,t.*\n" +
                     "       FROM\n" +
                     "           (SELECT t.*\n" +
                     "                   FROM\n" +
-                    "                    (SELECT COUNT(id_testimonial) OVER() TOTAL_COUNT,id_testimonial,subject,description,age,create_date,update_date\n" +
-                    "                    FROM barber.testimonial \n" +
+                    "                    (SELECT COUNT(id_testimonial) OVER() total_count,id_testimonial,subject,description,age,create_date,update_date\n" +
+                    "                    FROM content.testimonial \n" +
                     "                    WHERE subject LIKE  '%" + param.get("search") + "%' \n" +
-                    "                    ORDER BY barber.testimonial.id_testimonial DESC \n" +
+                    "                    ORDER BY content.testimonial.id_testimonial DESC \n" +
                     "                    ) t\n" +
                     "                 ) t\n" +
                     "          ) t\n" +
-                    "WHERE t.rn BETWEEN " + param.get("start") + "::integer AND " + param.get("length") + "::integer";
+                    "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("length") + "::INTEGER ";
             AppUtils.getLogger(this).debug("GET TESTIMONIAL LOG : {}", testimonialList.toString());
             return testimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Testimonial.class));
         };
@@ -87,21 +87,21 @@ public class TestimonialStrategy {
 
 
     @Transactional
-    public void saveData(Testimonial barberGuestBook) {
+    public void saveData(Testimonial contentGuestBook) {
         saveOrUpdateDataStrategy = (Testimonial parameters) -> {
-            String sql = "INSERT INTO barber.testimonial\n" +
+            String sql = "INSERT INTO content.testimonial\n" +
                     "(subject, description, age, create_date, update_date)\n" +
                     "VALUES (?, ?, ?, current_date, current_date)";
             jdbcTemplate.update(sql, parameters.getSubject(), parameters.getDescription(), parameters.getAge());
         };
-        saveOrUpdateDataStrategy.process(barberGuestBook);
+        saveOrUpdateDataStrategy.process(contentGuestBook);
     }
 
     @Transactional
     public void updateData(Testimonial testimonial) {
         saveOrUpdateDataStrategy = (Testimonial parameters) -> {
-            String sql = "UPDATE barber.testimonial\n" +
-                    "SET subject=?, description=?, age=?, update_date=current_date\n" +
+            String sql = "UPDATE content.testimonial\n" +
+                    "SET subject = ?, description = ?, age = ?, update_date = current_date\n" +
                     "WHERE id_testimonial = ?";
             jdbcTemplate.update(sql, parameters.getSubject(), parameters.getDescription(), parameters.getAge(), parameters.getIdTestimonial());
         };
@@ -111,7 +111,7 @@ public class TestimonialStrategy {
     @Transactional
     public void deleteData(Integer id) {
         deleteDataStrategy = (parameters) -> {
-            String sql = "DELETE FROM barber.testimonial\n" +
+            String sql = "DELETE FROM content.testimonial\n" +
                     "WHERE id_testimonial = ?";
             jdbcTemplate.update(sql, parameters);
         };

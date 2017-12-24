@@ -20,7 +20,7 @@ public class AppServiceTests {
 
     @Test
     public void contextLoads() {
-        AppUtils.getLogger(this).debug("generate password admin content : {}", passwordEncoder.encode("barberadmin"));
+        AppUtils.getLogger(this).debug("generate password admin content : {}", passwordEncoder.encode("admin"));
         AppUtils.getLogger(this).debug("generate password super admin : {}", passwordEncoder.encode("026"));
 
         CustomPasswordEncoderConfig customPasswordEncoder = new CustomPasswordEncoderConfig();
@@ -31,8 +31,8 @@ public class AppServiceTests {
 
         String hashed = BCrypt.hashpw("026", BCrypt.gensalt(12));
         AppUtils.getLogger(this).debug("genstalt 12 encoded " + hashed);
-        String hashedBarber = BCrypt.hashpw("barberadmin", BCrypt.gensalt(12));
-        AppUtils.getLogger(this).debug("genstalt 12 encoded " + hashedBarber);
+        String hashedAdmin = BCrypt.hashpw("admin", BCrypt.gensalt(12));
+        AppUtils.getLogger(this).debug("genstalt 12 encoded " + hashedAdmin);
     }
 
     @Test

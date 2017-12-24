@@ -32,7 +32,7 @@ public class ProfileStrategy {
         getDataStrategy = (parameter) -> {
             Profile profile = new Profile();
             String sql = "SELECT address, phone, email, lat, lon, create_date, update_date\n" +
-                    "FROM barber.profile ORDER BY create_date DESC LIMIT 1";
+                    "FROM content.profile ORDER BY create_date DESC LIMIT 1";
 
             profile = (Profile) jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper(Profile.class));
             AppUtils.getLogger(this).debug("GET PROFILE LOG : {}", profile.toString());
@@ -44,19 +44,17 @@ public class ProfileStrategy {
     @Transactional
     public void saveOrUpdate(Profile profile) {
         saveOrUpdateDataStrategy = (Profile parameters) -> {
-            Profile dataProfile = getData();
             String sql;
-
-            if (dataProfile.getCreateDate() == null || dataProfile.getCreateDate().equals("")) {
-                sql = "INSERT INTO barber.profile(\n" +
+            if (parameters.getCreateDate() == null || parameters.getCreateDate().equals("")) {
+                sql = "INSERT INTO content.profile(\n" +
                         "address, phone, email, lat, lon, create_date, update_date)\n" +
-                        "VALUES (?, ?, ?, ?, ?, current_timestamp, current_timestamp)";
+                        "VALUES (?, ?, ?, ?, ?, CURRENT_DATE, CURRENT_DATE)";
                 jdbcTemplate.update(sql, parameters.getAddress(), parameters.getPhone(), parameters.getEmail(), parameters.getLat(), parameters.getLon());
             } else {
-                sql = "UPDATE barber.profile\n" +
-                        "SET address=?, phone=?, email=?, lat=?, lon=?, create_date=current_timestamp, update_date=current_timestamp\n" +
+                sql = "UPDATE content.profile\n" +
+                        "SET address=?, phone=?, email=?, lat=?, lon=?, update_date=CURRENT_DATE\n" +
                         "WHERE create_date=?";
-                jdbcTemplate.update(sql, parameters.getAddress(), parameters.getPhone(), parameters.getEmail(), parameters.getLat(), parameters.getLon(), dataProfile.getCreateDate());
+                jdbcTemplate.update(sql, parameters.getAddress(), parameters.getPhone(), parameters.getEmail(), parameters.getLat(), parameters.getLon(), parameters.getCreateDate());
             }
         };
         saveOrUpdateDataStrategy.process(profile);

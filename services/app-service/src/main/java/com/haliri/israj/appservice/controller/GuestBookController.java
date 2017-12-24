@@ -1,10 +1,10 @@
 package com.haliri.israj.appservice.controller;
 
 import com.haliri.israj.appcore.domain.content.GuestBook;
+import com.haliri.israj.appcore.handler.ResponseHandler;
 import com.haliri.israj.appcore.utils.AppUtils;
 import com.haliri.israj.appcore.constant.ResponseStatus;
 import com.haliri.israj.appcore.strategy.content.impl.GuestBookStrategy;
-import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,42 +21,42 @@ public class GuestBookController {
     GuestBookStrategy guestBookStrategy;
 
     @Autowired
-    ResponseHandlerImpl responseHandlerImpl;
+    ResponseHandler responseHandler;
 
-    @RequestMapping(value = "/public/barber/get/guest_book", method = RequestMethod.GET)
+    @RequestMapping(value = "/public/get/guest_book", method = RequestMethod.GET)
     public Object getGuestBook() {
         List<GuestBook> guestBookList = null;
         try{
             guestBookList = guestBookStrategy.getListData();
-            return responseHandlerImpl.setResult(ResponseStatus.SUCCESS, null, guestBookList);
+            return responseHandler.setResult(ResponseStatus.SUCCESS, null, guestBookList);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get/guest_book_one_month", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/guest_book_one_month", method = RequestMethod.GET)
     public Object getGuestBookOneMonth() {
         List<GuestBook> guestBookList = null;
         try{
             guestBookList = guestBookStrategy.getOneMonthListData();
-            return responseHandlerImpl.setResult(ResponseStatus.SUCCESS, null, guestBookList);
+            return responseHandler.setResult(ResponseStatus.SUCCESS, null, guestBookList);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get_by_id/guest_book/{idGuestBook}", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get_by_id/guest_book/{idGuestBook}", method = RequestMethod.GET)
     public Object getGuestBookById(@PathVariable(value = "idGuestBook") Integer idGuestBook) {
         List<GuestBook> guestBookList = null;
         try{
             guestBookList = guestBookStrategy.getListDataById(idGuestBook);
-            return responseHandlerImpl.setResult(ResponseStatus.SUCCESS, null, guestBookList);
+            return responseHandler.setResult(ResponseStatus.SUCCESS, null, guestBookList);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/get/guest_book", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/guest_book", method = RequestMethod.GET)
     public Object getGuestBookPerPage(@RequestParam(value = "draw", defaultValue = "0") int draw,
                                @RequestParam(value = "start", defaultValue = "0") int start,
                                @RequestParam(value = "length", defaultValue = "10") int length,
@@ -89,13 +89,13 @@ public class GuestBookController {
                 result.put("recordsFiltered", 0);
             }
 
-            return responseHandlerImpl.setResult(ResponseStatus.SUCCESS,null,result);
+            return responseHandler.setResult(ResponseStatus.SUCCESS,null,result);
         } catch (Exception e){
-            return responseHandlerImpl.setResult(ResponseStatus.FAILED,e.getMessage(),result);
+            return responseHandler.setResult(ResponseStatus.FAILED,e.getMessage(),result);
         }
     }
 
-    @RequestMapping(value = "/public/barber/insert/guest_book", method = RequestMethod.POST)
+    @RequestMapping(value = "/public/insert/guest_book", method = RequestMethod.POST)
     public Object insertGuestBook(
             @RequestParam(value = "username") String username
     ) {
@@ -103,23 +103,23 @@ public class GuestBookController {
         guestBook.setUsername(username);
         try {
             guestBookStrategy.saveData(guestBook);
-            return responseHandlerImpl.setResult(ResponseStatus.SUCCESS, null, null);
+            return responseHandler.setResult(ResponseStatus.SUCCESS, null, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(ResponseStatus.FAILED, e.getMessage(), null);
+            return responseHandler.setResult(ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 
-    @RequestMapping(value = "/secret/barber/delete/guest_book/{idGuestBook}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/secret/delete/guest_book/{idGuestBook}", method = RequestMethod.DELETE)
     public Object deleteGuestBook(
             @PathVariable(value = "idGuestBook") Integer idGuestBook
     ) {
         try {
             guestBookStrategy.deleteData(idGuestBook);
-            return responseHandlerImpl.setResult(ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandlerImpl.setResult(ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(ResponseStatus.FAILED,e.getMessage(),null);
         }
     }
 }

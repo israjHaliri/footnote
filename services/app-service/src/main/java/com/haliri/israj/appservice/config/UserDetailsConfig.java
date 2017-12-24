@@ -28,7 +28,7 @@ public class UserDetailsConfig implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user =  userDAO.getDataById(username);
-        AppUtils.getLogger(this).debug("USERNAME PARAMETER : {}, DETAIL : {}",username, user.toString());
+        AppUtils.getLogger(this).debug("USERNAME PARAMETER : {}",username);
 
         if (user.getId() == null) {
             throw new UsernameNotFoundException(username);

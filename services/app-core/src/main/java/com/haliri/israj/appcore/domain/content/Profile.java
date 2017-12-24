@@ -1,5 +1,6 @@
 package com.haliri.israj.appcore.domain.content;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -11,8 +12,8 @@ public class Profile {
     private String email;
     private Float lat;
     private Float lon;
-    private Timestamp createDate;
-    private Timestamp updateDate;
+    private Date createDate;
+    private Date updateDate;
 
     public String getAddress() {
         return address;
@@ -54,19 +55,19 @@ public class Profile {
         this.lon = lon;
     }
 
-    public Timestamp getCreateDate() {
+    public Date getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Timestamp createDate) {
+    public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
 
-    public Timestamp getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Timestamp updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 

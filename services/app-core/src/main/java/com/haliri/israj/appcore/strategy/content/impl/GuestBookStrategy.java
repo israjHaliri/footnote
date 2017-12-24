@@ -33,9 +33,9 @@ public class GuestBookStrategy {
     public List<GuestBook> getOneMonthListData() {
         getDataStrategy = (parameter) -> {
             List<GuestBook> guestBookList = new ArrayList<>();
-            String sql = "SELECT guest_book.create_date, count(guest_book.create_date) total_count FROM barber.guest_book where guest_book.create_date BETWEEN\n" +
+            String sql = "SELECT guest_book.create_date, COUNT (guest_book.create_date) total_count FROM content.guest_book WHERE guest_book.create_date BETWEEN\n" +
                     "NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-30\n" +
-                    "AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER group by guest_book.create_date";
+                    "AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER GROUP BY guest_book.create_date";
 
             guestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
             AppUtils.getLogger(this).debug("GET ONE MONTH GUESTBOOK LOG : {}", guestBookList.toString());
@@ -47,7 +47,7 @@ public class GuestBookStrategy {
     public List<GuestBook> getListData() {
         getDataStrategy = (parameter) -> {
             List<GuestBook> guestBookList = new ArrayList<>();
-            String sql = "SELECT * FROM barber.guest_book ORDER BY id_guest_book ASC limit 5 ";
+            String sql = "SELECT * FROM content.guest_book ORDER BY id_guest_book ASC LIMIT 5 ";
 
             guestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
             AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", guestBookList.toString());
@@ -59,7 +59,7 @@ public class GuestBookStrategy {
     public List<GuestBook> getListDataById(Integer id) {
         getDataStrategy = (parameter) -> {
             List<GuestBook> guestBookList = new ArrayList<>();
-            String sql = "SELECT * FROM barber.guest_book where id_guest_book = ? ";
+            String sql = "SELECT * FROM content.guest_book WHERE id_guest_book = ? ";
 
             guestBookList = jdbcTemplate.query(sql,new Object[]{parameter}, new BeanPropertyRowMapper(GuestBook.class));
             AppUtils.getLogger(this).debug("GET BY ID GUESTBOOK LOG : {}", guestBookList.toString());
@@ -75,18 +75,18 @@ public class GuestBookStrategy {
 
             String sql = "SELECT t.*\n" +
                     "FROM\n" +
-                    "   (SELECT row_number() over() as rn,t.*\n" +
+                    "   (SELECT ROW_NUMBER() OVER() AS rn,t.*\n" +
                     "       FROM\n" +
                     "           (SELECT t.*\n" +
                     "                   FROM\n" +
-                    "                    (SELECT COUNT(id_guest_book) OVER() TOTAL_COUNT,id_guest_book,username,create_date\n" +
-                    "                    FROM barber.guest_book \n" +
+                    "                    (SELECT COUNT(id_guest_book) OVER() total_count,id_guest_book,username,create_date\n" +
+                    "                    FROM content.guest_book \n" +
                     "                    WHERE username LIKE  '%" + param.get("search") + "%' \n" +
-                    "                    ORDER BY barber.guest_book.id_guest_book DESC \n" +
+                    "                    ORDER BY content.guest_book.id_guest_book DESC \n" +
                     "                    ) t\n" +
                     "                 ) t\n" +
                     "          ) t\n" +
-                    "WHERE t.rn BETWEEN " + param.get("start") + "::integer AND " + param.get("length") + "::integer";
+                    "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("length") + "::INTEGER";
             AppUtils.getLogger(this).debug("GET PERPAGE GUESTBOOK LOG : {}", guestBookList.toString());
             return guestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
         };
@@ -96,7 +96,7 @@ public class GuestBookStrategy {
     @Transactional
     public void saveData(GuestBook guestBook) {
         saveOrUpdateDataStrategy = (GuestBook parameters) -> {
-            String sql = "INSERT INTO barber.guest_book (username, create_date) VALUES (?, current_date)";
+            String sql = "INSERT INTO content.guest_book (username, create_date) VALUES (?, CURRENT_DATE )";
             jdbcTemplate.update(sql, parameters.getUsername());
         };
         saveOrUpdateDataStrategy.process(guestBook);
@@ -105,7 +105,7 @@ public class GuestBookStrategy {
     @Transactional
     public void deleteData(Integer id) {
         deleteDataStrategy = (parameters) -> {
-            String sql = "DELETE FROM barber.guest_book\n" +
+            String sql = "DELETE FROM content.guest_book\n" +
                     "WHERE id_guest_book = ?";
             jdbcTemplate.update(sql, parameters);
         };
