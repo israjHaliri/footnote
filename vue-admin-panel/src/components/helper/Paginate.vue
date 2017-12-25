@@ -1,102 +1,77 @@
 <template>
-	<div class="container-fluid">
-		<div class="animated fadeIn">
-			<div class="row">
-				<table>
-					<thead>
-						<tr>
-							<th v-for="key in columns">
-								{{key | capitalize}}
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="entry in data">
-							<td v-for="key in columns">
-								{{entry[key]}}
-							</td>
-						</tr>
-					</tbody>
-				</table>
-				<div id="grid-view-model">
-					<form id="search">
-						Search
-						<input name="query" v-model="searchQuery">
-					</form>
-					<!-- <grid :data="gridData | orderByBusinessRules | filterBy searchQuery | limitBy rowsPerPage startRow" :columns="gridColumns"> -->
-					</grid>
-					<div id="page-navigation">
-						<button @click=pageMoves(-1)>Back</button>
-						<p>{{startRow / rowsPerPage + 1}} out of {{gridData.length / rowsPerPage}}</p>
-						<button @click=pageMoves(1)>Next</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</template>    
+	<ul style="float:right" class="pagination">
+		<li>
+			<a href="#" @click.prevent="pageChanged(1)" aria-label="Previous">
+				<span aria-hidden="true">&laquo;</span>
+			</a>
+		</li>
+		<li v-for="n in paginationRange" :class="activePage(n)">
+			<a href="#" @click.prevent="pageChanged(n)">{{ n }}</a>
+		</li>
+		<li>
+			<a href="#" @click.prevent="pageChanged(lastPage)" aria-label="Next">
+				<span aria-hidden="true">&raquo;</span>
+			</a>
+		</li>
+	</ul>
+</template>
 
 <script>
-import Vue from 'vue'
-// Make a list of 100 of random dummy data
-var baseData = [{
-	name: 'w2way com',
-	power: Infinity
-}, {
-	name: 'w3free com',
-	power: 9000
-}, {
-	name: 'ng4free com',
-	power: 7000
-}, {
-	name: 'Jet Li',
-	power: 8000
-}];
-
-// looping through data display using vuejs
-var gridData = Array(250).fill(null).map(function() {
-	return Object.assign({}, baseData[Math.floor(Math.random() * 4)]);
-});
-
-// here id or uniq register the grid simple component
-Vue.component('grid', {
-	template: '#grid-template',
-	props: {
-		data: Array,
-		columns: Array
-	}
-});
-
-// simple Create the view-model in vuejs
-var gridViewModel = new Vue({
-	el: '#grid-view-model',
-	data: {
-		searchQuery: '',
-		gridColumns: ['name', 'power'],
-		gridData: gridData,
-		startRow: 0,
-		rowsPerPage: 10
-	},
-	methods: {
-		pageMoves: function(amount) {
-			var startrownew = this.startRow + (amount * this.rowsPerPage);
-			if (startrownew >= 0 && startrownew < gridData.length) {
-				this.startRow = startrownew;
-			}
-		}
-	},
-	filters: {
-		orderByBusinessRules: function(data) {
-			return data.slice().sort(function(a, b) {
-				return a.power - b.power;
-			});
-		}
-	}
-})
-
+import Util from '@/components/helper/Util'
 
 export default {
+	props: {
+		currentPage: {
+			type: Number,
+			required: true
+		},
 
+		totalPages: Number,
+
+		itemsPerPage: Number,
+
+		totalItems: Number,
+
+		visiblePages: {
+			type: Number,
+			default: 5,
+			coerce: (val) => parseInt(val)
+		}
+
+	},
+	data () {
+		return {}
+	},
+	computed: {
+		lastPage () {
+			if (this.totalPages) {
+				return this.totalPages
+			} else {
+				return this.totalItems % this.itemsPerPage === 0
+				? this.totalItems / this.itemsPerPage
+				: Math.floor(this.totalItems / this.itemsPerPage) + 1
+			}
+		},
+		paginationRange () {
+			let start = this.currentPage - this.visiblePages / 2 <= 0
+			? 1 : this.currentPage + this.visiblePages / 2 > this.lastPage
+			? Util.lowerBound(this.lastPage - this.visiblePages + 1, 1)
+			: Math.ceil(this.currentPage - this.visiblePages / 2)
+			let range = []
+			for (let i = 0; i < this.visiblePages && i < this.lastPage; i++) {
+				range.push(start + i)
+			}
+			return range
+		}
+	},
+	methods: {
+		pageChanged (pageNum) {
+			this.$emit('page-changed', pageNum)
+		},
+		activePage (pageNum) {
+			return this.currentPage === pageNum ? 'active' : ''
+		}
+	}
 }
 </script>
 

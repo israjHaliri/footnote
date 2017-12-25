@@ -3,7 +3,7 @@
 		<div class="animated fadeIn">
 			<div class="row">
 				<div class="col-md-12">
-					<Search></Search>
+					<Search @searching="searchData"></Search>
 				</div>
 				<div class="col-md-12">
 					<table style="background-color:white" class="table table-responsive table-bordered table-hover">
@@ -27,6 +27,10 @@
 						</tbody>
 					</table>
 				</div>
+				<div class="col-md-12">
+					<pagination :current-page="page.currentPage" :total-pages="page.totalPages" @page-changed="changePage">
+					</pagination>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -34,22 +38,33 @@
 
 <script>
 import Search from '@/components/helper/Search'
+import Pagination from '@/components/helper/Paginate'
 
 export default {
 	data(){
 		return {
 			listData : [],
 			searchKeyword : "",
+			page: {
+				currentPage: 1,
+				totalPages: 10
+			}
 		}
 	},
 	components: {
 		Search,
+		Pagination,
 	},
 	mounted () {
-		this.getData();
+		this.getData("");
 	},
 	methods:{
-		getData(){
+		searchData (keywords) {
+			this.page.currentPage = 1
+			this.searchKeyword = keywords;
+			this.getData();
+		},
+		getData(keywords){
 			this.$axios.request({
 				url:'/secret/get/content',
 				method:'GET',
@@ -58,16 +73,19 @@ export default {
 					"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
 				},
 				params: {
-					type: 'ARTICLE',
+					'type' : 'ARTICLE',
+					'search[value]' : this.searchKeyword,
+					'start' : this.page.currentPage,
 				},
 			})
 			.then( response => {
 				this.listData = response.data.data.items;
 			})
 		},
-		search: function(e) {
-            console.log(e);
-        }
+		changePage (pageNum) {
+			this.page.currentPage = pageNum
+			this.getData();
+		}
 	}
 }
 </script>

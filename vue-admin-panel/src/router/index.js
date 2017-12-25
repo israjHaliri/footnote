@@ -8,7 +8,9 @@ import Dashboard from '@/components/Dashboard'
 import Profile from '@/components/Profile'
 import ItemNew from '@/components/item/New'
 import ItemList from '@/components/item/List'
+import ItemListNew from '@/components/item/ListNew'
 import NotFound from '@/components/404'
+import Vuex from '@/components/vuex/AppCounter'
 
 Vue.use(Router)
 export default new Router({
@@ -44,6 +46,14 @@ export default new Router({
 			path: '/item/list',
 			name: 'ItemList',
 			component: ItemList
+		},{
+			path: '/item/list/new',
+			name: 'ItemListNew',
+			component: ItemListNew
+		},{
+			path: '/vuex',
+			name: 'Vuex',
+			component: Vuex
 		}
 		]
 	}
