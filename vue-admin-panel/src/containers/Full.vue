@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import Header from '@/components/common/Header.vue'
-import Footer from '@/components/common/Footer.vue'
-import Menu from '@/components/common/Menu.vue'
+import Header from '@/components/layout/Header.vue'
+import Footer from '@/components/layout/Footer.vue'
+import Menu from '@/components/layout/Menu.vue'
 export default {
 	name: 'full',
 	data: function(){

@@ -4,13 +4,12 @@ import Router from 'vue-router'
 import Full from '@/containers/Full'
 
 import Login from '@/components/Login'
-import Dashboard from '@/components/Dashboard'
-import Profile from '@/components/Profile'
+import GuesbookDashboard from '@/components/guestbook/Dashboard'
+import ProfileUpdate from '@/components/profile/Update'
+import TestimonialList from '@/components/testimonial/List'
 import ItemNew from '@/components/item/New'
 import ItemList from '@/components/item/List'
-import ItemListNew from '@/components/item/ListNew'
 import NotFound from '@/components/404'
-import Vuex from '@/components/vuex/AppCounter'
 
 Vue.use(Router)
 export default new Router({
@@ -22,22 +21,26 @@ export default new Router({
 		name: 'Login',
 		component: Login
 	},
-	{ path: '/404', component: NotFound },  
-	{ path: '*', redirect: '/404' }, 
+	{ path: '/404', component: NotFound },
+	{ path: '*', redirect: '/404' },
 	{
 		path: '/',
 		name: 'Backend',
 		component: Full,
-		children : 
+		children :
 		[
 		{
-			path: '/dashboard',
-			name: 'Dashboard',
-			component: Dashboard
+			path: '/guestbook/dashboard',
+			name: 'GuestbookDashboard',
+			component: GuesbookDashboard
 		},{
-			path: '/profile',
-			name: 'Profile',
-			component: Profile
+			path: '/profile/update',
+			name: 'ProfileUpdate',
+			component: ProfileUpdate
+		},{
+			path: '/testimonial/list',
+			name: 'TestimonialList',
+			component: TestimonialList
 		},{
 			path: '/item/new',
 			name: 'ItemNew',
@@ -46,14 +49,6 @@ export default new Router({
 			path: '/item/list',
 			name: 'ItemList',
 			component: ItemList
-		},{
-			path: '/item/list/new',
-			name: 'ItemListNew',
-			component: ItemListNew
-		},{
-			path: '/vuex',
-			name: 'Vuex',
-			component: Vuex
 		}
 		]
 	}

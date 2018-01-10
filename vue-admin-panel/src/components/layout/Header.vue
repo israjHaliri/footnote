@@ -51,7 +51,7 @@ export default {
                 this.$router.push("/")
             })
             .catch( error => {
-                alert(error.response.data.message);
+                alert(error.response.contentData.message);
                 this.$router.push("/")
             });
         }

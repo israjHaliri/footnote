@@ -10,45 +10,52 @@
 						<thead>
 							<tr>
 								<th>TITLE</th>
+								<th>SUBJECT</th>
 								<th>DESCRIPTION</th>
-								<th>TYPE</th>
-								<th>INFORMATON</th>
+								<th>DATE</th>
 								<th>ACTION</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(val, index) in listData">
-								<td>{{ val.title }}</td>
+							<tr v-for="(val, index) in contentData.testimonial">
+								<td>{{ val.rn }}</td>
+								<td>{{ val.subject }}</td>
 								<td>{{ val.description }}</td>
-								<td>{{ val.type }}</td>
-								<td>{{ val.information }}</td>
-								<td>{{ val.information }}</td>
+								<td>{{ val.createDate }}</td>
+								<td>{{ val.createDate }}</td>
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="col-md-12">
-					<pagination :current-page="page.currentPage" :total-pages="page.totalPages" @page-changed="changePage">
-					</pagination>
+					<Pagination  :pagination="contentData"
+									 @paginate="getData()"
+									 :offset=offset>
+					</Pagination>
 				</div>
 			</div>
 		</div>
 	</div>
-</template>    
+</template>
 
 <script>
 import Search from '@/components/helper/pagination/Search'
 import Pagination from '@/components/helper/pagination/Paginate'
 
 export default {
-	data(){
+	contentData(){
 		return {
-			listData : [],
 			searchKeyword : "",
-			page: {
-				currentPage: 1,
-				totalPages: 10
-			}
+			contentData: {
+				total: 0,
+				per_page: 0,
+				last_page: 0,
+				from: 1,
+				to: 5,
+				current_page: 1,
+				testimonial : ""
+			},
+			offset: 4,
 		}
 	},
 	components: {
@@ -60,30 +67,32 @@ export default {
 	},
 	methods:{
 		searchData (keywords) {
-			this.page.currentPage = 1
+			this.contentData.current_page = 1;
 			this.searchKeyword = keywords;
 			this.getData();
 		},
 		getData(keywords){
 			this.$axios.request({
-				url:'/secret/get/content',
+				url:'/secret/get/testimonial',
 				method:'GET',
 				headers : {
 					"Content-Type" : "application/x-www-form-urlencoded",
 					"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
 				},
 				params: {
-					'type' : 'ARTICLE',
-					'search[value]' : this.searchKeyword,
-					'start' : this.page.currentPage,
+					'search' : this.searchKeyword,
+					'start' : this.contentData.current_page,
 				},
 			})
 			.then( response => {
-				this.listData = response.contentData.contentData.items;
+				this.contentData.testimonial = response.contentData.content.testimonial;
+				this.contentData.total = response.contentData.content.totalData;
+				this.contentData.per_page = response.contentData.content.perPage;
+				this.contentData.last_page = Math.ceil(this.contentData.total / this.contentData.per_page);
 			})
 		},
 		changePage (pageNum) {
-			this.page.currentPage = pageNum
+			this.contentData.current_page = pageNum;
 			this.getData();
 		}
 	}
@@ -91,5 +100,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

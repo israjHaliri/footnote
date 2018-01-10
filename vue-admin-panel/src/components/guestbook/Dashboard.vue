@@ -9,7 +9,7 @@
 </template>    
 
 <script>
-import LineChart from '@/components/chart/LineChart'
+import LineChart from '@/components/helper/chart/LineChart'
 
 export default {
 	data () {
@@ -35,9 +35,9 @@ export default {
 				}
 			})
 			.then( response => {
-				for (var i = 0; i < response.data.data.length; i++) {
-					this.listLineData.push(response.data.data[i].totalCount)
-					this.listLineLabel.push(response.data.data[i].createDate)
+				for (var i = 0; i < response.data.contentData.length; i++) {
+					this.listLineData.push(response.data.contentData[i].totalCount)
+					this.listLineLabel.push(response.data.contentData[i].createDate)
 				}
 			})
 		}

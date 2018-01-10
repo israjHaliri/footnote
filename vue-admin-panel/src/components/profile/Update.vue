@@ -57,13 +57,13 @@ export default {
 			})
 			.then( response => {
 				console.log(response);
-				this.address = response.data.data.address;
-				this.email = response.data.data.email;
-				this.lat = response.data.data.lat;
-				this.lon = response.data.data.lon;
-				this.phone = response.data.data.phone;
-				this.createDate = response.data.data.createDate;
-				this.updateDate = response.data.data.updateDate;
+				this.address = response.data.contentData.address;
+				this.email = response.data.contentData.email;
+				this.lat = response.data.contentData.lat;
+				this.lon = response.data.contentData.lon;
+				this.phone = response.data.contentData.phone;
+				this.createDate = response.data.contentData.createDate;
+				this.updateDate = response.data.contentData.updateDate;
 			})
 		},updateData(){
 			this.$axios({
@@ -73,7 +73,7 @@ export default {
 					"Content-Type" : "application/json",
 					"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
 				},
-				data : 
+				data :
 				{
 					address : this.address,
 					email : this.email,
@@ -85,8 +85,8 @@ export default {
 			})
 			.then( response => {
 				console.log(response);
-				alert(response.data.message);
-				if(response.data.status ==  200){
+				alert(response.contentData.message);
+				if(response.contentData.status ==  200){
 					this.getData();
 				}
 				

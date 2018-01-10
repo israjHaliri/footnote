@@ -53,7 +53,7 @@ export default {
 					"Content-Type" : "application/json",
 					"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
 				},
-				data : 
+				contentData :
 				{
 					idContent : this.idContent,
 					title : this.title,
@@ -70,8 +70,8 @@ export default {
 			})
 			.then( response => {
 				console.log(response);
-				alert(response.data.message);
-				if(response.data.status ==  200){
+				alert(response.contentData.message);
+				if(response.contentData.status ==  200){
 					this.idContent = "";
 					this.title = "";
 					this.description = "";

@@ -40,7 +40,7 @@ export default {
 	methods:{
 		auth(){
 			this.$axios.post(
-				'/login', 
+				'/login',
 				this.$querystring.stringify({
 					'username': this.username,
 					'password': this.$base64.Base64.encode(this.password)
@@ -52,9 +52,10 @@ export default {
 				})
 			.then( response => {
 				localStorage.setItem('VueAdminPanelToken', response.data.token)
-				this.$router.push("/dashboard")	
+				this.$router.push("/guestbook/dashboard")
 			})
 			.catch( error => {
+				console.log(error)
 				this.message = error.response.data.message;
 			});
 		}
@@ -129,7 +130,7 @@ user-select: none; */
 	/* border: 1px solid #3079ed; */
 	border: 0px;
 	color: #fff;
-	text-shadow: 0 1px rgba(0,0,0,0.1); 
+	text-shadow: 0 1px rgba(0,0,0,0.1);
 	background-color: #4d90fe;
 	padding: 17px 0px;
 	font-family: roboto;
@@ -153,7 +154,7 @@ user-select: none; */
 	display: inline-block;
 	opacity: 0.6;
 	transition: opacity ease 0.5s;
-} 
+}
 
 .login-help{
 	font-size: 12px;
