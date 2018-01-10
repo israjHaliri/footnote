@@ -6,5 +6,4 @@ package com.haliri.israj.appcore.strategy.content;
 public interface SaveOrUpdateDataStrategy<T> {
 
     void process(T parameters);
-
 }

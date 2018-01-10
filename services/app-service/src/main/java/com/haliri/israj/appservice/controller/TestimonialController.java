@@ -26,62 +26,55 @@ public class TestimonialController {
     @RequestMapping(value = "/public/get/testimonial", method = RequestMethod.GET)
     public Object getTestimonial() {
         List<Testimonial> result = null;
-        try{
+        try {
             result = testimonialStrategy.getListData();
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
-        } catch (Exception e){
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+        } catch (Exception e) {
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 
     @RequestMapping(value = "/secret/get_by_id/testimonial/{idTestimonial}", method = RequestMethod.GET)
     public Object getTestimonialById(@PathVariable(value = "idTestimonial") Integer idTestimonial) {
         List<Testimonial> result = null;
-        try{
+        try {
             result = testimonialStrategy.getListDataById(idTestimonial);
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
-        } catch (Exception e){
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+        } catch (Exception e) {
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 
     @RequestMapping(value = "/secret/get/testimonial", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
-            @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "columns[0][data]", defaultValue = "") String firstColumn,
-            @RequestParam(value = "order[0][column]", defaultValue = "0") int sortIndex,
-            @RequestParam(value = "order[0][dir]", defaultValue = "ASC") String sortDir,
-            @RequestParam(value = "search[value]", defaultValue = "") String search
+            @RequestParam(value = "search", defaultValue = "") String search
     ) {
-        AppUtils.getLogger(this).debug(
-                "datatable info = draw : {} , start : {}, length : {}, firstColumn : {}, sortIndex : {}, sortDir : {}, search : {},",
-                draw, start, length, firstColumn, sortIndex, sortDir, search
-        );
+        AppUtils.getLogger(this).debug("datatable info = start : {}, search : {},", start, search);
+
+        int perPage = 10;
+
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("start",(start + 1));
-        parameters.put("length",length + start);
-        parameters.put("search",search);
+        parameters.put("start", ((start - 1) * 10));
+        parameters.put("search", search);
+        parameters.put("perPage", perPage);
+
         List<Testimonial> testimonialList = null;
 
-        Map<String,Object> result = new HashMap();
-        result.put("draw", draw);
-        result.put("search[value]", search);
-        try{
+        Map<String, Object> result = new HashMap();
+        result.put("search", search);
+        result.put("perPage", perPage);
+        try {
             testimonialList = testimonialStrategy.getListDataPerPage(parameters);
-            result.put("data", testimonialList);
-            if(testimonialList.size() > 0){
-                result.put("recordsTotal", testimonialList.get(0).getTotal_count());
-                result.put("recordsFiltered", testimonialList.get(0).getTotal_count());
-            }else{
-                result.put("recordsTotal", 0);
-                result.put("recordsFiltered", 0);
+            result.put("testimonial", testimonialList);
+            if (testimonialList.size() > 0) {
+                result.put("totalData", testimonialList.get(0).getTotalCount());
+            } else {
+                result.put("totalData", 0);
             }
-
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,result);
-        } catch (Exception e){
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),result);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
+        } catch (Exception e) {
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), result);
         }
     }
 
@@ -97,10 +90,10 @@ public class TestimonialController {
         testimonial.setAge(age);
         try {
             testimonialStrategy.saveData(testimonial);
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 
@@ -118,10 +111,10 @@ public class TestimonialController {
         testimonial.setIdTestimonial(idTestimonial);
         try {
             testimonialStrategy.updateData(testimonial);
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 
@@ -131,10 +124,10 @@ public class TestimonialController {
     ) {
         try {
             testimonialStrategy.deleteData(idTestimonial);
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
         } catch (Exception e) {
             e.printStackTrace();
-            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
+            return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
         }
     }
 }

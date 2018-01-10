@@ -6,6 +6,7 @@ import java.sql.Date;
  * Created by israjhaliri on 11/23/17.
  */
 public class Testimonial {
+
     private Integer idTestimonial;
     private String subject;
     private String description;
@@ -13,7 +14,7 @@ public class Testimonial {
     private Date createDate;
     private Date updateDate;
     private Integer rn;
-    private Integer total_count;
+    private Integer totalCount;
 
     public Integer getIdTestimonial() {
         return idTestimonial;
@@ -71,12 +72,12 @@ public class Testimonial {
         this.rn = rn;
     }
 
-    public Integer getTotal_count() {
-        return total_count;
+    public Integer getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotal_count(Integer total_count) {
-        this.total_count = total_count;
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     @Override
@@ -89,7 +90,7 @@ public class Testimonial {
                 ", createDate=" + createDate +
                 ", updateDate=" + updateDate +
                 ", rn=" + rn +
-                ", total_count=" + total_count +
+                ", total_count=" + totalCount +
                 '}';
     }
 }

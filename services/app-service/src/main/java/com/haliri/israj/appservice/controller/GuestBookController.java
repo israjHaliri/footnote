@@ -17,6 +17,7 @@ import java.util.Map;
  */
 @RestController
 public class GuestBookController {
+
     @Autowired
     GuestBookStrategy guestBookStrategy;
 
@@ -26,6 +27,7 @@ public class GuestBookController {
     @RequestMapping(value = "/public/get/guest_book", method = RequestMethod.GET)
     public Object getGuestBook() {
         List<GuestBook> guestBookList = null;
+
         try{
             guestBookList = guestBookStrategy.getListData();
             return responseHandler.setResult(ResponseStatus.SUCCESS, null, guestBookList);
@@ -37,6 +39,7 @@ public class GuestBookController {
     @RequestMapping(value = "/secret/get/guest_book_one_month", method = RequestMethod.GET)
     public Object getGuestBookOneMonth() {
         List<GuestBook> guestBookList = null;
+
         try{
             guestBookList = guestBookStrategy.getOneMonthListData();
             return responseHandler.setResult(ResponseStatus.SUCCESS, null, guestBookList);
@@ -47,9 +50,8 @@ public class GuestBookController {
 
     @RequestMapping(value = "/secret/get_by_id/guest_book/{idGuestBook}", method = RequestMethod.GET)
     public Object getGuestBookById(@PathVariable(value = "idGuestBook") Integer idGuestBook) {
-        List<GuestBook> guestBookList = null;
         try{
-            guestBookList = guestBookStrategy.getListDataById(idGuestBook);
+            List<GuestBook> guestBookList = guestBookStrategy.getListDataById(idGuestBook);
             return responseHandler.setResult(ResponseStatus.SUCCESS, null, guestBookList);
         } catch (Exception e){
             return responseHandler.setResult(ResponseStatus.FAILED,e.getMessage(),null);
@@ -69,10 +71,12 @@ public class GuestBookController {
                 "datatable info = draw : {} , start : {}, length : {}, firstColumn : {}, sortIndex : {}, sortDir : {}, search : {},",
                 draw, start, length, firstColumn, sortIndex, sortDir, search
         );
+
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("start",(start + 1));
         parameters.put("length",length + start);
         parameters.put("search",search);
+
         List<GuestBook> guestBookList = null;
 
         Map<String,Object> result = new HashMap();
@@ -101,6 +105,7 @@ public class GuestBookController {
     ) {
         GuestBook guestBook = new GuestBook();
         guestBook.setUsername(username);
+
         try {
             guestBookStrategy.saveData(guestBook);
             return responseHandler.setResult(ResponseStatus.SUCCESS, null, null);

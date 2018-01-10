@@ -14,7 +14,6 @@ import java.util.HashSet;
 public class AppUtils {
 
     private static class AppHolder {
-
         private static final AppUtils INSTANCE = new AppUtils();
     }
 
@@ -52,11 +51,11 @@ public class AppUtils {
     }
 
     public static String formatDecimal(float number) {
-        float epsilon = 0.004f; // 4 tenths of a cent
+        float epsilon = 0.004f;
         if (Math.abs(Math.round(number) - number) < epsilon) {
-            return String.format("%10.0f", number); // sdb
+            return String.format("%10.0f", number);
         } else {
-            return String.format("%10.2f", number); // dj_segfault
+            return String.format("%10.2f", number);
         }
     }
 

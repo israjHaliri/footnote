@@ -25,12 +25,9 @@ public class ItemController {
     ResponseHandler responseHandler;
 
     @RequestMapping(value = "/public/get/content", method = RequestMethod.GET)
-    public Object getTestimonial(
-            @RequestParam(value = "type", defaultValue = "") String type
-    ) {
-        List<Item> result = null;
+    public Object getTestimonial(@RequestParam(value = "type", defaultValue = "") String type) {
         try{
-            result = itemStrategy.getListData(type);
+            List<Item> result = itemStrategy.getListData(type);
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e){
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
@@ -45,9 +42,9 @@ public class ItemController {
         Map parameter = new HashMap();
         parameter.put("type",type);
         parameter.put("idContent",idContent);
-        List<Item> result = null;
+
         try{
-            result = itemStrategy.getListDataById(parameter);
+            List<Item>  result = itemStrategy.getListDataById(parameter);
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);
         } catch (Exception e){
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED,e.getMessage(),null);
@@ -69,11 +66,13 @@ public class ItemController {
                 "datatable info = draw : {} , start : {}, length : {}, firstColumn : {}, sortIndex : {}, sortDir : {}, search : {},",
                 draw, start, length, firstColumn, sortIndex, sortDir, search
         );
+
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("start",(start + 1));
         parameters.put("length",length + start);
         parameters.put("search",search);
         parameters.put("type",type);
+
         List<Item> itemList = null;
 
         Map<String,Object> result = new HashMap();

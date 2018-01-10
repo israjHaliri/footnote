@@ -6,5 +6,4 @@ package com.haliri.israj.appcore.strategy.content;
 public interface DeleteDataStrategy<T> {
 
     void process(T id);
-
 }

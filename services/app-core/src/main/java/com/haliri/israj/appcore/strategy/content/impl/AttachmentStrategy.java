@@ -5,6 +5,7 @@ import com.haliri.israj.appcore.strategy.content.DeleteDataStrategy;
 import com.haliri.israj.appcore.strategy.content.GetDataStrategy;
 import com.haliri.israj.appcore.strategy.content.SaveOrUpdateDataStrategy;
 import com.haliri.israj.appcore.utils.AppUtils;
+import com.sun.org.apache.bcel.internal.generic.RET;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,7 +34,6 @@ public class AttachmentStrategy {
     public List<Attachment> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
-            List<Attachment> attachmentList = new ArrayList<>();
 
             String sql = "SELECT t.*\n" +
                     "   FROM\n" +
@@ -50,26 +50,23 @@ public class AttachmentStrategy {
                     "t\n" +
                     "WHERE t.rn BETWEEN "+param.get("start")+"::INTEGER AND "+param.get("length")+"::INTEGER";
 
-
-            attachmentList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Attachment.class));
-            AppUtils.getLogger(this).debug("GET ATTACHMENT LOG : {}", attachmentList.toString());
-            return attachmentList;
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Attachment.class));
         };
+
         return (List<Attachment>) getDataStrategy.process(allparameters);
     }
 
     public String getFileNameById(Map param) {
         getDataStrategy = (parameters) -> {
             Map<String,Object> objParam = (Map<String, Object>) parameters;
-            List<Attachment> attachmentList = new ArrayList<>();
 
             String sql = "SELECT file \n" +
                     "FROM content.attachment WHERE id_attachment = ? AND content_id = ? AND type = ?;";
 
             Attachment attachment = (Attachment) jdbcTemplate.queryForObject(sql, new Object[]{objParam.get("idAttachment"),objParam.get("idContent"),objParam.get("type")}, new BeanPropertyRowMapper(Attachment.class));
-            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", attachmentList.toString());
             return attachment.getFile().toString();
         };
+
         return (String) getDataStrategy.process(param);
     }
 
@@ -81,6 +78,7 @@ public class AttachmentStrategy {
                     "VALUES ( ?, ?, ?)";
             jdbcTemplate.update(sql, parameters.getItemId(), parameters.getFile(),parameters.getContentType().name());
         };
+
         saveOrUpdateDataStrategy.process(attachment);
     }
 
@@ -92,6 +90,7 @@ public class AttachmentStrategy {
                     "WHERE id_attachment=? AND content_id=? AND type=?";
             jdbcTemplate.update(sql, parameters.getFile(),parameters.getIdAttachment(),parameters.getItemId(),parameters.getContentType().name());
         };
+
         saveOrUpdateDataStrategy.process(attachment);
     }
 
@@ -103,6 +102,7 @@ public class AttachmentStrategy {
                     "WHERE id_attachment=? AND type =? AND content_id =?";
             jdbcTemplate.update(sql, parameters.get("idAttachment"),objParam.get("type"),objParam.get("idContent"));
         };
+
         deleteDataStrategy.process(param);
     }
 

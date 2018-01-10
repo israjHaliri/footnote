@@ -6,6 +6,7 @@ import java.sql.Date;
  * Created by israjhaliri on 11/23/17.
  */
 public class GuestBook {
+
     private String username;
     private String idGuestBook;
     private Date createDate;

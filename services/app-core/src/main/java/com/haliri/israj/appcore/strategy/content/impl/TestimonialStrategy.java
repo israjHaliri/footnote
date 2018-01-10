@@ -5,7 +5,6 @@ import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
 import com.haliri.israj.appcore.strategy.content.DeleteDataStrategy;
 import com.haliri.israj.appcore.strategy.content.GetDataStrategy;
 import com.haliri.israj.appcore.strategy.content.SaveOrUpdateDataStrategy;
-import com.haliri.israj.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,34 +35,25 @@ public class TestimonialStrategy {
 
     public List<Testimonial> getListData() {
         getDataStrategy = (parameters) -> {
-            List<Testimonial> testimonialList = new ArrayList<>();
-
             String sql = "SELECT * FROM content.testimonial ORDER BY create_date DESC LIMIT 5";
-
-            testimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Testimonial.class));
-            AppUtils.getLogger(this).debug("TESTIMONIAL LOG GET DATA: {}", testimonialList.toString());
-            return testimonialList;
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Testimonial.class));
         };
+
         return (List<Testimonial>) getDataStrategy.process(null);
     }
 
     public List<Testimonial> getListDataById(Integer id) {
         getDataStrategy = (parameters) -> {
-            List<Testimonial> testimonialList = new ArrayList<>();
-
             String sql = "SELECT * FROM content.testimonial WHERE id_testimonial = ?";
-
-            testimonialList = jdbcTemplate.query(sql,new Object[]{parameters}, new BeanPropertyRowMapper(Testimonial.class));
-            AppUtils.getLogger(this).debug("TESTIMONIAL LOG GET DATA: {}", testimonialList.toString());
-            return testimonialList;
+            return jdbcTemplate.query(sql, new Object[]{parameters}, new BeanPropertyRowMapper(Testimonial.class));
         };
+
         return (List<Testimonial>) getDataStrategy.process(id);
     }
 
     public List<Testimonial> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
-            List<Testimonial> testimonialList = new ArrayList<>();
 
             String sql = "SELECT t.*\n" +
                     "FROM\n" +
@@ -78,10 +68,10 @@ public class TestimonialStrategy {
                     "                    ) t\n" +
                     "                 ) t\n" +
                     "          ) t\n" +
-                    "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("length") + "::INTEGER ";
-            AppUtils.getLogger(this).debug("GET TESTIMONIAL LOG : {}", testimonialList.toString());
-            return testimonialList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Testimonial.class));
+                    "OFFSET " + param.get("start") + "::INTEGER LIMIT " + param.get("perPage") + "::INTEGER";
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Testimonial.class));
         };
+
         return (List<Testimonial>) getDataStrategy.process(allparameters);
     }
 
@@ -92,8 +82,10 @@ public class TestimonialStrategy {
             String sql = "INSERT INTO content.testimonial\n" +
                     "(subject, description, age, create_date, update_date)\n" +
                     "VALUES (?, ?, ?, current_date, current_date)";
+
             jdbcTemplate.update(sql, parameters.getSubject(), parameters.getDescription(), parameters.getAge());
         };
+
         saveOrUpdateDataStrategy.process(contentGuestBook);
     }
 
@@ -105,6 +97,7 @@ public class TestimonialStrategy {
                     "WHERE id_testimonial = ?";
             jdbcTemplate.update(sql, parameters.getSubject(), parameters.getDescription(), parameters.getAge(), parameters.getIdTestimonial());
         };
+
         saveOrUpdateDataStrategy.process(testimonial);
     }
 
@@ -115,6 +108,7 @@ public class TestimonialStrategy {
                     "WHERE id_testimonial = ?";
             jdbcTemplate.update(sql, parameters);
         };
+
         deleteDataStrategy.process(id);
     }
 }

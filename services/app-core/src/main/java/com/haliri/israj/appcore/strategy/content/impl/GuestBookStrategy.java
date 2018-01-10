@@ -4,7 +4,6 @@ import com.haliri.israj.appcore.domain.content.GuestBook;
 import com.haliri.israj.appcore.strategy.content.DeleteDataStrategy;
 import com.haliri.israj.appcore.strategy.content.GetDataStrategy;
 import com.haliri.israj.appcore.strategy.content.SaveOrUpdateDataStrategy;
-import com.haliri.israj.appcore.utils.AppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,46 +31,37 @@ public class GuestBookStrategy {
 
     public List<GuestBook> getOneMonthListData() {
         getDataStrategy = (parameter) -> {
-            List<GuestBook> guestBookList = new ArrayList<>();
             String sql = "SELECT guest_book.create_date, COUNT (guest_book.create_date) total_count FROM content.guest_book WHERE guest_book.create_date BETWEEN\n" +
                     "NOW()::DATE-EXTRACT(DOW FROM NOW())::INTEGER-30\n" +
                     "AND NOW()::DATE-EXTRACT(DOW from NOW())::INTEGER GROUP BY guest_book.create_date";
 
-            guestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
-            AppUtils.getLogger(this).debug("GET ONE MONTH GUESTBOOK LOG : {}", guestBookList.toString());
-            return guestBookList;
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
         };
+
         return (List<GuestBook>) getDataStrategy.process(null);
     }
 
     public List<GuestBook> getListData() {
         getDataStrategy = (parameter) -> {
-            List<GuestBook> guestBookList = new ArrayList<>();
             String sql = "SELECT * FROM content.guest_book ORDER BY id_guest_book ASC LIMIT 5 ";
-
-            guestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
-            AppUtils.getLogger(this).debug("GET GUESTBOOK LOG : {}", guestBookList.toString());
-            return guestBookList;
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
         };
+
         return (List<GuestBook>) getDataStrategy.process(null);
     }
 
     public List<GuestBook> getListDataById(Integer id) {
         getDataStrategy = (parameter) -> {
-            List<GuestBook> guestBookList = new ArrayList<>();
             String sql = "SELECT * FROM content.guest_book WHERE id_guest_book = ? ";
-
-            guestBookList = jdbcTemplate.query(sql,new Object[]{parameter}, new BeanPropertyRowMapper(GuestBook.class));
-            AppUtils.getLogger(this).debug("GET BY ID GUESTBOOK LOG : {}", guestBookList.toString());
-            return guestBookList;
+            return jdbcTemplate.query(sql,new Object[]{parameter}, new BeanPropertyRowMapper(GuestBook.class));
         };
+
         return (List<GuestBook>) getDataStrategy.process(id);
     }
 
     public List<GuestBook> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
-            List<GuestBook> guestBookList = new ArrayList<>();
 
             String sql = "SELECT t.*\n" +
                     "FROM\n" +
@@ -87,9 +77,9 @@ public class GuestBookStrategy {
                     "                 ) t\n" +
                     "          ) t\n" +
                     "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("length") + "::INTEGER";
-            AppUtils.getLogger(this).debug("GET PERPAGE GUESTBOOK LOG : {}", guestBookList.toString());
-            return guestBookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(GuestBook.class));
         };
+
         return (List<GuestBook>) getDataStrategy.process(allparameters);
     }
 
@@ -99,6 +89,7 @@ public class GuestBookStrategy {
             String sql = "INSERT INTO content.guest_book (username, create_date) VALUES (?, CURRENT_DATE )";
             jdbcTemplate.update(sql, parameters.getUsername());
         };
+
         saveOrUpdateDataStrategy.process(guestBook);
     }
 
@@ -109,6 +100,7 @@ public class GuestBookStrategy {
                     "WHERE id_guest_book = ?";
             jdbcTemplate.update(sql, parameters);
         };
+
         deleteDataStrategy.process(id);
     }
 }

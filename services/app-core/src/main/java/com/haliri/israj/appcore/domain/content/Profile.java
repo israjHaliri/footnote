@@ -7,6 +7,7 @@ import java.sql.Timestamp;
  * Created by israjhaliri on 11/21/17.
  */
 public class Profile {
+
     private String address;
     private String phone;
     private String email;

@@ -11,6 +11,7 @@ import java.io.IOException;
  * Created by israjhaliri on 8/31/17.
  */
 public class RestFilter implements Filter {
+    
     @Override
     public void init(FilterConfig fc) throws ServletException { }
 
@@ -19,6 +20,7 @@ public class RestFilter implements Filter {
         CustomRequestHandler requestHandler = new CustomRequestHandler((HttpServletRequest) sr);
         fc.doFilter(requestHandler, sr1);
     }
+
     @Override
     public void destroy() {
     }

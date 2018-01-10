@@ -29,6 +29,7 @@ public class UserDAOImpl implements UserDAO {
     public User getDataById(Object id) {
         String sql = "SELECT * FROM common.users WHERE id= ?";
         String sqlRole = "SELECT ur.user_id,r.role,r.id FROM common.user_roles ur JOIN common.role r on ur.role_id = r.id WHERE user_id = ?";
+
         try {
             User user = (User) jdbcTemplate.queryForObject(sql, new Object[]{id.toString()}, new BeanPropertyRowMapper(User.class));
             List<Role> roles = jdbcTemplate.query(sqlRole, new Object[]{id.toString()}, new BeanPropertyRowMapper(Role.class));

@@ -17,6 +17,7 @@ public class WebUtil {
     public static String getUserLogin(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
+
         return  currentPrincipalName;
     }
 }

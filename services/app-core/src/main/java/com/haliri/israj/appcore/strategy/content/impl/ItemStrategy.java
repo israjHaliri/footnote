@@ -36,37 +36,31 @@ public class ItemStrategy {
 
     public List<Item> getListData(String type) {
         getDataStrategy = (parameters) -> {
-            List<Item> itemList = new ArrayList<>();
-
             String sql = "SELECT id_item, title, description, create_date, update_date, create_by, update_by, type, information\n" +
                     "FROM content.content WHERE type = ? limit 5";
 
-            itemList = jdbcTemplate.query(sql, new Object[]{parameters}, new BeanPropertyRowMapper(Item.class));
-            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", itemList.toString());
-            return itemList;
+            return jdbcTemplate.query(sql, new Object[]{parameters}, new BeanPropertyRowMapper(Item.class));
         };
+
         return (List<Item>) getDataStrategy.process(type);
     }
 
     public List<Item> getListDataById(Map param) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> objParam = (Map<String, Object>) parameters;
-            List<Item> itemList = new ArrayList<>();
 
             String sql = "SELECT id_item, title, description, create_date, update_date, create_by, update_by, type, information\n" +
                     "FROM content.content WHERE type = ? and id_item = ? limit 5";
 
-            itemList = jdbcTemplate.query(sql, new Object[]{objParam.get("type"), objParam.get("idContent")}, new BeanPropertyRowMapper(Item.class));
-            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", itemList.toString());
-            return itemList;
+            return jdbcTemplate.query(sql, new Object[]{objParam.get("type"), objParam.get("idContent")}, new BeanPropertyRowMapper(Item.class));
         };
+
         return (List<Item>) getDataStrategy.process(param);
     }
 
     public List<Item> getListDataPerPage(Object allparameters) {
         getDataStrategy = (parameters) -> {
             Map<String, Object> param = (Map<String, Object>) parameters;
-            List<Item> itemList = new ArrayList<>();
 
             String sql = "SELECT t.*" +
                     "FROM\n" +
@@ -82,12 +76,9 @@ public class ItemStrategy {
                     "     t)\n" +
                     "t\n" +
                     "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("length") + "::INTEGER";
-
-
-            itemList = jdbcTemplate.query(sql, new BeanPropertyRowMapper(Item.class));
-            AppUtils.getLogger(this).debug("CONTENT LOG GET DATA: {}", itemList.toString());
-            return itemList;
+            return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Item.class));
         };
+
         return (List<Item>) getDataStrategy.process(allparameters);
     }
 
@@ -101,6 +92,7 @@ public class ItemStrategy {
             jdbcTemplate.update(sql, parameters.getTitle(), parameters.getDescription(), parameters.getCreateBy(),
                     parameters.getContentType().name(), parameters.getInformation());
         };
+
         saveOrUpdateDataStrategy.process(Item);
     }
 
@@ -114,6 +106,7 @@ public class ItemStrategy {
                     parameters.getUpdateDate(), parameters.getUpdateBy(),
                     parameters.getContentType().name(), parameters.getInformation(), Item.getIdContent());
         };
+
         saveOrUpdateDataStrategy.process(Item);
     }
 
@@ -124,6 +117,7 @@ public class ItemStrategy {
                     "WHERE id_item = ?";
             jdbcTemplate.update(sql, parameters);
         };
+
         deleteDataStrategy.process(id);
     }
 }

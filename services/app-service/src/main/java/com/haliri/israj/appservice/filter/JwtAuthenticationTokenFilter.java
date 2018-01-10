@@ -45,8 +45,9 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
             AppUtils.getLogger(this).debug("REQ STARTS WITH : {}",httpRequest.getRequestURI().toString());
             String authToken = httpRequest.getHeader(this.tokenHeader);
 
-            if (StringUtils.hasText(authToken) && authToken.startsWith("Bearer "))
+            if (StringUtils.hasText(authToken) && authToken.startsWith("Bearer ")){
                 authToken = authToken.substring(7);
+            }
 
             String username = jwtTokenUtil.getUsernameFromToken(authToken);
             try {
@@ -64,9 +65,8 @@ public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthentication
             }catch (Exception e){
                 AppUtils.getLogger(this).error("ERROR USER DETAIL FROM TOKEN : {}", e.getMessage());
             }
-
-
         }
+
         chain.doFilter(request, response);
     }
 }

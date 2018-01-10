@@ -16,18 +16,19 @@ public class ResponseHandlerImpl implements ResponseHandler {
     @Override
     public ResultMessage setResult(ResponseStatus responseStatus, String erroMessage, Object data) {
         ResultMessage resultMessage = new ResultMessage();
-        if(responseStatus.equals(ResponseStatus.SUCCESS)){
+
+        if (responseStatus.equals(ResponseStatus.SUCCESS)) {
             resultMessage.setMessage(ResponseMessage.SUCCESS_PROCESS);
             resultMessage.setStatus(HttpStatus.SC_OK);
             resultMessage.setError(erroMessage);
-            resultMessage.setData(data);
-        }else
-        {
+            resultMessage.setContentData(data);
+        } else {
             resultMessage.setMessage(ResponseMessage.FAILED_PROCESS);
-            resultMessage.setStatus(HttpStatus.SC_METHOD_FAILURE);
+            resultMessage.setStatus(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             resultMessage.setError(erroMessage);
-            resultMessage.setData(data);
+            resultMessage.setContentData(data);
         }
+
         return resultMessage;
     }
 }

@@ -30,24 +30,27 @@ public class CustomRequestHandler extends HttpServletRequestWrapper {
 
     public byte[] getRequestBody() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
+
         String body = IOUtils.toString(super.getInputStream(), "UTF-8");
         Object originalPayload = parseToken(body);
         String sOrigPayload = mapper.writeValueAsString(originalPayload);
+
         AppUtils.getLogger(this).debug("ORIGINAL PAYLOAD FROM TOKEN [{}]", sOrigPayload);
         return sOrigPayload.getBytes("UTF-8");
     }
 
     public Object parseToken(String token) {
         AppUtils.getLogger(this).debug("TOKEN TO PARSE [{}]", token);
+
         try {
             ObjectMapper mapper = new ObjectMapper();
+
             Claims body = Jwts.parser()
                     .setSigningKey("israjhaliri".getBytes("UTF-8"))
                     .parseClaimsJws(token)
                     .getBody();
-            AppUtils.getLogger(this).debug("JSON PAYLOAD [{}]",
-                    mapper.writerWithDefaultPrettyPrinter()
-                            .writeValueAsString(body));
+
+            AppUtils.getLogger(this).debug("JSON PAYLOAD [{}]", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(body));
             return body;
         } catch (JwtException | ClassCastException | JsonProcessingException | UnsupportedEncodingException e) {
             AppUtils.getLogger(this).error(e.getMessage(), e);
@@ -57,8 +60,8 @@ public class CustomRequestHandler extends HttpServletRequestWrapper {
 
     @Override
     public ServletInputStream getInputStream() throws IOException {
-        final ByteArrayInputStream byteArrayInputStream =
-                new ByteArrayInputStream(getRequestBody());
+        final ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(getRequestBody());
+
         ServletInputStream servletInputStream =
                 new ServletInputStream() {
                     @Override
@@ -81,6 +84,7 @@ public class CustomRequestHandler extends HttpServletRequestWrapper {
                         throw new RuntimeException("Not implemented");
                     }
                 };
+
         return servletInputStream;
     }
 }

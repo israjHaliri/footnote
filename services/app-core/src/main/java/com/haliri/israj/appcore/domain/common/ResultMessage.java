@@ -4,10 +4,11 @@ package com.haliri.israj.appcore.domain.common;
  * Created by israjhaliri on 11/21/17.
  */
 public class ResultMessage {
+
     private int status;
     private String error;
     private String message;
-    private Object data;
+    private Object contentData;
 
     private static ResultMessage instance = null;
 
@@ -45,12 +46,12 @@ public class ResultMessage {
         this.message = message;
     }
 
-    public Object getData() {
-        return data;
+    public Object getContentData() {
+        return contentData;
     }
 
-    public void setData(Object data) {
-        this.data = data;
+    public void setContentData(Object contentData) {
+        this.contentData = contentData;
     }
 
     public static void setInstance(ResultMessage instance) {
@@ -63,7 +64,7 @@ public class ResultMessage {
                 "status=" + status +
                 ", error='" + error + '\'' +
                 ", message='" + message + '\'' +
-                ", data=" + data +
+                ", contentData=" + contentData +
                 '}';
     }
 }

@@ -11,5 +11,4 @@ import org.springframework.stereotype.Service;
 public interface ResponseHandler {
 
     ResultMessage setResult(ResponseStatus responseStatus, String erroMessage, Object data);
-
 }

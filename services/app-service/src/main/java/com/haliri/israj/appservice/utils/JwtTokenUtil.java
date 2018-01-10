@@ -34,6 +34,7 @@ public class JwtTokenUtil implements Serializable {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
         claims.put(CLAIM_KEY_AUDIENCE, "israjHaliriSite");
+
         return generateToken(claims);
     }
 
@@ -41,6 +42,7 @@ public class JwtTokenUtil implements Serializable {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, username);
         claims.put(CLAIM_KEY_AUDIENCE, "israjHaliriSite");
+
         return generateToken(claims);
     }
 
@@ -53,7 +55,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Date generateExpirationDate() {
-        Date expiredDate = new Date(System.currentTimeMillis() + expiration);
+        Date expiredDate = new Date(System.currentTimeMillis() + expiration * 10);
         return expiredDate;
     }
 
@@ -67,6 +69,7 @@ public class JwtTokenUtil implements Serializable {
         } catch (Exception e) {
             claims = null;
         }
+
         return claims;
     }
 
@@ -78,17 +81,20 @@ public class JwtTokenUtil implements Serializable {
         } catch (Exception e) {
             username = null;
         }
+
         return username;
     }
 
     public Date getExpirationDateFromToken(String token) {
         Date expiration;
+
         try {
             final Claims claims = getClaimsFromToken(token);
             expiration = claims.getExpiration();
         } catch (Exception e) {
             expiration = null;
         }
+
         return expiration;
     }
 
@@ -103,6 +109,7 @@ public class JwtTokenUtil implements Serializable {
         if (username.equals(userDetails.getUsername()) && !isTokenExpired(token)) {
             return true;
         }
+
         AppUtils.getLogger(this).info("TOKE WAS EXPIRED AT : {}", getExpirationDateFromToken(token));
         return false;
     }

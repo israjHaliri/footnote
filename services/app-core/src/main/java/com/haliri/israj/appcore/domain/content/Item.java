@@ -9,6 +9,7 @@ import java.util.List;
  * Created by israjhaliri on 11/23/17.
  */
 public class Item {
+
     private Integer idContent;
     private String title;
     private String description;

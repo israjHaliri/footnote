@@ -30,10 +30,10 @@ public class AttachmentController {
     @Autowired
     ResponseHandler responseHandler;
 
-    final String uuid = UUID.randomUUID().toString().replace("-", "");
-
     @Value("${patFile}")
     String pathFile;
+
+    final String uuid = UUID.randomUUID().toString().replace("-", "");
 
     @RequestMapping(value = "/secret/get/attachment", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
@@ -55,6 +55,7 @@ public class AttachmentController {
         parameters.put("length", length + start);
         parameters.put("search", search);
         parameters.put("type", type);
+
         List<Attachment> attachmentList = null;
 
         Map<String, Object> result = new HashMap();
@@ -89,6 +90,7 @@ public class AttachmentController {
         attachment.setItemId(contentId);
         attachment.setFile(uuid+"."+extension);
         attachment.setContentType(contentType);
+
         try {
             if(saveFile(contentId,file, attachment.getFile())){
                 attachmentStrategy.saveData(attachment);
@@ -112,8 +114,10 @@ public class AttachmentController {
         parameter.put("type", type);
         parameter.put("idAttachment", idAttachment);
         parameter.put("idContent", idContent);
+
         try {
             String nameFile = attachmentStrategy.getFileNameById(parameter);
+
             if (deleletFile(nameFile)) {
                 attachmentStrategy.deleteData(parameter);
                 return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
@@ -146,7 +150,6 @@ public class AttachmentController {
     private Boolean deleletFile(String nameFile) {
         File tempDir = new File(pathFile);
         File finalDestination = new File(tempDir + File.separator + nameFile);
-
         if (finalDestination.delete()) {
             return Boolean.TRUE;
         } else {

@@ -6,5 +6,4 @@ package com.haliri.israj.appcore.strategy.content;
 public interface GetDataStrategy<T1,T2> {
 
     T1 process(T2 parameters);
-
 }

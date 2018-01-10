@@ -28,8 +28,6 @@ public class UserDetailsConfig implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user =  userDAO.getDataById(username);
-        AppUtils.getLogger(this).debug("USERNAME PARAMETER : {}",username);
-
         if (user.getId() == null) {
             throw new UsernameNotFoundException(username);
         } else {
@@ -37,6 +35,7 @@ public class UserDetailsConfig implements UserDetailsService {
             user.getRoles().forEach((users)->{
                 grantedAuthorities.add(new SimpleGrantedAuthority(users.getRole()));
             });
+
             return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(),user.getEnable(), true, true, true, grantedAuthorities);
         }
     }
