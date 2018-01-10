@@ -28,6 +28,9 @@
 									</button>
 								</td>
 							</tr>
+							<tr v-if="data.testimonial.length == 0">
+								<td align="center" colspan="5">No Data</td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

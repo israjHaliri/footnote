@@ -61,7 +61,7 @@ public class ItemStrategyTests {
         Item.setUpdateBy("admin.content@gmail.com");
         Item.setContentType(ContentType.ARTICLE);
         Item.setInformation("-");
-        Item.setIdContent(null);
+        Item.setIdItem(null);
         itemStrategy.saveData(Item);
     }
 
@@ -76,7 +76,7 @@ public class ItemStrategyTests {
         Item.setUpdateBy("admin.content@gmail.com");
         Item.setContentType(ContentType.ARTICLE);
         Item.setInformation("-");
-        Item.setIdContent(2);
+        Item.setIdItem(2);
         itemStrategy.updateData(Item);
     }
 

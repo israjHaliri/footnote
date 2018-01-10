@@ -7,7 +7,7 @@ import Login from '@/components/Login'
 import GuesbookDashboard from '@/components/guestbook/Dashboard'
 import ProfileUpdate from '@/components/profile/Update'
 import TestimonialList from '@/components/testimonial/List'
-import ItemNew from '@/components/item/New'
+import ItemForm from '@/components/item/Form'
 import ItemList from '@/components/item/List'
 import NotFound from '@/components/404'
 
@@ -44,7 +44,12 @@ export default new Router({
 		},{
 			path: '/item/new',
 			name: 'ItemNew',
-			component: ItemNew
+			component: ItemForm
+		},{
+			path: '/item/update/:id/:type',
+			props: true,
+			name: 'ItemUpdate',
+			component: ItemForm
 		},{
 			path: '/item/list',
 			name: 'ItemList',

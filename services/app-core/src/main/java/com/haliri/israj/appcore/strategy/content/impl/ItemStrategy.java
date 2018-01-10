@@ -2,7 +2,6 @@ package com.haliri.israj.appcore.strategy.content.impl;
 
 import com.haliri.israj.appcore.domain.content.Item;
 import com.haliri.israj.appcore.handler.impl.ResponseHandlerImpl;
-import com.haliri.israj.appcore.utils.AppUtils;
 import com.haliri.israj.appcore.strategy.content.DeleteDataStrategy;
 import com.haliri.israj.appcore.strategy.content.GetDataStrategy;
 import com.haliri.israj.appcore.strategy.content.SaveOrUpdateDataStrategy;
@@ -12,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +35,7 @@ public class ItemStrategy {
     public List<Item> getListData(String type) {
         getDataStrategy = (parameters) -> {
             String sql = "SELECT id_item, title, description, create_date, update_date, create_by, update_by, type, information\n" +
-                    "FROM content.content WHERE type = ? limit 5";
+                    "FROM content.item WHERE type = ? limit 5";
 
             return jdbcTemplate.query(sql, new Object[]{parameters}, new BeanPropertyRowMapper(Item.class));
         };
@@ -50,9 +48,9 @@ public class ItemStrategy {
             Map<String, Object> objParam = (Map<String, Object>) parameters;
 
             String sql = "SELECT id_item, title, description, create_date, update_date, create_by, update_by, type, information\n" +
-                    "FROM content.content WHERE type = ? and id_item = ? limit 5";
+                    "FROM content.item WHERE type = ? and id_item = ?";
 
-            return jdbcTemplate.query(sql, new Object[]{objParam.get("type"), objParam.get("idContent")}, new BeanPropertyRowMapper(Item.class));
+            return jdbcTemplate.query(sql, new Object[]{objParam.get("type"), Integer.valueOf(objParam.get("idItem").toString())}, new BeanPropertyRowMapper(Item.class));
         };
 
         return (List<Item>) getDataStrategy.process(param);
@@ -68,14 +66,14 @@ public class ItemStrategy {
                     "       FROM\n" +
                     "           (SELECT t.*\n" +
                     "               FROM\n" +
-                    "                   (SELECT COUNT(id_item) OVER() total_count,id_item,title,description,create_date,update_date,create_by,update_by,type,information\n" +
+                    "                   (SELECT COUNT(id_item) OVER() total_count,id_item,title,description,create_date,update_date,create_by,update_by,type as content_type,information\n" +
                     "                    FROM content.item \n" +
-                    "                    WHERE title LIKE  '%" + param.get("search") + "%' AND type = '" + param.get("type") + "' \n" +
+                    "                    WHERE title LIKE  '%" + param.get("search") + "%' OR type = '%" + param.get("type") + "%' \n" +
                     "                    ORDER BY content.item.id_item DESC) " +
                     "             t)\n" +
                     "     t)\n" +
                     "t\n" +
-                    "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("length") + "::INTEGER";
+                    "OFFSET " + param.get("start") + "::INTEGER LIMIT " + param.get("perPage") + "::INTEGER";
             return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Item.class));
         };
 
@@ -104,7 +102,7 @@ public class ItemStrategy {
                     "WHERE id_item = ?";
             jdbcTemplate.update(sql, parameters.getTitle(), parameters.getDescription(),
                     parameters.getUpdateDate(), parameters.getUpdateBy(),
-                    parameters.getContentType().name(), parameters.getInformation(), Item.getIdContent());
+                    parameters.getContentType().name(), parameters.getInformation(), Item.getIdItem());
         };
 
         saveOrUpdateDataStrategy.process(Item);

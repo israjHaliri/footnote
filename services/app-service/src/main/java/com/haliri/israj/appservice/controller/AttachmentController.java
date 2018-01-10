@@ -37,39 +37,32 @@ public class AttachmentController {
 
     @RequestMapping(value = "/secret/get/attachment", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
-            @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "columns[0][data]", defaultValue = "") String firstColumn,
-            @RequestParam(value = "order[0][column]", defaultValue = "0") int sortIndex,
-            @RequestParam(value = "order[0][dir]", defaultValue = "ASC") String sortDir,
-            @RequestParam(value = "search[value]", defaultValue = "") String search,
+            @RequestParam(value = "search", defaultValue = "") String search,
             @RequestParam(value = "type", defaultValue = "") String type
     ) {
-        AppUtils.getLogger(this).debug(
-                "datatable info = draw : {} , start : {}, length : {}, firstColumn : {}, sortIndex : {}, sortDir : {}, search : {},",
-                draw, start, length, firstColumn, sortIndex, sortDir, search
-        );
+        AppUtils.getLogger(this).debug("datatable info = start : {}, search : {}, tyoe : {}", start, search, type);
+
+        int perPage = 10;
+
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("start", (start + 1));
-        parameters.put("length", length + start);
-        parameters.put("search", search);
-        parameters.put("type", type);
+        parameters.put("start", ((start - 1) * 10));
+        parameters.put("search",search);
+        parameters.put("type",type);
+        parameters.put("perPage", perPage);
 
         List<Attachment> attachmentList = null;
 
         Map<String, Object> result = new HashMap();
-        result.put("draw", draw);
-        result.put("search[value]", search);
+        result.put("search", search);
+        result.put("perPage", perPage);
         try {
             attachmentList = attachmentStrategy.getListDataPerPage(parameters);
             result.put("attachments", attachmentList);
             if (attachmentList.size() > 0) {
-                result.put("recordsTotal", attachmentList.get(0).getTotal_count());
-                result.put("recordsFiltered", attachmentList.get(0).getTotal_count());
+                result.put("totalData", attachmentList.get(0).getTotalCount());
             } else {
-                result.put("recordsTotal", 0);
-                result.put("recordsFiltered", 0);
+                result.put("totalData", 0);
             }
 
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, result);

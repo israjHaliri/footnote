@@ -24,7 +24,7 @@ public class ItemController {
     @Autowired
     ResponseHandler responseHandler;
 
-    @RequestMapping(value = "/public/get/content", method = RequestMethod.GET)
+    @RequestMapping(value = "/public/get/item", method = RequestMethod.GET)
     public Object getTestimonial(@RequestParam(value = "type", defaultValue = "") String type) {
         try{
             List<Item> result = itemStrategy.getListData(type);
@@ -34,14 +34,14 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(value = "/secret/get_by_id/content", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get_by_id/item", method = RequestMethod.GET)
     public Object getTestimonial(
             @RequestParam(value = "type", defaultValue = "") String type,
-            @RequestParam(value = "idContent", defaultValue = "") String idContent
+            @RequestParam(value = "idItem", defaultValue = "") String idItem
     ) {
         Map parameter = new HashMap();
         parameter.put("type",type);
-        parameter.put("idContent",idContent);
+        parameter.put("idItem",idItem);
 
         try{
             List<Item>  result = itemStrategy.getListDataById(parameter);
@@ -51,42 +51,34 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(value = "/secret/get/content", method = RequestMethod.GET)
+    @RequestMapping(value = "/secret/get/item", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
-            @RequestParam(value = "draw", defaultValue = "0") int draw,
             @RequestParam(value = "start", defaultValue = "0") int start,
-            @RequestParam(value = "length", defaultValue = "10") int length,
-            @RequestParam(value = "columns[0][data]", defaultValue = "") String firstColumn,
-            @RequestParam(value = "order[0][column]", defaultValue = "0") int sortIndex,
-            @RequestParam(value = "order[0][dir]", defaultValue = "ASC") String sortDir,
-            @RequestParam(value = "search[value]", defaultValue = "") String search,
+            @RequestParam(value = "search", defaultValue = "") String search,
             @RequestParam(value = "type", defaultValue = "") String type
     ) {
-        AppUtils.getLogger(this).debug(
-                "datatable info = draw : {} , start : {}, length : {}, firstColumn : {}, sortIndex : {}, sortDir : {}, search : {},",
-                draw, start, length, firstColumn, sortIndex, sortDir, search
-        );
+        AppUtils.getLogger(this).debug("datatable info = start : {}, search : {}, tyoe : {}", start, search, type);
+
+        int perPage = 10;
 
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("start",(start + 1));
-        parameters.put("length",length + start);
+        parameters.put("start", ((start - 1) * 10));
         parameters.put("search",search);
         parameters.put("type",type);
+        parameters.put("perPage", perPage);
 
         List<Item> itemList = null;
 
         Map<String,Object> result = new HashMap();
-        result.put("draw", draw);
-        result.put("search[value]", search);
+        result.put("search", search);
+        result.put("perPage", perPage);
         try{
             itemList = itemStrategy.getListDataPerPage(parameters);
-            result.put("items", itemList);
-            if(itemList.size() > 0){
-                result.put("recordsTotal", itemList.get(0).getTotal_count());
-                result.put("recordsFiltered", itemList.get(0).getTotal_count());
-            }else{
-                result.put("recordsTotal", 0);
-                result.put("recordsFiltered", 0);
+            result.put("item", itemList);
+            if (itemList.size() > 0) {
+                result.put("totalData", itemList.get(0).getTotalCount());
+            } else {
+                result.put("totalData", 0);
             }
 
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,result);
@@ -95,7 +87,7 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(value = "/secret/insert/content", method = RequestMethod.POST)
+    @RequestMapping(value = "/secret/insert/item", method = RequestMethod.POST)
     public Object saveTestimonial(@RequestBody Item Item) {
         try {
             Item.setCreateBy(WebUtil.getUserLogin());
@@ -107,7 +99,7 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(value = "/secret/update/content", method = RequestMethod.PUT)
+    @RequestMapping(value = "/secret/update/item", method = RequestMethod.PUT)
     public Object updateTestimonial(@RequestBody Item Item) {
         try {
             itemStrategy.updateData(Item);
@@ -118,12 +110,12 @@ public class ItemController {
         }
     }
 
-    @RequestMapping(value = "/secret/delete/content/{idContent}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/secret/delete/item/{idItem}", method = RequestMethod.DELETE)
     public Object insertTestimonial(
-            @PathVariable(value = "idContent") Integer idContent
+            @PathVariable(value = "idItem") String idItem
     ) {
         try {
-            itemStrategy.deleteData(idContent);
+            itemStrategy.deleteData(Integer.valueOf(idItem));
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS,null,null);
         } catch (Exception e) {
             e.printStackTrace();

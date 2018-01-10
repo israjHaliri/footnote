@@ -12,7 +12,7 @@ public class Attachment {
     private String file;
     private ContentType contentType;
     private Integer rn;
-    private Integer total_count;
+    private Integer totalCount;
 
     public Integer getIdAttachment() {
         return idAttachment;
@@ -54,12 +54,12 @@ public class Attachment {
         this.rn = rn;
     }
 
-    public Integer getTotal_count() {
-        return total_count;
+    public Integer getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotal_count(Integer total_count) {
-        this.total_count = total_count;
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class Attachment {
                 ", file='" + file + '\'' +
                 ", contentType=" + contentType +
                 ", rn=" + rn +
-                ", total_count=" + total_count +
+                ", totalCount=" + totalCount +
                 '}';
     }
 }

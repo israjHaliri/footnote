@@ -18,7 +18,7 @@
     axios.defaults.timeout = 2500;
     axios.interceptors.response.use(function (response) {
         console.log(response);
-        if (response.data.status == 420) {
+        if (response.data.status == 500 || response.data.status == 400) {
             alert(response.data.message);
             return response;
         } else {
@@ -35,6 +35,8 @@
             } else if (error.response.data.status == 403) {
                 Router.push("/");
                 return Promise.reject("Access Denied");
+            } else if (error.response.data.status == 400) {
+                alert(error);
             } else if (error.response.data.status == 401) {
                 return Promise.reject(error);
             } else {

@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Item {
 
-    private Integer idContent;
+    private Integer idItem;
     private String title;
     private String description;
     private Date createDate;
@@ -20,16 +20,16 @@ public class Item {
     private ContentType contentType;
     private String information;
     private Integer rn;
-    private Integer total_count;
+    private Integer totalCount;
 
     private List<Attachment> attachmentList;
 
-    public Integer getIdContent() {
-        return idContent;
+    public Integer getIdItem() {
+        return idItem;
     }
 
-    public void setIdContent(Integer idContent) {
-        this.idContent = idContent;
+    public void setIdItem(Integer idItem) {
+        this.idItem = idItem;
     }
 
     public String getTitle() {
@@ -108,12 +108,12 @@ public class Item {
         this.rn = rn;
     }
 
-    public Integer getTotal_count() {
-        return total_count;
+    public Integer getTotalCount() {
+        return totalCount;
     }
 
-    public void setTotal_count(Integer total_count) {
-        this.total_count = total_count;
+    public void setTotalCount(Integer totalCount) {
+        this.totalCount = totalCount;
     }
 
     public void setAttachmentList(List<Attachment> attachmentList) {
@@ -123,7 +123,7 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-                "idContent=" + idContent +
+                "idItem=" + idItem +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", createDate=" + createDate +
@@ -133,7 +133,7 @@ public class Item {
                 ", contentType=" + contentType +
                 ", information=" + information +
                 ", rn=" + rn +
-                ", total_count=" + total_count +
+                ", totalCount=" + totalCount +
                 ", attachmentList=" + attachmentList +
                 '}';
     }
