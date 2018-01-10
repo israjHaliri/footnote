@@ -46,12 +46,11 @@ export default {
                }
            })
             .then( response => {
-                console.log("response : ",response);
                 localStorage.setItem('VueAdminPanelToken', "")
                 this.$router.push("/")
             })
             .catch( error => {
-                alert(error.response.contentData.message);
+                alert(error.response.data.message);
                 this.$router.push("/")
             });
         }

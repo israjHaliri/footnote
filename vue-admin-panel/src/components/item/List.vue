@@ -8,88 +8,96 @@
 				<div class="col-md-12">
 					<table style="background-color:white" class="table table-responsive table-bordered table-hover">
 						<thead>
-							<tr>
-								<th>TITLE</th>
-								<th>DESCRIPTION</th>
-								<th>TYPE</th>
-								<th>INFORMATON</th>
-								<th>ACTION</th>
-							</tr>
+						<tr>
+							<th>TITLE</th>
+							<th>SUBJECT</th>
+							<th>DESCRIPTION</th>
+							<th>DATE</th>
+							<th>ACTION</th>
+						</tr>
 						</thead>
 						<tbody>
-							<tr v-for="(val, index) in listData">
-								<td>{{ val.title }}</td>
-								<td>{{ val.description }}</td>
-								<td>{{ val.type }}</td>
-								<td>{{ val.information }}</td>
-								<td>{{ val.information }}</td>
-							</tr>
+						<tr v-for="(val, index) in data.testimonial">
+							<td>{{ val.rn }}</td>
+							<td>{{ val.subject }}</td>
+							<td>{{ val.description }}</td>
+							<td>{{ val.createDate }}</td>
+							<td>{{ val.createDate }}</td>
+						</tr>
 						</tbody>
 					</table>
 				</div>
 				<div class="col-md-12">
-					<pagination :current-page="page.currentPage" :total-pages="page.totalPages" @page-changed="changePage">
-					</pagination>
+					<Pagination  :pagination="data"
+								 @paginate="getData()"
+								 :offset=offset>
+					</Pagination>
 				</div>
 			</div>
 		</div>
 	</div>
-</template>    
+</template>
 
 <script>
-import Search from '@/components/helper/pagination/Search'
-import Pagination from '@/components/helper/pagination/Paginate'
+	import Search from '@/components/helper/pagination/Search'
+	import Pagination from '@/components/helper/pagination/Paginate'
 
-export default {
-	data(){
-		return {
-			listData : [],
-			searchKeyword : "",
-			page: {
-				currentPage: 1,
-				totalPages: 10
+	export default {
+		data(){
+			return {
+				search_keyword : "",
+				data: {
+					total: 0,
+					per_page: 0,
+					last_page: 0,
+					from: 1,
+					to: 5,
+					current_page: 1,
+					testimonial : ""
+				},
+				offset: 4,
+			}
+		},
+		components: {
+			Search,
+			Pagination,
+		},
+		mounted () {
+			this.getData("");
+		},
+		methods:{
+			searchData (keywords) {
+				this.data.current_page = 1;
+				this.search_keyword = keywords;
+				this.getData();
+			},
+			getData(keywords){
+				this.$axios.request({
+					url:'/secret/get/testimonial',
+					method:'GET',
+					headers : {
+						"Content-Type" : "application/x-www-form-urlencoded",
+						"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
+					},
+					params: {
+						'search' : this.searchKeyword,
+						'start' : this.data.current_page,
+					},
+				})
+						.then( response => {
+							this.data.testimonial = response.data.contentData.testimonial;
+							this.data.total = response.data.contentData.totalData;
+							this.data.per_page = response.data.contentData.perPage;
+							this.data.last_page = Math.ceil(this.data.total / this.data.per_page);
+						})
+			},
+			changePage (pageNum) {
+				this.data.current_page = pageNum;
+				this.getData();
 			}
 		}
-	},
-	components: {
-		Search,
-		Pagination,
-	},
-	mounted () {
-		this.getData("");
-	},
-	methods:{
-		searchData (keywords) {
-			this.page.currentPage = 1
-			this.searchKeyword = keywords;
-			this.getData();
-		},
-		getData(keywords){
-			this.$axios.request({
-				url:'/secret/get/content',
-				method:'GET',
-				headers : {
-					"Content-Type" : "application/x-www-form-urlencoded",
-					"Authorization" : "Bearer "+ localStorage.getItem("VueAdminPanelToken")
-				},
-				params: {
-					'type' : 'ARTICLE',
-					'search[value]' : this.searchKeyword,
-					'start' : this.page.currentPage,
-				},
-			})
-			.then( response => {
-				this.listData = response.contentData.contentData.items;
-			})
-		},
-		changePage (pageNum) {
-			this.page.currentPage = pageNum
-			this.getData();
-		}
 	}
-}
 </script>
 
 <style scoped>
-
 </style>

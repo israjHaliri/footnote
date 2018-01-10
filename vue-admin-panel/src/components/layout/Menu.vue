@@ -3,17 +3,17 @@
         <nav class="sidebar-nav">
             <ul class="nav">
                 <router-link :to="'/guestbook/dashboard'" class="nav-item">
-                    <a v-on:click="handleClickMenu('Dashboard')" class="nav-link" href="#"><i class="icon-speedometer"></i> Guestbook</a>
+                    <a v-on:click="handleClickMenu('Dashboard')" class="nav-link"><i class="icon-speedometer"></i> Guestbook</a>
                 </router-link>
                 <li class="divider"></li>
                 <li class="nav-title">
                     Navigator
                 </li>
                 <router-link :to="'/profile/update'" class="nav-item">
-                    <a v-on:click="handleClickMenu('Profile')" class="nav-link" href="#"><i class="icon-pencil"></i> Profile</a>
+                    <a v-on:click="handleClickMenu('Profile')" class="nav-link"><i class="icon-pencil"></i> Profile</a>
                 </router-link>
                 <router-link :to="'/testimonial/list'" class="nav-item">
-                    <a v-on:click="handleClickMenu('Testimonial')" class="nav-link" href="#"><i class="icon-pencil"></i> Testimonial</a>
+                    <a v-on:click="handleClickMenu('Testimonial')" class="nav-link"><i class="icon-pencil"></i> Testimonial</a>
                 </router-link>
                 <router-link tag="li" class="nav-item nav-dropdown" :to="{ path: '/menu'}" disabled>
                     <div class="nav-link nav-dropdown-toggle" @click="handleClickParent">
@@ -38,7 +38,7 @@
 </template>
 <script>
 export default {
-    data () {
+    contentData () {
         return {
 
         }

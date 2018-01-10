@@ -85,8 +85,8 @@ export default {
 			})
 			.then( response => {
 				console.log(response);
-				alert(response.contentData.message);
-				if(response.contentData.status ==  200){
+				alert(response.data.message);
+				if(response.data.status ==  200){
 					this.getData();
 				}
 				
