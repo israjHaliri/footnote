@@ -9,6 +9,7 @@ import ProfileUpdate from '@/components/profile/Update'
 import TestimonialList from '@/components/testimonial/List'
 import ItemForm from '@/components/item/Form'
 import ItemList from '@/components/item/List'
+import AttachmentList from '@/components/attachment/List'
 import NotFound from '@/components/404'
 
 Vue.use(Router)
@@ -54,6 +55,10 @@ export default new Router({
 			path: '/item/list',
 			name: 'ItemList',
 			component: ItemList
+		},{
+			path: '/attachment/list',
+			name: 'AttachmentList',
+			component: AttachmentList
 		}
 		]
 	}

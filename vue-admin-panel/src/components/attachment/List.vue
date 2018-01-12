@@ -1,88 +1,64 @@
 <template>
-  <table id="table-id"></table>
+    <div class="container-fluid">
+        <div class="animated fadeIn">
+            <div class="row">
+                <div class="col-md-12">
+                    <table style="background-color:white" class="table table-responsive table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>NO</th>
+                            <th>FILE</th>
+                            <th width="10%">ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr  v-for="val in exGetter">
+                            <td>{{ val.rn }}</td>
+                            <td>{{ val.file }}</td>
+                            <td align="center">
+                                <!--<button class="btn btn-danger" v-on:click="ex(4)">-->
+                                <button class="btn btn-danger" v-on:click="exAction">
+                                    Load
+                                </button>
+                            </td>
+                        </tr>
+                        <tr v-if="attachments.length == 0">
+                            <td align="center" colspan="5">No Data</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-export default {
-    props: ['tableData'],
-    data() {
-      return {
-        rows: [],
-        headers: [
-          { title: 'column 1' },
-          { title: 'column 2' },
-          { title: 'column 3', class: 'some-class'}
-        ],
-        dtHandle: null
-      }
-    },
-    watch: {
-      tableData(val, oldVal) {
-        let vm = this;
-        vm.rows = [];
-        val.forEach(function (item) {
-          let row = [];
-          row.push(item.col_one_data);
-          row.push(item.col_two_data);
-          row.push(item.col_three_data);
- 
-          vm.rows.push(row);
-        });
- 
-        // This is where the "magic" happens...
-        vm.dtHandle.clear();
-        vm.dtHandle.rows.add(vm.rows);
-        vm.dtHandle.draw();
-      }
-    },
-    ready() {
-      // Determine the height of the table based on where it is on the page, 
-      // or force a minimum of 300px if it's too close to the bottom of the window.
-      let scrollY = (Math.floor(
-        window.innerHeight - this.$el.getBoundingClientRect().top
-      ) - 140);
-      if (scrollY < 300) {
-        scrollY = 300;
-      }
-      // Fire up datatables with our desired config
-      // and store a reference handle to our component's
-      // data element so we can reference it later..
-      this.dtHandle = $(this.$el).DataTable({
-        columns: this.headers,
-        data: this.rows,
-        data: this.rows,
-        searching: false,
-        paging: false,
-        fixedHeader: true,
-        fixedColumns: true,
-        scrollY: scrollY + 'px',
-        scrollX: true,
-        info: false,
-        buttons: [
-          {
-            extend: 'colvis',
-            collectionLayout: 'fixed two-column',
-            text: 'Show/Hide Data'
-          },
-          {
-            extend: 'csv',
-            text: 'Export CSV'
-          },
-          {
-            extend: 'excel',
-            text: 'Export Excel'
-          }
-        ]
-      });
- 
-      // Prepend the buttons to the wrapper so they appear above the table:
-      this.dtHandle.buttons()
-          .container()
-          .appendTo('#table-id_wrapper');
+    import {mapActions} from 'vuex';
+    import {mapGetters} from 'vuex';
+    export default {
+        computed : {
+            attachments (){
+                console.log("attachemnt : ",this.$store.state.attachments);
+                return this.$store.state.attachments
+            },
+//            exGetter(){
+//                return this.$store.getters.exGetter
+//            }
+                ...mapGetters([
+                        'exGetter'
+                ])
+        },
+        methods : {
+//            ex(data){
+//                this.$store.dispatch('exAction',data);
+//            }
+                ...mapActions([
+                        'exAction'
+                ])
+        }
     }
-  }
 </script>
 
 <style scoped>
-
 </style>
