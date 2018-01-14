@@ -12,10 +12,10 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-preset-stage-2": "^6.24.1",
-    "base-64": "^0.1.0",
     "chart.js": "^2.7.1",
-    "js-base64": "^2.4.0",
     "vue": "^2.5.2",
+    "js-base64": "^2.4.0",
+    "vue-base64-file-upload": "^1.0.4",
     "vue-chartjs": "^3.0.2",
     "vue-fusioncharts": "^1.0.0-beta.3",
     "vue-router": "^3.0.1",

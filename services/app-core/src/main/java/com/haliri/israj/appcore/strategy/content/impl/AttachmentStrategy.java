@@ -41,14 +41,14 @@ public class AttachmentStrategy {
                     "      FROM\n" +
                     "          (SELECT t.*\n" +
                     "              FROM\n" +
-                    "                  (SELECT COUNT(id_attachment) OVER() total_count,id_attachment,content_id,file,type\n" +
+                    "                  (SELECT COUNT(id_attachment) OVER() total_count,name_file,id_attachment,item_id,file,type\n" +
                     "                  FROM content.attachment \n" +
-                    "                   WHERE file LIKE  '%%' AND type = '"+param.get("type")+"'\n" +
+                    "                   WHERE file LIKE  '%%' AND type = '" + param.get("type") + "'\n" +
                     "                   ORDER BY content.attachment.id_attachment DESC)\n" +
                     "            t)\n" +
                     "    t)\n" +
                     "t\n" +
-                    "WHERE t.rn BETWEEN "+param.get("start")+"::INTEGER AND "+param.get("length")+"::INTEGER";
+                    "WHERE t.rn BETWEEN " + param.get("start") + "::INTEGER AND " + param.get("perPage") + "::INTEGER";
 
             return jdbcTemplate.query(sql, new BeanPropertyRowMapper(Attachment.class));
         };
@@ -58,13 +58,13 @@ public class AttachmentStrategy {
 
     public String getFileNameById(Map param) {
         getDataStrategy = (parameters) -> {
-            Map<String,Object> objParam = (Map<String, Object>) parameters;
+            Map<String, Object> objParam = (Map<String, Object>) parameters;
 
-            String sql = "SELECT file \n" +
-                    "FROM content.attachment WHERE id_attachment = ? AND content_id = ? AND type = ?;";
+            String sql = "SELECT file,name_file \n" +
+                    "FROM content.attachment WHERE id_attachment = ? AND item_id = ? AND type = ?;";
 
-            Attachment attachment = (Attachment) jdbcTemplate.queryForObject(sql, new Object[]{objParam.get("idAttachment"),objParam.get("idContent"),objParam.get("type")}, new BeanPropertyRowMapper(Attachment.class));
-            return attachment.getFile().toString();
+            Attachment attachment = (Attachment) jdbcTemplate.queryForObject(sql, new Object[]{objParam.get("idAttachment"), objParam.get("idContent"), objParam.get("type")}, new BeanPropertyRowMapper(Attachment.class));
+            return attachment.getNameFile().toString();
         };
 
         return (String) getDataStrategy.process(param);
@@ -74,9 +74,9 @@ public class AttachmentStrategy {
     public void saveData(Attachment attachment) {
         saveOrUpdateDataStrategy = (Attachment parameters) -> {
             String sql = "INSERT INTO content.attachment(\n" +
-                    "content_id, file, type)\n" +
-                    "VALUES ( ?, ?, ?)";
-            jdbcTemplate.update(sql, parameters.getItemId(), parameters.getFile(),parameters.getContentType().name());
+                    "item_id, file, name_file, type)\n" +
+                    "VALUES ( ?, ?, ?, ?)";
+            jdbcTemplate.update(sql, parameters.getItemId(), parameters.getFile(), parameters.getNameFile(), parameters.getContentType().name());
         };
 
         saveOrUpdateDataStrategy.process(attachment);
@@ -86,9 +86,9 @@ public class AttachmentStrategy {
     public void updateData(Attachment attachment) {
         saveOrUpdateDataStrategy = (Attachment parameters) -> {
             String sql = "UPDATE content.attachment\n" +
-                    "SET file=?\n" +
-                    "WHERE id_attachment=? AND content_id=? AND type=?";
-            jdbcTemplate.update(sql, parameters.getFile(),parameters.getIdAttachment(),parameters.getItemId(),parameters.getContentType().name());
+                    "SET file=?,name_file=?\n" +
+                    "WHERE id_attachment=? AND item_id=? AND type=?";
+            jdbcTemplate.update(sql, parameters.getFile(), parameters.getNameFile(),parameters.getIdAttachment(), parameters.getItemId(), parameters.getContentType().name());
         };
 
         saveOrUpdateDataStrategy.process(attachment);
@@ -99,8 +99,8 @@ public class AttachmentStrategy {
         deleteDataStrategy = (parameters) -> {
             Map objParam = parameters;
             String sql = "DELETE FROM content.attachment\n" +
-                    "WHERE id_attachment=? AND type =? AND content_id =?";
-            jdbcTemplate.update(sql, parameters.get("idAttachment"),objParam.get("type"),objParam.get("idContent"));
+                    "WHERE id_attachment=? AND type =? AND item_id =?";
+            jdbcTemplate.update(sql, parameters.get("idAttachment"), objParam.get("type"), objParam.get("idContent"));
         };
 
         deleteDataStrategy.process(param);

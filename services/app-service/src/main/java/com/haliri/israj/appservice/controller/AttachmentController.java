@@ -10,13 +10,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 /**
  * Created by israjhaliri on 10/16/17.
@@ -33,8 +40,6 @@ public class AttachmentController {
     @Value("${patFile}")
     String pathFile;
 
-    final String uuid = UUID.randomUUID().toString().replace("-", "");
-
     @RequestMapping(value = "/secret/get/attachment", method = RequestMethod.GET)
     public Object getTestimonialPerPage(
             @RequestParam(value = "start", defaultValue = "0") int start,
@@ -47,8 +52,8 @@ public class AttachmentController {
 
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("start", ((start - 1) * 10));
-        parameters.put("search",search);
-        parameters.put("type",type);
+        parameters.put("search", search);
+        parameters.put("type", type);
         parameters.put("perPage", perPage);
 
         List<Attachment> attachmentList = null;
@@ -73,22 +78,22 @@ public class AttachmentController {
 
     @RequestMapping(value = "/secret/insert/attachment", method = RequestMethod.POST)
     public Object saveTestimonial(
-            @RequestParam(value = "contentId") Integer contentId,
-            @RequestParam(value = "file") MultipartFile file,
-            @RequestParam(value = "contentType") ContentType contentType
+            @RequestParam(value = "contentId", defaultValue = "") String contentId,
+            @RequestParam(value = "file", defaultValue = "") String file,
+            @RequestParam(value = "contentType", defaultValue = "") ContentType contentType
     ) {
-        String extension = FilenameUtils.getExtension(file.getOriginalFilename());
 
         Attachment attachment = new Attachment();
-        attachment.setItemId(contentId);
-        attachment.setFile(uuid+"."+extension);
+        attachment.setItemId(Integer.valueOf(contentId));
+        attachment.setFile(file);
+        attachment.setNameFile(String.valueOf(UUID.randomUUID()) + ".jpg");
         attachment.setContentType(contentType);
 
         try {
-            if(saveFile(contentId,file, attachment.getFile())){
+            if (AppUtils.saveImageBase64(attachment.getNameFile(),attachment.getFile(), pathFile)) {
                 attachmentStrategy.saveData(attachment);
                 return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
-            }else{
+            } else {
                 return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, "Failed To Save File Make Sure Paramter is Correct", null);
             }
         } catch (Exception e) {
@@ -111,7 +116,7 @@ public class AttachmentController {
         try {
             String nameFile = attachmentStrategy.getFileNameById(parameter);
 
-            if (deleletFile(nameFile)) {
+            if (AppUtils.deleletFile(nameFile,pathFile)) {
                 attachmentStrategy.deleteData(parameter);
                 return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.SUCCESS, null, null);
             } else {
@@ -120,33 +125,6 @@ public class AttachmentController {
         } catch (Exception e) {
             e.printStackTrace();
             return responseHandler.setResult(com.haliri.israj.appcore.constant.ResponseStatus.FAILED, e.getMessage(), null);
-        }
-    }
-
-    private Boolean saveFile(Object id,MultipartFile file,String fileName) throws IOException {
-        AppUtils.getLogger(this).debug("PATH FILE : {}", pathFile);
-        File tempDir = new File(pathFile);
-        if (!tempDir.exists()) {
-            tempDir.mkdirs();
-        }
-
-        File finalDestination = new File(tempDir + File.separator + fileName);
-        try {
-            file.transferTo(finalDestination);
-            return Boolean.TRUE;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Boolean.FALSE;
-        }
-    }
-
-    private Boolean deleletFile(String nameFile) {
-        File tempDir = new File(pathFile);
-        File finalDestination = new File(tempDir + File.separator + nameFile);
-        if (finalDestination.delete()) {
-            return Boolean.TRUE;
-        } else {
-            return Boolean.FALSE;
         }
     }
 }

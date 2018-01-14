@@ -9,6 +9,7 @@ public class Attachment {
 
     private Integer idAttachment;
     private Integer itemId;
+    private String nameFile;
     private String file;
     private ContentType contentType;
     private Integer rn;
@@ -62,11 +63,20 @@ public class Attachment {
         this.totalCount = totalCount;
     }
 
+    public String getNameFile() {
+        return nameFile;
+    }
+
+    public void setNameFile(String nameFile) {
+        this.nameFile = nameFile;
+    }
+
     @Override
     public String toString() {
         return "Attachment{" +
                 "idAttachment=" + idAttachment +
                 ", itemId=" + itemId +
+                ", nameFile='" + nameFile + '\'' +
                 ", file='" + file + '\'' +
                 ", contentType=" + contentType +
                 ", rn=" + rn +

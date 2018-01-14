@@ -5,7 +5,7 @@
 -- Dumped from database version 9.6.5
 -- Dumped by pg_dump version 10.0
 
--- Started on 2017-12-25 13:11:35 WIB
+-- Started on 2018-01-14 23:22:10 WIB
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -185,7 +185,8 @@ CREATE TABLE attachment (
     id_attachment bigint NOT NULL,
     item_id integer NOT NULL,
     file text,
-    type character varying
+    type character varying,
+    name_file text
 );
 
 
@@ -483,7 +484,7 @@ COPY user_roles (id, role_id, user_id) FROM stdin;
 
 COPY users (id, password, enable, token, username) FROM stdin;
 vue@admin.com	$2a$12$3aJYGZNTDKXUeDruTBxYVeBVyTBcM0mpG/BF/.DezaUSI/N4yzMIO	t	\N	vue admin
-israj.haliri@gmail.com	$2a$12$3aJYGZNTDKXUeDruTBxYVeBVyTBcM0mpG/BF/.DezaUSI/N4yzMIO	t	eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpc3Jhai5oYWxpcmlAZ21haWwuY29tIiwiYXVkIjoiaXNyYWpIYWxpcmlTaXRlIiwiZXhwIjoxNTE0MTgwNTI3fQ.LH975ReBiuVkPphL7gMraLr1_GRU2w2ROmGjWdezVzY	israj haliri
+israj.haliri@gmail.com	$2a$12$3aJYGZNTDKXUeDruTBxYVeBVyTBcM0mpG/BF/.DezaUSI/N4yzMIO	t	eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpc3Jhai5oYWxpcmlAZ21haWwuY29tIiwiYXVkIjoiaXNyYWpIYWxpcmlTaXRlIiwiZXhwIjoxNTE1OTQ4NTc4fQ.RkZ1XYF85kZK8kHbRFPq_ZO2mouMiPKQs4S0Vci0BTA	israj haliri
 \.
 
 
@@ -495,7 +496,7 @@ SET search_path = content, pg_catalog;
 -- Data for Name: attachment; Type: TABLE DATA; Schema: content; Owner: footnoter
 --
 
-COPY attachment (id_attachment, item_id, file, type) FROM stdin;
+COPY attachment (id_attachment, item_id, file, type, name_file) FROM stdin;
 \.
 
 
@@ -520,11 +521,7 @@ new jono	2017-12-19	5
 --
 
 COPY item (title, description, create_date, update_date, create_by, update_by, type, id_item, information) FROM stdin;
-article 1	this is test	2017-12-24	\N	israj.haliri@gmail.com	\N	ARTICLE	7	\N
-articel 2	this is test	2017-12-24	\N	israj.haliri@gmail.com	\N	ARTICLE	8	\N
-articel 2	this is test	2017-12-24	\N	israj.haliri@gmail.com	\N	ARTICLE	9	none
-articel 3	this is test	2017-12-24	\N	israj.haliri@gmail.com	\N	ARTICLE	10	-
-article 4	this is test	2017-12-24	\N	israj.haliri@gmail.com	\N	ARTICLE	11	-
+aprod 1	1	2018-01-10	\N	israj.haliri@gmail.com	\N	PRODUCT	22	
 \.
 
 
@@ -535,7 +532,7 @@ article 4	this is test	2017-12-24	\N	israj.haliri@gmail.com	\N	ARTICLE	11	-
 --
 
 COPY profile (address, email, create_date, update_date, phone, lat, lon) FROM stdin;
-jln goal para	israj.haliri@gmail.com	2017-12-23	2017-12-24	085862624149	-6.14309978	106.721001
+jln goal para	israj.haliri@gmail.com	2017-12-23	2018-01-10	085862624149	-6.14309978	106.721001
 \.
 
 
@@ -546,7 +543,16 @@ jln goal para	israj.haliri@gmail.com	2017-12-23	2017-12-24	085862624149	-6.14309
 --
 
 COPY testimonial (subject, description, age, create_date, update_date, id_testimonial) FROM stdin;
-israj	test post man	24	2017-12-09	2017-12-09	7
+jono	dba	23	2017-12-09	\N	9
+anjas	dba	20	2017-12-09	\N	10
+michael	dba	40	2017-12-09	\N	12
+jhone doe	-	0	2017-12-09	\N	20
+jhone doe	-	0	2017-12-09	\N	21
+jhone doe	-	0	2017-12-09	\N	22
+jhone doe	-	0	2017-12-09	\N	23
+jhone doe	-	0	2017-12-09	\N	24
+jhone doe	-	0	2017-12-09	\N	25
+jhone doe	\N	\N	\N	\N	27
 \.
 
 
@@ -587,7 +593,7 @@ SET search_path = content, pg_catalog;
 -- Name: content_id_content_seq; Type: SEQUENCE SET; Schema: content; Owner: footnoter
 --
 
-SELECT pg_catalog.setval('content_id_content_seq', 11, true);
+SELECT pg_catalog.setval('content_id_content_seq', 22, true);
 
 
 --
@@ -605,7 +611,7 @@ SELECT pg_catalog.setval('guest_book_id_guest_book_seq', 5, true);
 -- Name: images_id_image_seq; Type: SEQUENCE SET; Schema: content; Owner: footnoter
 --
 
-SELECT pg_catalog.setval('images_id_image_seq', 16, true);
+SELECT pg_catalog.setval('images_id_image_seq', 28, true);
 
 
 --
@@ -623,7 +629,7 @@ SELECT pg_catalog.setval('images_news_and_article_di_seq', 1, false);
 -- Name: testimonial_id_testimonial_seq; Type: SEQUENCE SET; Schema: content; Owner: footnoter
 --
 
-SELECT pg_catalog.setval('testimonial_id_testimonial_seq', 7, true);
+SELECT pg_catalog.setval('testimonial_id_testimonial_seq', 27, true);
 
 
 SET search_path = common, pg_catalog;
@@ -771,7 +777,7 @@ ALTER TABLE ONLY attachment
     ADD CONSTRAINT item_fkey FOREIGN KEY (item_id) REFERENCES item(id_item);
 
 
--- Completed on 2017-12-25 13:11:36 WIB
+-- Completed on 2018-01-14 23:22:11 WIB
 
 --
 -- PostgreSQL database dump complete

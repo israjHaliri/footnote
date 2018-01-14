@@ -56,7 +56,8 @@ export default new Router({
 			name: 'ItemList',
 			component: ItemList
 		},{
-			path: '/attachment/list',
+			path: '/attachment/list/:id/:type',
+            props: true,
 			name: 'AttachmentList',
 			component: AttachmentList
 		}
