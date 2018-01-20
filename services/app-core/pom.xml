@@ -38,8 +38,8 @@
             <properties>
                 <activatedProperties>development</activatedProperties>
                 <db.url>jdbc:postgresql://localhost:5432/footnote</db.url>
-                <db.username>footnoter</db.username>
-                <db.password>footnoter</db.password>
+                <db.username>israjhaliri</db.username>
+                <db.password></db.password>
                 <pathLog>/Volumes/Base/Users/israjhaliri/Documents/AppLogs/footnote/</pathLog>
             </properties>
             <activation>
