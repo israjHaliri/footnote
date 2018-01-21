@@ -46,7 +46,7 @@ public class CustomRequestHandler extends HttpServletRequestWrapper {
             ObjectMapper mapper = new ObjectMapper();
 
             Claims body = Jwts.parser()
-                    .setSigningKey("israjhaliri".getBytes("UTF-8"))
+                    .setSigningKey("footnote".getBytes("UTF-8"))
                     .parseClaimsJws(token)
                     .getBody();
 

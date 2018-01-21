@@ -1,6 +1,7 @@
+install : brew install postgresql
 start postgre : pg_ctl -D /usr/local/var/postgres -l logfile start
 run cli : psql -U israjhaliri -d postgres
-import dummy : psql -U israjhaliri -d footnote -a -f footnote.sql
+import dummy from sql type text plain: psql -U israjhaliri -d footnote -a -f footnote.sql
 
 regenerate postgre :
 rm -rf /usr/local/var/postgres
