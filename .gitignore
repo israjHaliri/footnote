@@ -1,11 +1,14 @@
-services/app-core/target/
-services/app-service/target/
-services/.idea/
-services/services.iml
-services/app-core/app-core.iml
-services/app-service/app-service.iml
-services/israjhaliri.com-log
-services/app-service/israjhaliri.com-log/
-**/.DS_Store
-.idea/
+.DS_Store
+node_modules/
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
