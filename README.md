@@ -1,4 +1,4 @@
-# vue-admin-panel add es lint
+# vue-js-basic
 
 > A Vue.js project
 
